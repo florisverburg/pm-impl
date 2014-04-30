@@ -1,0 +1,23 @@
+# Play
+logs
+dist
+project/project
+project/target
+target
+tmp
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+.history
+
+# Mac
+.DS_Store
