@@ -23,3 +23,4 @@ conf/evolutions
 
 # Mac
 .DS_Store
+public/images/Thumbs.db
