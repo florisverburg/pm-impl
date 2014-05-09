@@ -4,7 +4,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
 
-
+/**
+ * The application controller
+ */
 public class Application extends Controller {
 
     /**
