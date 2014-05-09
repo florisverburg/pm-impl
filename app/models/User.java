@@ -13,7 +13,5 @@ import play.data.validation.*;
 public class User extends Model {
 
     @Id
-    public Long id;
-
-    public String name;
+    private Long id;
 }
