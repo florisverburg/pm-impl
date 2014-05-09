@@ -13,7 +13,8 @@ conf/evolutions
 .settings/
 
 # Intellij
-.idea/
+.idea/*
+!.idea/codeStyleSettings.xml
 .idea_modules/
 *.iml
 *.ipr
