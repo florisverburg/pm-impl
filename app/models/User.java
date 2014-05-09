@@ -12,6 +12,9 @@ import play.data.validation.*;
 @Entity
 public class User extends Model {
 
+    /**
+     * The user identifier
+     */
     @Id
     private Long id;
 }
