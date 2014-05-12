@@ -19,10 +19,29 @@ public class User extends Model {
     private Long id;
 
     /**
-     * The user name
+     * The first name of an user
      */
-    @Constraints.Required
-    private String name;
+    private String firstName;
+
+    /**
+     * The last name of an user
+     */
+    private String lastName;
+
+    /**
+     * The language of an user
+     */
+    private String language;
+
+    /**
+     * The login name of an user
+     */
+    private String loginName;
+
+    /**
+     * The email adres of an user
+     */
+    private String email;
 
     /**
      * Get the user id
