@@ -5,8 +5,8 @@
 <html>
     <head>
     <meta charset="utf-8">
-            <title>@title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>@title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="generator" content="Webflow">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/normalize.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/webflow.css")">
@@ -20,6 +20,32 @@
         <!--[if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
     </head>
     <body>
+        <div class="section header">
+            <div class="w-container">
+                <div class="w-row">
+                    <div class="w-col w-col-2 company-column">
+                        <div class="company-title">APMatch</div>
+                    </div>
+                    <div class="w-col w-col-6 company-column">
+                        <a class="nav-link" id="linkHome" href="@routes.Application.index()" target="_self">Home</a><a class="nav-link" id="linkAbout" href="@routes.Application.about()" target="_self">About</a><a class="nav-link" id="linkContact" href="@routes.Application.contact()" target="_self">Contact</a>
+                    </div>
+                    <div class="w-col w-col-4 nav-bar">
+                        <a class="nav-link" href="#page-nav-Section 1" target="_self">Log in</a><a class="nav-link" href="#page-nav-Section-2" target="_self">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         @content
+        <div class="section">
+            <div class="w-container">
+                <div class="w-row">
+                    <div class="w-col w-col-6 left-footer-col">
+                        <div class="footer-text">&copy;&nbsp;APMatch. All Rights Reserved.</div>
+                    </div>
+                    <!-- <div class="w-col w-col-6 footer-nav-bar"><a class="footer-link" href="#">Text Link</a><a class="footer-link" href="#">Text Link</a><a class="footer-link" href="#">Text Link</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

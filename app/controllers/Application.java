@@ -16,5 +16,24 @@ public class Application extends Controller {
        return ok(index.render("Welcome to APMatch!"));
     }
 
+    /**
+     * Create the about page
+     * @return The about page
+     */
+    public static Result about() {
+        return ok(about.render("About APMatch"));
+    }
+
+    /**
+     * Create the contact page with a form to email to this mail address
+     * @return The contact page
+     */
+    public static Result contact() {
+        return ok(contact.render(
+                "Do you have a comment or question? Please send us an e-mail.",
+                "contact@apmatch.nl"));
+    }
+
+
 
 }

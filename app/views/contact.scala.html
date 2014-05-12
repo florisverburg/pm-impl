@@ -1,0 +1,28 @@
+@(message: String, email: String)
+
+@main("Contact - APMatch") {
+
+    <div class="section">
+        <div class="w-container">
+            <div class="w-row">
+                <div class="w-col w-col-12">
+                    <div class="main-text">
+                        <p>
+                            @message
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-container">
+            <div class="w-row">
+                <div class="w-col w-col-12">
+                    <div class="main-text">
+                        <a href="MAILTO:@email?SUBJECT=Contact APMatch"><button>Click to send an e-mail</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
