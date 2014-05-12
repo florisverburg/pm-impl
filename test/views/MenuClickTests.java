@@ -21,6 +21,7 @@ public class MenuClickTests {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
             browser.goTo("http://localhost:3333");
+                browser.$("#navbarToggle").click();
             browser.$("#linkHome").click();
             assertThat(browser.url()).isEqualTo("http://localhost:3333/");
             assertThat(browser.title()).isEqualTo("Welcome to APMatch");
@@ -32,10 +33,11 @@ public class MenuClickTests {
     public void clickAboutTest() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
-                browser.goTo("http://localhost:3333");
-                browser.$("#linkAbout").click();
-                assertThat(browser.url()).isEqualTo("http://localhost:3333/about");
-                assertThat(browser.title()).isEqualTo("About - APMatch");
+            browser.goTo("http://localhost:3333");
+            browser.$("#navbarToggle").click();
+            browser.$("#linkAbout").click();
+            assertThat(browser.url()).isEqualTo("http://localhost:3333/about");
+            assertThat(browser.title()).isEqualTo("About - APMatch");
             }
         });
     }
@@ -43,10 +45,11 @@ public class MenuClickTests {
     public void clickContactTest() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
-                browser.goTo("http://localhost:3333");
-                browser.$("#linkContact").click();
-                assertThat(browser.url()).isEqualTo("http://localhost:3333/contact");
-                assertThat(browser.title()).isEqualTo("Contact - APMatch");
+            browser.goTo("http://localhost:3333");
+            browser.$("#navbarToggle").click();
+            browser.$("#linkContact").click();
+            assertThat(browser.url()).isEqualTo("http://localhost:3333/contact");
+            assertThat(browser.title()).isEqualTo("Contact - APMatch");
             }
         });
     }
