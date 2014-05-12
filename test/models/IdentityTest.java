@@ -33,7 +33,7 @@ public class IdentityTest extends WithApplication {
     }
 
     @Test
-    public void testSuccesAuthenticate() {
+    public void authenticateSuccess() {
         new Identity(bob, "bob@reallybad.com", "floor").save();
 
         Identity identity = Identity.authenticate("bob@reallybad.com", "floor");
@@ -41,7 +41,7 @@ public class IdentityTest extends WithApplication {
     }
 
     @Test
-    public void testFailEmailAuthenticate() {
+    public void authenticateFailEmail() {
         new Identity(bob, "bob@reallybad.com", "floor").save();
 
         Identity identity = Identity.authenticate("bob@wrongmail.com", "floor");
@@ -49,7 +49,7 @@ public class IdentityTest extends WithApplication {
     }
 
     @Test
-    public void testFailPasswordAuthenticate() {
+    public void authenticateFailPassword() {
         new Identity(bob, "bob@reallybad.com", "floor").save();
 
         Identity identity = Identity.authenticate("bob@reallybad.com", "wrongpass");
