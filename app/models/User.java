@@ -33,6 +33,14 @@ public class User extends Model {
     }
 
     /**
+     * Set the name of the user
+     * @param name The name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * Create a new User with a certain name
      * @param name The name of the User
      */

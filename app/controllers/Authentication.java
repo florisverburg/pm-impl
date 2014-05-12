@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import play.Logger;
 import play.mvc.*;
 import play.data.*;
 import views.html.*;
@@ -20,18 +21,19 @@ public class Authentication extends Controller {
         /**
          * The user email address
          */
-        private String email;
+        public String email;
 
         /**
          * The user password
          */
-        private String password;
+        public String password;
 
         /**
          * Validates the form
-         * @return returns null if login is correct, else an error message
+         * @return Returns null if login is correct, else an error message
          */
         public String validate() {
+            Logger.debug("Logging in with " + email + ":" + password);
             if (User.authenticate(email, password) == null) {
                 return "Invalid user or password";
             }

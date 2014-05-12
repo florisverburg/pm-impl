@@ -1,0 +1,11 @@
+# Users
+  - !!models.User
+    name: Test
+
+#Identities
+  - !!models.Identity
+    type:       EMAIL
+    user:       !!models.User
+      name: Test
+    identifier: test
+    data: $2a$07$0KQEM5eYOH5zxHlpAZAqeeNSjQQ4TVVDvKZzLUld6W7f1QNmPM6EO
