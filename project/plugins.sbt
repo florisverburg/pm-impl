@@ -7,7 +7,7 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.3")
 
-// Add PMD and Checkstyle libraries.
+// Add Checkstyle libraries.
 libraryDependencies ++= Seq(
   "com.puppycrawl.tools" % "checkstyle" % "5.5"
 )
