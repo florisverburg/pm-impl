@@ -18,8 +18,15 @@ public class Identity extends Model {
      * The type of identities
      */
     public enum Type {
+        /**
+         * Email
+         */
         @EnumValue("E")
         EMAIL,
+
+        /**
+         * Linkedin
+         */
         @EnumValue("L")
         LINKEDIN
     }
@@ -74,7 +81,6 @@ public class Identity extends Model {
      * @param user The user for which the identity needs to be created
      * @param email The email address used for the identity
      * @param password The plaintext password for the identity
-     * @return A new identity based on the provided login information
      */
     public Identity(User user, String email, String password) {
         this.type = Type.EMAIL;
@@ -97,8 +103,9 @@ public class Identity extends Model {
                 .findUnique();
 
         // When the identity exists check the password
-        if(identity != null && BCrypt.checkpw(password, identity.data))
+        if(identity != null && BCrypt.checkpw(password, identity.data)) {
             return identity;
+        }
 
         return null;
     }

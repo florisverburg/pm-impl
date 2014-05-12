@@ -50,8 +50,9 @@ public class User extends Model {
         Identity identity = Identity.authenticate(email, password);
 
         // Check if the identity is found using the email, password authentication
-        if(identity != null)
+        if(identity != null) {
             return identity.getUser();
+        }
 
         return null;
     }

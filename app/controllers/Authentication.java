@@ -20,12 +20,12 @@ public class Authentication extends Controller {
         /**
          * The user email address
          */
-        public String email;
+        private String email;
 
         /**
          * The user password
          */
-        public String password;
+        private String password;
 
         /**
          * Validates the form
@@ -57,7 +57,8 @@ public class Authentication extends Controller {
         Form<Login> loginForm = form(Login.class).bindFromRequest();
         if (loginForm.hasErrors()) {
             return badRequest(login.render(loginForm));
-        } else {
+        }
+        else {
             session().clear();
             session("user_id", loginForm.get().email);
             return redirect(
