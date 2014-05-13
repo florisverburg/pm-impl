@@ -100,9 +100,33 @@ public class Team extends Model {
 
     /**
      * Getter of the type
-     * @return the type
+     * @return type
      */
     public String getType() {
         return type;
+    }
+
+    /**
+     * Setter of the type
+     * @param type to be set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * Setter of the description
+     * @param description to be set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Getter of the description
+     * @return description
+     */
+    public String getDescription() {
+        return description;
     }
 }

@@ -37,11 +37,6 @@ public class User extends Model {
     private String language;
 
     /**
-     * The login name of an user
-     */
-    private String loginName;
-
-    /**
      * The email address of an user
      */
     private String email;
@@ -106,15 +101,12 @@ public class User extends Model {
      * @param fName firstName of the user
      * @param lName lastName of the user
      * @param lang language of the user
-     * @param loginNm loginName of the user
      * @param eml email of the user
      */
-    public User(String fName, String lName, String lang, String loginNm, String eml)
-    {
+    public User(String fName, String lName, String lang, String eml) {
         firstName = fName;
         lastName = lName;
         language = lang;
-        loginName = loginNm;
         email = eml;
     }
 
@@ -157,5 +149,69 @@ public class User extends Model {
      */
     public static User findByName(String name) {
         return find.where().eq("firstName", name).findUnique();
+    }
+
+    /**
+     *  Getter of the firstName
+     * @return firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * Setter of the firstName
+     * @param firstName to be set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     *  Getter of the lastName
+     * @return lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Setter of the lastName
+     * @param lastName to be set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * Getter of the language
+     * @return language
+     */
+    public String getLanguage() {
+        return language;
+    }
+
+    /**
+     * Setter of the language
+     * @param language to be set
+     */
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    /**
+     * Getter of the email
+     * @return email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Setter of the email
+     * @param email to be set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
