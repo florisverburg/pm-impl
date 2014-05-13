@@ -1,0 +1,31 @@
+@(form: Form[forms.RegisterForm])
+@import helper.twitterBootstrap._
+
+@main("Register", "register") {
+    @helper.form(routes.Authentication.registration) {
+        <div class="section">
+            <div class="w-container">
+                <div class="w-row">
+                    <div class="w-col w-col-12">
+                        <h1>Registration</h1>
+
+                        @if(form.hasGlobalErrors) {
+                            <p class="error">
+                            @form.globalError.message
+                            </p>
+                        }
+
+                        @helper.inputText(form("name"))
+                        @helper.inputText(form("email"))
+                        @helper.inputPassword(form("password"))
+                        @helper.inputPassword(form("passwordRepeat"))
+
+                        <p>
+                            <button type="submit">Register</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

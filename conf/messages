@@ -1,0 +1,6 @@
+# Authentication
+name = Name
+email = Email Address
+password = Password
+passwordRepeat = Repeat password
+

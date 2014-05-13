@@ -3,7 +3,7 @@
     id: 500
     firstName: Test
     lastName: Test
-    language: TestEnglish
+    language: English
     email: test@test.com
 
 #Identities
