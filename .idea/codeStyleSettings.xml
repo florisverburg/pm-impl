@@ -11,6 +11,8 @@
             <package name="play.data.validation" withSubpackages="true" static="false" />
             <package name="play.db.ebean" withSubpackages="true" static="false" />
             <package name="play.mvc" withSubpackages="true" static="false" />
+            <package name="play.data" withSubpackages="true" static="false" />
+            <package name="play.data.Form" withSubpackages="true" static="true" />
             <package name="javax.swing" withSubpackages="false" static="false" />
             <package name="views.html" withSubpackages="true" static="false" />
             <package name="models" withSubpackages="true" static="false" />
