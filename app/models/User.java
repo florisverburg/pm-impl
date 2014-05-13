@@ -93,7 +93,7 @@ public class User extends Model {
     private List<Skill> skills = new ArrayList();
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Group> groups = new ArrayList();
+    private List<Team> teams = new ArrayList();
 
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill
@@ -126,8 +126,12 @@ public class User extends Model {
         skills.add(skill);
     }
 
-    public void addGroup(Group group) {
-        groups.add(group);
+    /**
+     * Method to add a team to the list
+     * @param team to be added to the list
+     */
+    public void addTeam(Team team) {
+        teams.add(team);
     }
 
     /**
@@ -138,8 +142,12 @@ public class User extends Model {
         return skills;
     }
 
-    public List getGroups() {
-        return groups;
+    /**
+     * Used to return the list of teams this user has
+     * @return list of teams
+     */
+    public List getTeams() {
+        return teams;
     }
 
     /**
