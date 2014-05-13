@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, active: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -9,10 +9,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="generator" content="Webflow">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/normalize.css")">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/webflow.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/apmatch.webflow.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <script type="text/javascript" src="@routes.Assets.at("javascripts/modernizr.js")"></script>
         <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/webflow.js")" type="text/javascript"></script>
@@ -32,15 +32,15 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">APMatch</a>
+                    <a class="navbar-brand" href="@routes.Application.index()">APMatch</a>
                 </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a id="linkHome" href="@routes.Application.index()">Home</a></li>
-                        <li><a id="linkAbout" href="@routes.Application.about()">About</a></li>
-                        <li><a id="linkContact" href="@routes.Application.contact()">Contact</a></li>
+                        <li class="@{if(active=="index") "active"}"><a id="linkHome" href="@routes.Application.index()">Home</a></li>
+                        <li class="@{if(active=="about") "active"}"><a id="linkAbout" href="@routes.Application.about()">About</a></li>
+                        <li class="@{if(active=="contact") "active"}"><a id="linkContact" href="@routes.Application.contact()">Contact</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">Log in</a></li>

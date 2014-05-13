@@ -1,12 +1,16 @@
 @(message: String)
 
-@main("Welcome to APMatch") {
+@main("Welcome to APMatch", "index") {
 
 <div class="section">
     <div class="w-container">
         <div class="w-row">
             <div class="w-col w-col-12">
-                <div class="main-text jumbotron">@message</div>
+                <div class="main-text jumbotron">
+                    <p>
+                        @message
+                    </p>
+                </div>
             </div>
         </div>
     </div>
