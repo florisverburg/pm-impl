@@ -52,6 +52,34 @@ public class TeamTest {
         user.save();
     }
 
+    /**
+     * Method to test whether the creation of a team has been successful
+     */
+    @Test
+    public void testCreationTeam() {
+        // Check the values of the setUp() method for admin
+        assertThat(admin.getType()).isEqualTo("admin");
+        assertThat(admin.getDescription()).isEqualTo("Admin of the system, has right to everything");
+    }
+
+    /**
+     * Method to test the usage of the team's setters
+     */
+    @Test
+    public void testSettersTeam() {
+        // Set different values
+        admin.setType("CEO");
+        admin.setDescription("Should be able to do anything he wants");
+        admin.save();
+
+        // Check the new values
+        assertThat(admin.getType()).isEqualTo("CEO");
+        assertThat(admin.getDescription()).isEqualTo("Should be able to do anything he wants");
+    }
+
+    /**
+     * Method to test the many-to-many relation of Team and Right
+     */
     @Test
     public void testFindByNameTeam() {
 
@@ -69,6 +97,9 @@ public class TeamTest {
         assertThat(returnedRights.size()).isEqualTo(1);
     }
 
+    /**
+     * Method to test the many-to-many relationship of Team and Right
+     */
     @Test
     public void testFindByNameRight() {
 
@@ -77,7 +108,7 @@ public class TeamTest {
 
         assertThat(returnedTeams.get(0).getType()).isEqualTo("admin");
         assertThat(returnedTeams.get(1).getType()).isEqualTo("user");
-        assertThat(returnedTeams.size()).isEqualTo(1);
+        assertThat(returnedTeams.size()).isEqualTo(2);
 
         returnedValue = Right.findByName("edit");
         returnedTeams = returnedValue.getTeams();

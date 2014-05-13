@@ -25,27 +25,60 @@ public class UserTest extends WithApplication {
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
         // Create a new user
-        bob = new User("Bob", "Verburg", "English", "Bob", "bob@example.com");
+        bob = new User("Bob","Verburg","English","bob@example.com");
+        bob.save();
+
+        // Create skills
+        Skill programming = new Skill("Programming", Skill.Type.PROGRAMMING, 10);
+        Skill documenting = new Skill("Documenting", Skill.Type.DOCUMENTING, 10);
+
+        // Add skills to user bob
+        bob.addSkill(programming);
+        bob.addSkill(documenting);
         bob.save();
     }
 
     /**
-     * Method to test the many-to-many relationship
+     * Method to test whether the creation of an user has been successful
+     */
+    @Test
+    public void testCreationUser() {
+        // Check the values of the setUp() method
+        assertThat(bob.getFirstName()).isEqualTo("Bob");
+        assertThat(bob.getLastName()).isEqualTo("Verburg");
+        assertThat(bob.getLanguage()).isEqualTo("English");
+        assertThat(bob.getEmail()).isEqualTo("bob@example.com");
+    }
+
+    /**
+     * Method to test the usage of the user's setters
+     */
+    @Test
+    public void testSetters() {
+        // Set different values
+        bob.setFirstName("Erica");
+        bob.setLastName("Tienen");
+        bob.setLanguage("Dutch");
+        bob.setEmail("erica@example.com");
+        bob.save();
+
+        // Check the new values
+        assertThat(bob.getFirstName()).isEqualTo("Erica");
+        assertThat(bob.getLastName()).isEqualTo("Tienen");
+        assertThat(bob.getLanguage()).isEqualTo("Dutch");
+        assertThat(bob.getEmail()).isEqualTo("erica@example.com");
+    }
+
+    /**
+     * Method to test the many-to-many relationship of User and Skills
      */
     @Test
     public void testManyToMany() {
-        Skill programming = new Skill("Programming", Skill.Type.PROGRAMMING, 10);
-        Skill documenting = new Skill("Documenting", Skill.Type.DOCUMENTING, 10);
-        bob.addSkill(programming);
-        bob.addSkill(documenting);
-        bob.save();
-
         bob = User.findByName("Bob");
         List<Skill> bobsSkills = bob.getSkills();
-        Skill bobsSkills1 = bobsSkills.get(0);
-        Skill bobsSkills2 = bobsSkills.get(1);
-        assertThat(bobsSkills1.getName()).isEqualTo("Programming");
-        assertThat(bobsSkills2.getName()).isEqualTo("Documenting");
+        assertThat(bobsSkills.get(0).getName()).isEqualTo("Programming");
+        assertThat(bobsSkills.get(1).getName()).isEqualTo("Documenting");
+        assertThat(bobsSkills.size()).isEqualTo(2);
     }
 
 
