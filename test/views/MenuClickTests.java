@@ -21,7 +21,7 @@ public class MenuClickTests {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
             browser.goTo("http://localhost:3333");
-                browser.$("#navbarToggle").click();
+            browser.$("#navbarToggle").click();
             browser.$("#linkHome").click();
             assertThat(browser.url()).isEqualTo("http://localhost:3333/");
             assertThat(browser.title()).isEqualTo("Welcome to APMatch");
@@ -41,15 +41,16 @@ public class MenuClickTests {
             }
         });
     }
+
     @Test
     public void clickContactTest() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
-            browser.goTo("http://localhost:3333");
-            browser.$("#navbarToggle").click();
-            browser.$("#linkContact").click();
-            assertThat(browser.url()).isEqualTo("http://localhost:3333/contact");
-            assertThat(browser.title()).isEqualTo("Contact - APMatch");
+                browser.goTo("http://localhost:3333");
+                browser.$("#navbarToggle").click();
+                browser.$("#linkContact").click();
+                assertThat(browser.url()).isEqualTo("http://localhost:3333/contact");
+                assertThat(browser.title()).isEqualTo("Contact - APMatch");
             }
         });
     }
