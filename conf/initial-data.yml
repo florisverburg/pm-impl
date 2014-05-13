@@ -1,11 +1,10 @@
 # Users
   - !!models.User
-    id: 500
-    name: Test
+    id: 400
 
 #Identities
   - !!models.PasswordIdentity
     user:       !!models.User
-      id: 500
+      id: 400
     identifier: test@test.com
     data: $2a$10$Q8Y7D1igQHlsZYCzUm9M7u7TUV/j5nyZU37Qzuea9KUFyA1YrlHfu

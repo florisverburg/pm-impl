@@ -1,87 +1,62 @@
 package models;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.annotation.EnumValue;
 import org.hibernate.validator.constraints.Length;
 import play.data.validation.*;
 import play.db.ebean.*;
 import javax.persistence.*;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * Created by Freek on 12/05/14.
  * The Identity is a login method for the User
  */
 @Entity
-public class Identity extends Model {
-    /**
-     * The type of identities
-     */
-    public enum Type {
-        /**
-         * Email
-         */
-        @EnumValue("E")
-        EMAIL,
-
-        /**
-         * Linkedin
-         */
-        @EnumValue("L")
-        LINKEDIN
-    }
+@Inheritance
+@DiscriminatorColumn(name="type")
+public abstract class Identity extends Model {
 
     /**
      * The identity identifier
      */
     @Id
     @Constraints.Required
-    private Long id;
-
-    /**
-     * The identity type
-     */
-    @Constraints.Required
-    private Type type;
+    protected Long id;
 
     /**
      * The user which the identity is linked to
      */
     @ManyToOne
     @Constraints.Required
-    private User user;
+    protected User user;
 
     /**
      * Identifier of the identity
-     * Depending on the type of identity the data differs:
-     * - EMAIL: The email address
+     * Depending on the type of identity the data differs.
      */
     @Constraints.Required
-    private String identifier;
+    protected String identifier;
 
     /**
      * The data of the identity.
-     * Depending on the type of the identity the data differs:
-     * - EMAIL: It contains the hashed password
+     * Depending on the type of the identity the data differs.
      */
     @Length(max=250)
     @Constraints.Required
-    private String data;
+    protected String data;
 
     /**
-     * Get the type of the identity
-     * @return The type
+     * Get the identity id
+     * @return The id
      */
-    public Type getType() {
-        return type;
+    public Long getId() {
+        return id;
     }
 
     /**
-     * Set the type of the identity
-     * @param type The type
+     * Set the identity id
+     * @param id The id
      */
-    public void setType(Type type) {
-        this.type = type;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
@@ -133,36 +108,9 @@ public class Identity extends Model {
     }
 
     /**
-     * Create an identity with an username and password
-     * @param user The user for which the identity needs to be created
-     * @param email The email address used for the identity
-     * @param password The plaintext password for the identity
+     * Define the finder for Ebean
      */
-    public Identity(User user, String email, String password) {
-        this.type = Type.EMAIL;
-        this.user = user;
-        this.identifier = email;
-        this.data = BCrypt.hashpw(password, BCrypt.gensalt());
-    }
-
-    /**
-     * Checks the identity authentication with email and password
-     * @param email The identity email address
-     * @param password The identity password
-     * @return The identity if it is correct authentication else null
-     */
-    public static Identity authenticate(String email, String password) {
-        Identity identity = Ebean.find(Identity.class)
-                .where()
-                .eq("type", Type.EMAIL)
-                .eq("identifier", email)
-                .findUnique();
-
-        // When the identity exists check the password
-        if(identity != null && BCrypt.checkpw(password, identity.data)) {
-            return identity;
-        }
-
-        return null;
-    }
+    public static Finder<Long, Identity> find = new Finder<Long, Identity>(
+            Long.class, Identity.class
+    );
 }

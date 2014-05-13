@@ -1,7 +1,6 @@
 package controllers;
 
 import models.*;
-import play.Logger;
 import play.mvc.*;
 import play.data.*;
 import views.html.*;
@@ -33,7 +32,6 @@ public class Authentication extends Controller {
          * @return Returns null if login is correct, else an error message
          */
         public String validate() {
-            Logger.debug("Logging in with " + email + ":" + password);
             if (User.authenticate(email, password) == null) {
                 return "Invalid user or password";
             }

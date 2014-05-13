@@ -5,7 +5,6 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import play.test.WithApplication;
 import static play.test.Helpers.*;
-import com.avaje.ebean.*;
 
 /**
  * Created by Freek on 12/05/14.
@@ -25,8 +24,8 @@ public class IdentityTest extends WithApplication {
 
     @Test
     public void createAndRetrieveIdentity() {
-        new Identity(bob, "bob@example.com", "floortje<3").save();
-        Identity identity = Ebean.find(Identity.class).where().eq("identifier", "bob@example.com").findUnique();
+        new PasswordIdentity(bob, "bob@example.com", "floortje<3").save();
+        Identity identity = Identity.find.where().eq("identifier", "bob@example.com").findUnique();
 
         assertNotNull(identity);
         assertEquals(bob, identity.getUser());
@@ -34,25 +33,25 @@ public class IdentityTest extends WithApplication {
 
     @Test
     public void authenticateSuccess() {
-        new Identity(bob, "bob@reallybad.com", "floor").save();
+        new PasswordIdentity(bob, "bob@reallybad.com", "floor").save();
 
-        Identity identity = Identity.authenticate("bob@reallybad.com", "floor");
+        Identity identity = PasswordIdentity.authenticate("bob@reallybad.com", "floor");
         assertNotNull(identity);
     }
 
     @Test
     public void authenticateFailEmail() {
-        new Identity(bob, "bob@reallybad.com", "floor").save();
+        new PasswordIdentity(bob, "bob@reallybad.com", "floor").save();
 
-        Identity identity = Identity.authenticate("bob@wrongmail.com", "floor");
+        Identity identity = PasswordIdentity.authenticate("bob@wrongmail.com", "floor");
         assertNull(identity);
     }
 
     @Test
     public void authenticateFailPassword() {
-        new Identity(bob, "bob@reallybad.com", "floor").save();
+        new PasswordIdentity(bob, "bob@reallybad.com", "floor").save();
 
-        Identity identity = Identity.authenticate("bob@reallybad.com", "wrongpass");
+        Identity identity = PasswordIdentity.authenticate("bob@reallybad.com", "wrongpass");
         assertNull(identity);
     }
 }

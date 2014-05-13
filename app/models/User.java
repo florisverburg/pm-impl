@@ -25,6 +25,22 @@ public class User extends Model {
     private String name;
 
     /**
+     * Get the user id
+     * @return The id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Set the user id
+     * @param id The id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
      * Retrieve the name of the user
      * @return The name of the user
      */
@@ -49,13 +65,20 @@ public class User extends Model {
     }
 
     /**
+     * Define the finder for Ebean
+     */
+    public static Finder<Long, User> find = new Finder<Long, User>(
+        Long.class, User.class
+    );
+
+    /**
      * Checks the user authentication with email and password
      * @param email The user email address
      * @param password The user password
      * @return True if user authenticated successfully else false
      */
     public static User authenticate(String email, String password) {
-        Identity identity = Identity.authenticate(email, password);
+        Identity identity = PasswordIdentity.authenticate(email, password);
 
         // Check if the identity is found using the email, password authentication
         if(identity != null) {
