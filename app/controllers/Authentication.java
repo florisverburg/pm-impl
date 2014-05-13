@@ -45,8 +45,9 @@ public class Authentication extends Controller {
             return badRequest(login.render(loginForm));
         }
         else {
+            // Set the session and redirect to home
             session().clear();
-            session("user_id", loginForm.get().email);
+            session("user_id", loginForm.get().getUser().getId().toString());
             return redirect(
                     routes.Application.index()
             );

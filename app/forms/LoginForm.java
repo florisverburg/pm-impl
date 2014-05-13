@@ -32,4 +32,12 @@ public class LoginForm {
         }
         return null;
     }
+
+    /**
+     * Returns the user if the login was valid
+     * @return The user
+     */
+    public User getUser() {
+        return User.byEmail(email);
+    }
 }
