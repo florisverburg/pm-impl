@@ -5,6 +5,9 @@ import javax.persistence.*;
 import play.data.validation.*;
 import play.db.ebean.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Freek on 09/05/14.
  * This is the user representation of the database
@@ -39,7 +42,7 @@ public class User extends Model {
     private String loginName;
 
     /**
-     * The email adres of an user
+     * The email address of an user
      */
     private String email;
 
@@ -57,30 +60,6 @@ public class User extends Model {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Retrieve the name of the user
-     * @return The name of the user
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Set the name of the user
-     * @param name The name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Create a new User with a certain name
-     * @param name The name of the User
-     */
-    public User(String name) {
-     this.name = name;
     }
 
     /**
@@ -105,5 +84,70 @@ public class User extends Model {
         }
 
         return null;
+    }
+
+    /**
+     * The many-to-many relationship defined by the skills and users
+     */
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Skill> skills = new ArrayList();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Group> groups = new ArrayList();
+
+    /**
+     * Finder to be defined to use the many-to-many relationship of user and skill
+     */
+    private static Model.Finder<Long, User> find =
+            new Model.Finder<Long, User>(Long.class, User.class);
+
+    /**
+     * Constructor for the User class
+     * @param fName firstName of the user
+     * @param lName lastName of the user
+     * @param lang language of the user
+     * @param loginNm loginName of the user
+     * @param eml email of the user
+     */
+    public User(String fName, String lName, String lang, String loginNm, String eml)
+    {
+        firstName = fName;
+        lastName = lName;
+        language = lang;
+        loginName = loginNm;
+        email = eml;
+    }
+
+    /**
+     * Method to add a skill to the list, used for the many-to-many relationship
+     * @param skill skill to add to the list
+     */
+    public void addSkill(Skill skill) {
+        skills.add(skill);
+    }
+
+    public void addGroup(Group group) {
+        groups.add(group);
+    }
+
+    /**
+     * Used to return the list of skills
+     * @return returns the current list of skills
+     */
+    public List getSkills() {
+        return skills;
+    }
+
+    public List getGroups() {
+        return groups;
+    }
+
+    /**
+     * Method to search a User by name
+     * @param name name that will be used to search for
+     * @return returns the User that has a name equal to the input
+     */
+    public static User findByName(String name) {
+        return find.where().eq("firstName", name).findUnique();
     }
 }
