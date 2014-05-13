@@ -51,16 +51,10 @@ public class RegisterForm {
 
         // Check if passwords match
         if(!password.equals(passwordRepeat)) {
-            errors.add(new ValidationError("passwordRepeat", "The password doesn't match."));
+            errors.add(new ValidationError("passwordRepeat", "error.passwordRepeat"));
         }
 
-        // Check if there are any errors
-        if(errors.size() > 0) {
-            return errors;
-        }
-        else {
-            return null;
-        }
+        return errors.isEmpty() ? null : errors;
     }
 
     /**

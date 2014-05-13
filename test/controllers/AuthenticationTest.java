@@ -48,4 +48,53 @@ public class AuthenticationTest extends WithApplication {
         assertTrue(contentAsString(result).contains("Invalid user or password"));
         assertNotEquals(User.byEmail("test@test.com").getId().toString(), session(result).get("user_id"));
     }
+
+    @Test
+    public void registrationFailNameEmail() {
+        Result result = callAction(
+                routes.ref.Authentication.registration(),
+                fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
+                        "name", "",
+                        "email", "nonvalid!@#43844",
+                        "password", "myVeryGoodPas",
+                        "passwordRepeat", "myVeryGoodPass"
+                ))
+        );
+
+        assertEquals(400, status(result));
+        assertTrue(contentAsString(result).contains("Valid email required"));
+        assertTrue(contentAsString(result).contains("This field is required"));
+    }
+
+    @Test
+    public void registrationFailPassword() {
+        Result result = callAction(
+                routes.ref.Authentication.registration(),
+                fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
+                        "name", "Bob",
+                        "email", "mybob@example.com",
+                        "password", "myVeryGoodPass",
+                        "passwordRepeat", "wrong"
+                ))
+        );
+
+        assertEquals(400, status(result));
+        assertTrue(contentAsString(result).contains("The passwords don&#x27;t match"));;
+    }
+
+    @Test
+    public void registrationFailPasswordLength() {
+        Result result = callAction(
+                routes.ref.Authentication.registration(),
+                fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
+                        "name", "Bob",
+                        "email", "mybob@example.com",
+                        "password", "bad",
+                        "passwordRepeat", "bad"
+                ))
+        );
+
+        assertEquals(400, status(result));
+        assertTrue(contentAsString(result).contains("Minimum length is"));;
+    }
 }
