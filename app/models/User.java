@@ -88,6 +88,9 @@ public class User extends Model {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Skill> skills = new ArrayList();
 
+    /**
+     * The many-to-many relationship defined for the users and teams
+     */
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Team> teams = new ArrayList();
 
@@ -145,7 +148,7 @@ public class User extends Model {
 
     /**
      * Method to search a User by name
-     * @param name name that will be used to search for
+     * @param name that will be used to search for
      * @return returns the User that has a name equal to the input
      */
     public static User findByName(String name) {
@@ -153,7 +156,7 @@ public class User extends Model {
     }
 
     /**
-     *  Getter of the firstName
+     * Getter of the firstName
      * @return firstName
      */
     public String getFirstName() {
@@ -169,7 +172,7 @@ public class User extends Model {
     }
 
     /**
-     *  Getter of the lastName
+     * Getter of the lastName
      * @return lastName
      */
     public String getLastName() {

@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by Marijn Goedegebure on 12-5-2014.
+ * Right model class for the database model
  */
 @Entity
 public class Skill extends Model {

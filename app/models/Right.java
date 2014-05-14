@@ -3,13 +3,13 @@ package models;
 
 import play.data.validation.*;
 import play.db.ebean.*;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Marijn Goedegebure on 13-5-2014.
+ * Right model class for the database model
  */
 @Entity
 public class Right extends Model {
