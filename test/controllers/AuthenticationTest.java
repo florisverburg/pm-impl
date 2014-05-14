@@ -79,7 +79,7 @@ public class AuthenticationTest extends WithApplication {
         );
 
         assertEquals(400, status(result));
-        assertTrue(contentAsString(result).contains("The passwords don&#x27;t match"));;
+        assertTrue(contentAsString(result).contains("The passwords don&#x27;t match"));
     }
 
     @Test
@@ -95,6 +95,28 @@ public class AuthenticationTest extends WithApplication {
         );
 
         assertEquals(400, status(result));
-        assertTrue(contentAsString(result).contains("Minimum length is"));;
+        assertTrue(contentAsString(result).contains("Minimum length is"));
+    }
+
+    @Test
+    public void registrationSuccess() {
+        Result result = callAction(
+                routes.ref.Authentication.registration(),
+                fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
+                        "name", "Bob",
+                        "email", "mybob@example.com",
+                        "password", "myVeryGoodPass",
+                        "passwordRepeat", "myVeryGoodPass"
+                ))
+        );
+        User user = User.byEmail("mybob@example.com");
+        User userAuth = User.authenticate("mybob@example.com", "myVeryGoodPass");
+
+        assertEquals(303, status(result));
+        assertNotNull(user);
+        assertNotNull(userAuth);
+        assertEquals(user, userAuth);
+        assertEquals(user.getName(), "Bob");
+        assertEquals(user.getEmail(), "mybob@example.com");
     }
 }
