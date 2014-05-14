@@ -18,7 +18,7 @@ public class IdentityTest extends WithApplication {
         start(fakeApplication(inMemoryDatabase()));
 
         // Create a new user
-        bob = new User("bob");
+        bob = new User("Bob","Verburg","English","bob@example.com");
         bob.save();
     }
 
