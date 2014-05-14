@@ -3,3 +3,7 @@
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
 }
+
+.black-background {
+	background: black;
+}
