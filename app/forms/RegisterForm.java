@@ -8,14 +8,29 @@ import java.util.List;
 
 /**
  * Created by Freek on 13/05/14.
+ * The registration form
  */
 public class RegisterForm {
 
     /**
-     * The registration name
+     * The registration first name
      */
     @Constraints.Required
-    private String name;
+    @Constraints.MaxLength(128)
+    private String firstName;
+
+    /**
+     * The registration last name
+     */
+    @Constraints.Required
+    @Constraints.MaxLength(128)
+    private String lastName;
+
+    /**
+     * The registration last name
+     */
+    @Constraints.Required
+    private String language;
 
     /**
      * The registration email address
@@ -38,19 +53,51 @@ public class RegisterForm {
     private String passwordRepeat;
 
     /**
-     * Gets name.
-     * @return The name
+     * Gets the first name.
+     * @return The first name
      */
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * Sets name.
-     * @param name The name
+     * Sets the first name.
+     * @param firstName The first name
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * Gets last name.
+     * @return The last name
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Sets last name.
+     * @param lastName The last name
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * Gets language.
+     * @return The language
+     */
+    public String getLanguage() {
+        return language;
+    }
+
+    /**
+     * Sets language.
+     * @param language The language
+     */
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     /**
@@ -126,7 +173,7 @@ public class RegisterForm {
      * @return The new user
      */
     private User getUser() {
-        return new User(name, "", "", email);
+        return new User(firstName, lastName, language, email);
     }
 
     /**

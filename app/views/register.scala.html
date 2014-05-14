@@ -15,7 +15,9 @@
                             </p>
                         }
 
-                        @helper.inputText(form("name"))
+                        @helper.inputText(form("firstName"))
+                        @helper.inputText(form("lastName"))
+                        @helper.inputText(form("language"))
                         @helper.inputText(form("email"))
                         @helper.inputPassword(form("password"))
                         @helper.inputPassword(form("passwordRepeat"))
