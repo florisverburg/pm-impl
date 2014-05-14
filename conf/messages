@@ -1,9 +1,14 @@
 # Authentication
 name = Name
-email = Email Address
+email = Email address
 password = Password
 passwordRepeat = Repeat password
 error.passwordRepeat = The passwords don''t match
+
 authentication.loggedOut = You successfully logged out!
 authentication.loggedIn = You successfully logged in!
+
+firstName = First name
+lastName = Last name
+language = Language
 
