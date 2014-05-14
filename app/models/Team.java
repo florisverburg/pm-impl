@@ -1,7 +1,6 @@
 package models;
 
 import javax.persistence.*;
-import org.hibernate.validator.constraints.Length;
 import play.data.validation.*;
 import play.db.ebean.*;
 
