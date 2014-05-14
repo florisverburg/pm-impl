@@ -83,4 +83,28 @@ public class Right extends Model {
     public static Right findByName(String type) {
         return find.where().eq("type", type).findUnique();
     }
+
+    /**
+     * Getter for the description
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Setter of the type
+     * @param type to be set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * Setter of the description
+     * @param description to be set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

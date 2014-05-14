@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Marijn Goedegebure on 12-5-2014.
  */
 @Entity
-public class Skill {
+public class Skill extends Model {
 
     /**
      * Enumerate defined for the different types of skills an user can have
@@ -71,11 +71,27 @@ public class Skill {
     }
 
     /**
+     * Setter of the name
+     * @param name to be set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * Add a user to the list for the many-to-many relationship
      * @param user to add to the list
      */
     public void addUser(User user) {
         users.add(user);
+    }
+
+    /**
+     * Getter for the users
+     * @return users
+     */
+    public List<User> getUsers() {
+        return users;
     }
 
     /**
@@ -88,5 +104,46 @@ public class Skill {
         name = nm;
         maxValue = maxV;
         type = tp;
+    }
+
+    /**
+     * Getter of the type
+     * @return type
+     */
+    public Type getType() {
+        return type;
+    }
+
+    /**
+     * Setter of the type
+     * @param type to be set
+     */
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    /**
+     * Getter of the max value
+     * @return maxValue
+     */
+    public Integer getMaxValue() {
+        return maxValue;
+    }
+
+    /**
+     * Setter of the max value
+     * @param maxValue to be set
+     */
+    public void setMaxValue(Integer maxValue) {
+        this.maxValue = maxValue;
+    }
+
+    /**
+     * Method to find a skill by its name
+     * @param name of the skill to be found
+     * @return skill with the name
+     */
+    public static Skill findByName(String name) {
+        return find.where().eq("name", name).findUnique();
     }
 }
