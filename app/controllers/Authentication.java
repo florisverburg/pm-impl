@@ -48,6 +48,7 @@ public class Authentication extends Controller {
             // Set the session and redirect to home
             session().clear();
             session("user_id", loginForm.get().getUser().getId().toString());
+            flash("success", "authentication.loggedIn");
             return redirect(
                     routes.Application.index()
             );
@@ -81,7 +82,7 @@ public class Authentication extends Controller {
      */
     @Security.Authenticated(Secured.class)
     public static Result logout() {
-        request().username();
+        flash("success", "authentication.loggedOut");
         session().clear();
         return redirect(
                 routes.Application.index()
