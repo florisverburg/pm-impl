@@ -24,7 +24,7 @@ public class Practical extends Model {
      * Name of the practical
      */
     @Constraints.Required
-    @Constraints.MaxLength(20)
+    @Constraints.MaxLength(50)
     private String name;
 
     /**
@@ -40,12 +40,20 @@ public class Practical extends Model {
     @ManyToMany(mappedBy = "practicals", cascade = CascadeType.ALL)
     List<User> users = new ArrayList<>();
 
+    /**
+     * One-to-many relationship between practical and user
+     */
+    @ManyToOne
+    @JoinColumn(name = "adminId")
+    private User admin;
+
 
     /**
      * Finder defined for the practical
      */
-    public static Finder<Long, Practical> find =
-            new Finder<>(Long.class, Practical.class);
+
+    public static Model.Finder<Long, Practical> find =
+            new Model.Finder<>(Long.class, Practical.class);
 
 
     /**
@@ -65,6 +73,94 @@ public class Practical extends Model {
      */
     public static Practical findByName(String name) {
         return find.where().eq("name", name).findUnique();
+    }
+
+    /**
+     * Getter for id
+     * @return id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Setter for id
+     * @param id to set
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * Getter for name
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Setter for name
+     * @param name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Getter for description
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Setter for description
+     * @param description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Getter for admin
+     * @return admin
+     */
+    public User getAdmin() {
+        return admin;
+    }
+
+    /**
+     * Setter for admin
+     * @param admin to set
+     */
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    /**
+     * Getter for users
+     * @return users
+     */
+    public List<User> getUsers() {
+        return users;
+    }
+
+    /**
+     * Setter for users
+     * @param users to set
+     */
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    /**
+     * Method to add a user to the list
+     * @param user to add
+     */
+    public void addUsers(User user) {
+        users.add(user);
     }
 
 }

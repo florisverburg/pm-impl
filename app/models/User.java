@@ -65,13 +65,19 @@ public class User extends Model {
      * The many-to-many relationship defined for the users and practicals
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    List<Practical> practicals = new ArrayList<>();
+    private List<Practical> practicals = new ArrayList<>();
+
+    /**
+     * One-to-many relationship between practical and user
+     */
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    private List<Practical> practicalsAdmin = new ArrayList<>();
 
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
     public static Model.Finder<Long, User> find =
-            new Model.Finder<Long, User>(Long.class, User.class);
+            new Model.Finder<>(Long.class, User.class);
 
     /**
      * Constructor for the User class
@@ -146,10 +152,18 @@ public class User extends Model {
     }
 
     /**
+     * Method to add a practical to the list
+     * @param practical to be added to the list
+     */
+    public void addPractical(Practical practical) {
+        practicals.add(practical);
+    }
+
+    /**
      * Used to return the list of skills
      * @return returns the current list of skills
      */
-    public List getSkills() {
+    public List<Skill> getSkills() {
         return skills;
     }
 
@@ -157,8 +171,40 @@ public class User extends Model {
      * Used to return the list of teams this user has
      * @return list of teams
      */
-    public List getTeams() {
+    public List<Team> getTeams() {
         return teams;
+    }
+
+    /**
+     * Used to return the list of practicals
+     * @return practicals
+     */
+    public List<Practical> getPracticals() {
+        return practicals;
+    }
+
+    /**
+     * Used to return the list of practicals the user is admin of
+     * @return list of practical the user is admin of
+     */
+    public List<Practical> getPracticalsAdmin() {
+        return practicalsAdmin;
+    }
+
+    /**
+     * Setter of the list of practicals the user is admin of
+     * @param practicalsAdmin the user is admin of
+     */
+    public void setPracticalsAdmin(List<Practical> practicalsAdmin) {
+        this.practicalsAdmin = practicalsAdmin;
+    }
+
+    /**
+     * Add a practical to the list of practicals the user is admin of
+     * @param practical to be added to the list
+     */
+    public void addPracticalAdmin(Practical practical) {
+        practicalsAdmin.add(practical);
     }
 
     /**
