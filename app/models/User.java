@@ -25,21 +25,21 @@ public class User extends Model {
      * The first name of an user
      */
     @Constraints.Required
-    @Constraints.MaxLength(20)
+    @Constraints.MaxLength(128)
     private String firstName;
 
     /**
      * The last name of an user
      */
     @Constraints.Required
-    @Constraints.MaxLength(20)
+    @Constraints.MaxLength(128)
     private String lastName;
 
     /**
      * The language of an user
      */
     @Constraints.Required
-    @Constraints.MaxLength(20)
+    @Constraints.MaxLength(128)
     private String language;
 
     /**
@@ -48,39 +48,6 @@ public class User extends Model {
     @Constraints.Required
     @Constraints.Email
     private String email;
-
-    /**
-     * Get the user id
-     * @return The id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Set the user id
-     * @param id The id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Checks the user authentication with email and password
-     * @param email The user email address
-     * @param password The user password
-     * @return True if user authenticated successfully else false
-     */
-    public static User authenticate(String email, String password) {
-        Identity identity = PasswordIdentity.authenticate(email, password);
-
-        // Check if the identity is found using the email, password authentication
-        if(identity != null) {
-            return identity.getUser();
-        }
-
-        return null;
-    }
 
     /**
      * The many-to-many relationship defined by the skills and users
@@ -112,6 +79,48 @@ public class User extends Model {
         lastName = lName;
         language = lang;
         email = eml;
+    }
+
+    /**
+     * Checks the user authentication with email and password
+     * @param email The user email address
+     * @param password The user password
+     * @return True if user authenticated successfully else false
+     */
+    public static User authenticate(String email, String password) {
+        Identity identity = PasswordIdentity.authenticate(email, password);
+
+        // Check if the identity is found using the email, password authentication
+        if(identity != null) {
+            return identity.getUser();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get an user by email address
+     * @param email The email address
+     * @return The user if found, else null
+     */
+    public static User byEmail(String email) {
+        return User.find.where().eq("email", email).findUnique();
+    }
+
+    /**
+     * Get the user id
+     * @return The id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Set the user id
+     * @param id The id
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**

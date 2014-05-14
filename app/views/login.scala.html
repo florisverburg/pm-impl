@@ -1,4 +1,4 @@
-@(form: Form[Authentication.Login])
+@(form: Form[forms.LoginForm])
 
 @main("Login", "login") {
     @helper.form(routes.Authentication.authenticate) {
@@ -14,12 +14,9 @@
                     </p>
                 }
 
-                <p>
-                    <input type="email" name="email" placeholder="Email" value="@form("email").value">
-                </p>
-                <p>
-                    <input type="password" name="password" placeholder="Password">
-                </p>
+                @helper.inputText(form("email"))
+                @helper.inputPassword(form("password"))
+
                 <p>
                     <button type="submit">Login</button>
                 </p>

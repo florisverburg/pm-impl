@@ -163,6 +163,15 @@ public class UserTest extends WithApplication {
         assertEquals(returnedTeams.size(),1);
     }
 
+    @Test
+    public void getByEmail() {
+        User createRob = new User("rob", "lastName", "english", "rob@none.com");
+        createRob.save();
+        User rob = User.byEmail("rob@none.com");
+
+        assertNotNull(rob);
+        assertEquals(createRob, rob);
+    }
 
     @Test
     public void authenticateSuccess() {

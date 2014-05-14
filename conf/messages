@@ -1,0 +1,7 @@
+# Authentication
+name = Name
+email = Email Address
+password = Password
+passwordRepeat = Repeat password
+error.passwordRepeat = The passwords don''t match
+

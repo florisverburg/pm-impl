@@ -1,6 +1,10 @@
 # Users
   - !!models.User
     id: 400
+    firstName: Test
+    lastName: Test
+    language: English
+    email: test@test.com
 
 #Identities
   - !!models.PasswordIdentity

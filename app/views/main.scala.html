@@ -40,7 +40,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="@{if(active=="login") "active"}"><a href="@routes.Authentication.login()">Log in</a></li>
-                        <li><a href="#">Register</a></li>
+                        <li class="@{if(active=="register") "active"}"><a href="@routes.Authentication.register()">Register</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
