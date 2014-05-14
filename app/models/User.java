@@ -62,6 +62,12 @@ public class User extends Model {
     private List<Team> teams = new ArrayList();
 
     /**
+     * The many-to-many relationship defined for the users and practicals
+     */
+    @ManyToMany(cascade = CascadeType.ALL)
+    List<Practical> practicals = new ArrayList<>();
+
+    /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
     public static Model.Finder<Long, User> find =
