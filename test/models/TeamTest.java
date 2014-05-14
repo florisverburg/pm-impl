@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.fest.assertions.Assertions.*;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
@@ -19,6 +20,9 @@ public class TeamTest {
 
     private Right read;
     private Right edit;
+
+    private User bob;
+    private User hendrik;
 
 
     /**
@@ -42,13 +46,24 @@ public class TeamTest {
         edit = new Right("edit", "Can edit all the webpages");
         edit.save();
 
-        // Add the rights to the admin team
+        // Create a new user
+        bob = new User("Bob","Verburg","English","bob@example.com");
+        bob.save();
+
+        // Create a new user
+        hendrik = new User("Hendrik","Tienen","Dutch","hendrik@example.com");
+        hendrik.save();
+
+        // Add the rights and users to the admin team
         admin.addRight(read);
         admin.addRight(edit);
+        admin.addUser(bob);
+        admin.addUser(hendrik);
         admin.save();
 
         // Add the rights to the user team
         user.addRight(read);
+        user.addUser(bob);
         user.save();
     }
 
@@ -78,42 +93,48 @@ public class TeamTest {
     }
 
     /**
-     * Method to test the many-to-many relation of Team and Right
+     * Method to test the many-to-many relations of Team with Right
      */
     @Test
-    public void testFindByNameTeam() {
-
+    public void testManyToManyRights() {
+        // Get team
         Team returnedValue = Team.findByName("admin");
         List<Right> returnedRights = returnedValue.getRights();
 
+        // Check whether associated rights are correct
         assertThat(returnedRights.get(0).getType()).isEqualTo("read");
         assertThat(returnedRights.get(1).getType()).isEqualTo("edit");
         assertThat(returnedRights.size()).isEqualTo(2);
 
+        // Get other team
         returnedValue = Team.findByName("user");
         returnedRights = returnedValue.getRights();
 
+        // Check whether associated rights are correct
         assertThat(returnedRights.get(0).getType()).isEqualTo("read");
         assertThat(returnedRights.size()).isEqualTo(1);
     }
 
     /**
-     * Method to test the many-to-many relationship of Team and Right
+     * Method to test the many-to-many relations of Team with User
      */
     @Test
-    public void testFindByNameRight() {
+    public void testManyToManyUsers() {
+        Team returnedValue = Team.findByName("admin");
+        // Get users of the team
+        List<User> returnedUsers = returnedValue.getUsers();
 
-        Right returnedValue = Right.findByName("read");
-        List<Team> returnedTeams = returnedValue.getTeams();
+        // Check whether associated users are correct
+        assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
+        assertEquals(returnedUsers.get(1).getFirstName(),"Hendrik");
+        assertEquals(returnedUsers.size(),2);
 
-        assertThat(returnedTeams.get(0).getType()).isEqualTo("admin");
-        assertThat(returnedTeams.get(1).getType()).isEqualTo("user");
-        assertThat(returnedTeams.size()).isEqualTo(2);
+        returnedValue = Team.findByName("user");
+        // Get users of the team
+        returnedUsers = returnedValue.getUsers();
 
-        returnedValue = Right.findByName("edit");
-        returnedTeams = returnedValue.getTeams();
-
-        assertThat(returnedTeams.get(0).getType()).isEqualTo("admin");
-        assertThat(returnedTeams.size()).isEqualTo(1);
+        // Check whether associated users are correct
+        assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
+        assertEquals(returnedUsers.size(),1);
     }
 }
