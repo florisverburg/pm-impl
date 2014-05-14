@@ -1,6 +1,5 @@
 package models;
 
-import models.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 import play.test.WithApplication;
@@ -25,6 +24,9 @@ public class UserTest extends WithApplication {
 
     private Team admin;
     private Team user;
+
+    private Practical programmingAssignment;
+    private Practical documentingAssingment;
     /**
      * Setup method for the UserTest
      */
@@ -55,19 +57,40 @@ public class UserTest extends WithApplication {
         user = new Team("user", "User of the system, can read");
         user.save();
 
+        // Create a new practical
+        programmingAssignment = new Practical("ProgrammingAssignment", "Assignment about programming");
+        programmingAssignment.setAdmin(bob);
+        programmingAssignment.save();
+
+        // Create a new practical
+        documentingAssingment = new Practical("DocumentingAssignment", "Assignment about documenting");
+        documentingAssingment.setAdmin(bob);
+        documentingAssingment.save();
+
         // Add skills to user bob
         bob.addSkill(programming);
         bob.addSkill(documenting);
         // Add teams to user bob
         bob.addTeam(admin);
         bob.addTeam(user);
+        // Add practicals to user bob
+        bob.addPractical(programmingAssignment);
+        bob.addPractical(documentingAssingment);
+        // Add practicals to user bob as admin
+        bob.addPracticalAdmin(programmingAssignment);
+        bob.addPracticalAdmin(documentingAssingment);
         bob.save();
 
         // Add skills to user hendrik
         hendrik.addSkill(programming);
         // Add teams to user hendrik
         hendrik.addTeam(user);
+        // Add practicals to user hendrik
+        hendrik.addPractical(programmingAssignment);
+        // Add practicals to user hendrik as admin
+        hendrik.addPracticalAdmin(programmingAssignment);
         hendrik.save();
+
     }
 
     /**
@@ -161,6 +184,45 @@ public class UserTest extends WithApplication {
         // Check whether associated users are correct
         assertEquals(returnedTeams.get(0).getType(),"user");
         assertEquals(returnedTeams.size(),1);
+    }
+
+    /**
+     * Method to test the many-to-many relations of User with Practical
+     */
+    @Test
+    public void testManyToManyPracticals() {
+        User returnedValue = User.findByName("Bob");
+        // Get teams of the user
+        List<Practical> returnedPracticals = returnedValue.getPracticals();
+
+        // Check whether associated users are correct
+        assertEquals(returnedPracticals.get(0).getName(),"ProgrammingAssignment");
+        assertEquals(returnedPracticals.get(1).getName(),"DocumentingAssignment");
+        assertEquals(returnedPracticals.size(),2);
+
+        returnedValue = User.findByName("Hendrik");
+        // Get teams of the user
+        returnedPracticals = returnedValue.getPracticals();
+
+        // Check whether associated users are correct
+        assertEquals(returnedPracticals.get(0).getName(),"ProgrammingAssignment");
+        assertEquals(returnedPracticals.size(),1);
+    }
+
+    /**
+     * Method to test the one-to-many relation of User and PracticalAdmin
+     */
+    @Test
+    public void testOneToManyPracticalAdmin() {
+        User returnedValue = User.findByName("Bob");
+        // Get prac of the user
+        List<Practical> returnedPracticalsAdmin = returnedValue.getPracticalsAdmin();
+
+        // Check whether associated users are correct
+        assertNotNull(returnedPracticalsAdmin);
+        assertEquals(returnedPracticalsAdmin.get(0).getName(), "ProgrammingAssignment");
+        assertEquals(returnedPracticalsAdmin.get(1).getName(),"DocumentingAssignment");
+        assertEquals(returnedPracticalsAdmin.size(),2);
     }
 
     @Test

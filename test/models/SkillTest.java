@@ -1,6 +1,7 @@
 package models;
 import models.*;
 import org.junit.*;
+import play.test.WithApplication;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import static play.test.Helpers.*;
 /**
  * Created by Marijn Goedegebure on 13-5-2014.
  */
-public class SkillTest {
+public class SkillTest extends WithApplication {
 
     private User bob;
     private User hendrik;
