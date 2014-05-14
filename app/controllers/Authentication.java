@@ -79,7 +79,9 @@ public class Authentication extends Controller {
      * Logs out the current user
      * @return Redirects to the application home page
      */
+    @Security.Authenticated(Secured.class)
     public static Result logout() {
+        request().username();
         session().clear();
         return redirect(
                 routes.Application.index()

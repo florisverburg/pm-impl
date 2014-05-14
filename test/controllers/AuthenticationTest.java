@@ -1,6 +1,5 @@
 package controllers;
 
-import com.google.common.collect.ImmutableBiMap;
 import models.*;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -12,8 +11,6 @@ import play.test.*;
 import static play.test.Helpers.*;
 import com.avaje.ebean.Ebean;
 import com.google.common.collect.ImmutableMap;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by Freek on 12/05/14.
@@ -35,7 +32,7 @@ public class AuthenticationTest extends WithApplication {
         );
 
         assertEquals(303, status(result));
-        assertEquals(User.byEmail("test@test.com").getId().toString(), session(result).get("user_id"));
+        assertEquals(User.findByEmail("test@test.com").getId().toString(), session(result).get("user_id"));
     }
 
     @Test
@@ -49,7 +46,7 @@ public class AuthenticationTest extends WithApplication {
 
         assertEquals(400, status(result));
         assertTrue(contentAsString(result).contains("Invalid user or password"));
-        assertNotEquals(User.byEmail("test@test.com").getId().toString(), session(result).get("user_id"));
+        assertNotEquals(User.findByEmail("test@test.com").getId().toString(), session(result).get("user_id"));
     }
 
     @Test
@@ -122,7 +119,7 @@ public class AuthenticationTest extends WithApplication {
                 fakeRequest().withFormUrlEncodedBody(body));
 
 
-        User user = User.byEmail("mybob@example.com");
+        User user = User.findByEmail("mybob@example.com");
         User userAuth = User.authenticate("mybob@example.com", "myVeryGoodPass");
 
         assertEquals(303, status(result));

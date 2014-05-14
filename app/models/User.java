@@ -115,8 +115,17 @@ public class User extends Model {
      * @param email The email address
      * @return The user if found, else null
      */
-    public static User byEmail(String email) {
-        return User.find.where().eq("email", email).findUnique();
+    public static User findByEmail(String email) {
+        return find.where().eq("email", email).findUnique();
+    }
+
+    /**
+     * Get an user by id
+     * @param id The user id
+     * @return The user if found, else null
+     */
+    public static User findById(Long id) {
+        return find.byId(id);
     }
 
     /**
