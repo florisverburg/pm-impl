@@ -58,13 +58,6 @@ public class User extends Model {
     }
 
     /**
-     * Define the finder for Ebean
-     */
-    public static Finder<Long, User> find = new Finder<Long, User>(
-        Long.class, User.class
-    );
-
-    /**
      * Checks the user authentication with email and password
      * @param email The user email address
      * @param password The user password
@@ -93,7 +86,7 @@ public class User extends Model {
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
-    private static Model.Finder<Long, User> find =
+    public static Model.Finder<Long, User> find =
             new Model.Finder<Long, User>(Long.class, User.class);
 
     /**
