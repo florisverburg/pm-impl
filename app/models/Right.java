@@ -1,6 +1,7 @@
 package models;
 
 
+import play.data.validation.*;
 import play.db.ebean.*;
 
 import javax.persistence.*;
@@ -22,11 +23,15 @@ public class Right extends Model {
     /**
      * Type of the right
      */
+    @Constraints.Required
+    @Constraints.MaxLength(20)
     private String type;
 
     /**
      * Description of the right
      */
+    @Constraints.Required
+    @Constraints.MaxLength(100)
     private String description;
 
     /**

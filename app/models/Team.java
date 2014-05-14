@@ -1,6 +1,8 @@
 package models;
 
 import javax.persistence.*;
+import org.hibernate.validator.constraints.Length;
+import play.data.validation.*;
 import play.db.ebean.*;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Marijn Goedegebure on 13-5-2014.
+ * The model representing the team in the database
  */
 @Entity
 public class Team extends Model {
@@ -22,30 +25,34 @@ public class Team extends Model {
     /**
      * The type of the Team which can have rights
      */
+    @Constraints.Required
+    @Constraints.MaxLength(20)
     private String type;
 
     /**
      * The description of the Team
      */
+    @Constraints.Required
+    @Constraints.MaxLength(100)
     private String description;
 
     /**
      * The many-to-many relationship with the user table
      */
     @ManyToMany(mappedBy = "teams", cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList();
+    private List<User> users = new ArrayList<>();
 
     /**
      * THe many-to-many relationship with the right table
      */
     @ManyToMany(cascade =  CascadeType.ALL)
-    private List<Right> rights = new ArrayList();
+    private List<Right> rights = new ArrayList<>();
 
     /**
      * Finder defined for looking up the different teams
      */
     private static Model.Finder<Long, Team> find =
-            new Model.Finder<Long, Team>(Long.class, Team.class);
+            new Model.Finder<>(Long.class, Team.class);
 
     /**
      * Constructor of the Team model class

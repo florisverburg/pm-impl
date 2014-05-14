@@ -1,6 +1,8 @@
 package models;
 
 import javax.persistence.*;
+
+import play.data.validation.*;
 import play.db.ebean.*;
 import com.avaje.ebean.annotation.EnumValue;
 
@@ -38,16 +40,20 @@ public class Skill extends Model {
     /**
      *  The name of the skill
      */
+    @Constraints.Required
+    @Constraints.MaxLength(20)
     private String name;
 
     /**
      *  The kind of skill
      */
+    @Constraints.Required
     private Type type;
 
     /**
      * The max value a skill can has
      */
+    @Constraints.Required
     private Integer maxValue;
 
     /**

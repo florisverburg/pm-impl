@@ -24,21 +24,29 @@ public class User extends Model {
     /**
      * The first name of an user
      */
+    @Constraints.Required
+    @Constraints.MaxLength(20)
     private String firstName;
 
     /**
      * The last name of an user
      */
+    @Constraints.Required
+    @Constraints.MaxLength(20)
     private String lastName;
 
     /**
      * The language of an user
      */
+    @Constraints.Required
+    @Constraints.MaxLength(20)
     private String language;
 
     /**
      * The email address of an user
      */
+    @Constraints.Required
+    @Constraints.Email
     private String email;
 
     /**
