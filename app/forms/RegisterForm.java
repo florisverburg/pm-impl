@@ -15,27 +15,91 @@ public class RegisterForm {
      * The registration name
      */
     @Constraints.Required
-    public String name;
+    private String name;
 
     /**
      * The registration email address
      */
     @Constraints.Required
     @Constraints.Email
-    public String email;
+    private String email;
 
     /**
      * The registration password
      */
     @Constraints.Required
     @Constraints.MinLength(8)
-    public String password;
+    private String password;
 
     /**
      * The registration password repeat
      */
     @Constraints.Required
-    public String passwordRepeat;
+    private String passwordRepeat;
+
+    /**
+     * Gets name.
+     * @return The name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets name.
+     * @param name The name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets email.
+     * @return The email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Sets email.
+     * @param email The email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Gets password.
+     * @return The password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Sets password.
+     * @param password The password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Gets password repeat.
+     * @return The password repeat
+     */
+    public String getPasswordRepeat() {
+        return passwordRepeat;
+    }
+
+    /**
+     * Sets password repeat.
+     * @param passwordRepeat The password repeat
+     */
+    public void setPasswordRepeat(String passwordRepeat) {
+        this.passwordRepeat = passwordRepeat;
+    }
 
     /**
      * Validates the registration form
