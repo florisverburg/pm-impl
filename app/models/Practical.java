@@ -48,9 +48,14 @@ public class Practical extends Model {
     private User admin;
 
     /**
+     * One-to-many relationship between practical and practical group
+     */
+    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
+    List<PracticalGroup> practicalGroups = new ArrayList<>();
+
+    /**
      * Finder defined for the practical
      */
-
     public static Model.Finder<Long, Practical> find =
             new Model.Finder<>(Long.class, Practical.class);
 
@@ -159,6 +164,30 @@ public class Practical extends Model {
      */
     public void addUsers(User user) {
         users.add(user);
+    }
+
+    /**
+     * Getter for practicalGroups
+     * @return practicalGroups
+     */
+    public List<PracticalGroup> getPracticalGroups() {
+        return practicalGroups;
+    }
+
+    /**
+     * Setter for practicalGroups
+     * @param practicalGroups to set
+     */
+    public void setPracticalGroups(List<PracticalGroup> practicalGroups) {
+        this.practicalGroups = practicalGroups;
+    }
+
+    /**
+     * Add a practicalgroup to the list
+     * @param practicalGroups to add
+     */
+    public void addPractical(PracticalGroup practicalGroups) {
+        this.practicalGroups.add(practicalGroups);
     }
 
 }

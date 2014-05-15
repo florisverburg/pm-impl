@@ -74,6 +74,12 @@ public class User extends Model {
     private List<Practical> practicalsAdmin = new ArrayList<>();
 
     /**
+     * Many-to-many relationship defined for the users and practicalgroups
+     */
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<PracticalGroup> practicalGroups = new ArrayList<>();
+
+    /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
     public static Model.Finder<Long, User> find =
@@ -198,6 +204,30 @@ public class User extends Model {
      */
     public List<Practical> getPracticalsAdmin() {
         return practicalsAdmin;
+    }
+
+     /**
+     * Getter for practicalgroups
+     * @return practicalgroups
+     */
+    public List<PracticalGroup> getPracticalGroups() {
+        return practicalGroups;
+    }
+
+    /**
+     * Setter for practicalgroups
+     * @param practicalGroups to set
+     */
+    public void setPracticalGroups(List<PracticalGroup> practicalGroups) {
+        this.practicalGroups = practicalGroups;
+    }
+
+    /**
+     * Add a practicalgroup to the list
+     * @param practicalGroup to add
+     */
+    public void addPracticalGroup(PracticalGroup practicalGroup) {
+        this.practicalGroups.add(practicalGroup);
     }
 
     /**
