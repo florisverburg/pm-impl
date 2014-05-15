@@ -11,7 +11,7 @@ import static play.data.Form.*;
  * Created by Freek on 12/05/14.
  * This class handles all the authentication methods like login and register.
  */
-public class Authentication extends Controller {
+public class Authentication extends SecuredController {
 
     /**
      * Shows the login page

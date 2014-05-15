@@ -6,7 +6,7 @@ import views.html.*;
 /**
  * The application controller
  */
-public class Application extends Controller {
+public class Application extends SecuredController {
 
     /**
      * Create the index page
