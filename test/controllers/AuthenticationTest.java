@@ -129,4 +129,24 @@ public class AuthenticationTest extends WithApplication {
         assertEquals(user.getFirstName(), "Bob");
         assertEquals(user.getEmail(), "mybob@example.com");
     }
+
+    @Test
+    public void notAuthenticated() {
+        Result result = callAction(
+                controllers.routes.ref.Authentication.logout(),
+                fakeRequest()
+        );
+        assertEquals(303, status(result));
+        assertEquals("/login", header("Location", result));
+    }
+
+    @Test
+    public void authenticated() {
+        Result result = callAction(
+                controllers.routes.ref.Authentication.logout(),
+                fakeRequest().withSession("user_id", "500")
+        );
+        assertEquals(303, status(result));
+    }
+
 }
