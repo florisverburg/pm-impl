@@ -1,30 +1,25 @@
-@(form: Form[forms.RegisterForm])
-@import helper.twitterBootstrap._
+@(registerForm: Form[forms.RegisterForm])
 
-@main("Register", "register") {
-    @helper.form(routes.Authentication.registration) {
+@implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
+
+@main("Register - APMatch", "register") {
+    @helper.form(routes.Authentication.registration, 'class -> "form-horizontal") {
         <div class="section">
             <div class="w-container">
                 <div class="w-row">
                     <div class="w-col w-col-12">
                         <h1>Registration</h1>
 
-                        @if(form.hasGlobalErrors) {
-                            <p class="error">
-                            @form.globalError.message
-                            </p>
-                        }
 
-                        @helper.inputText(form("firstName"))
-                        @helper.inputText(form("lastName"))
-                        @helper.inputText(form("language"))
-                        @helper.inputText(form("email"))
-                        @helper.inputPassword(form("password"))
-                        @helper.inputPassword(form("passwordRepeat"))
 
-                        <p>
-                            <button type="submit">Register</button>
-                        </p>
+                        @form.inputText(registerForm("firstName"))
+                        @form.inputText(registerForm("lastName"))
+                        @form.inputText(registerForm("language"))
+                        @form.inputText(registerForm("email"))
+                        @form.inputPassword(registerForm("password"))
+                        @form.inputPassword(registerForm("passwordRepeat"))
+
+                        @form.button(registerForm("Register"), '_label -> null)
                     </div>
                 </div>
             </div>

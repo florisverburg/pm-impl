@@ -7,6 +7,10 @@
  *   Webflow.push(readyFunction);
  * ----------------------------------------------------------------------
  */
+$(document).ready(function() {
+  $('.tooltip-div').tooltip();
+}); 
+
 var Webflow = { w: Webflow };
 Webflow.init = function () {
   'use strict';

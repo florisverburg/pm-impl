@@ -7,3 +7,15 @@
 .black-background {
 	background: black;
 }
+
+.red-text {
+	color: red !important;
+}
+
+.vert-align-middle {
+    vertical-align: middle !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	background: none !important;
+}

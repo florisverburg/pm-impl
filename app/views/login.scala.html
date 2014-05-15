@@ -1,25 +1,19 @@
-@(form: Form[forms.LoginForm])
+@(loginForm: Form[forms.LoginForm])
 
-@main("Login", "login") {
-    @helper.form(routes.Authentication.authenticate) {
+@implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
+
+@main("Login - APMatch", "login") {
+    @helper.form(routes.Authentication.authenticate, 'class -> "form-horizontal") {
 <div class="section">
     <div class="w-container">
         <div class="w-row">
             <div class="w-col w-col-12">
                 <h1>Sign in</h1>
 
-                @if(form.hasGlobalErrors) {
-                    <p class="error">
-                    @form.globalError.message
-                    </p>
-                }
+                @form.inputText(loginForm("email"))
+                @form.inputPassword(loginForm("password"))
 
-                @helper.inputText(form("email"))
-                @helper.inputPassword(form("password"))
-
-                <p>
-                    <button type="submit">Login</button>
-                </p>
+                @form.button(loginForm("Log in"), '_label -> null)
             </div>
         </div>
     </div>
