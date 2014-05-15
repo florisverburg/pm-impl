@@ -4,25 +4,23 @@
 
 @main("Register - APMatch", "register") {
     @helper.form(routes.Authentication.registration, 'class -> "form-horizontal") {
-        <div class="section">
-            <div class="w-container">
-                <div class="w-row">
-                    <div class="w-col w-col-12">
-                        <h1>Registration</h1>
+        <div class="container">
+            <h1>Registration</h1>
 
+            @if(registerForm.hasGlobalErrors) {
+                <p class="error">
+                @registerForm.globalError.message
+                </p>
+            }
 
+            @form.inputText(registerForm("firstName"))
+            @form.inputText(registerForm("lastName"))
+            @form.inputText(registerForm("language"))
+            @form.inputText(registerForm("email"))
+            @form.inputPassword(registerForm("password"))
+            @form.inputPassword(registerForm("passwordRepeat"))
 
-                        @form.inputText(registerForm("firstName"))
-                        @form.inputText(registerForm("lastName"))
-                        @form.inputText(registerForm("language"))
-                        @form.inputText(registerForm("email"))
-                        @form.inputPassword(registerForm("password"))
-                        @form.inputPassword(registerForm("passwordRepeat"))
-
-                        @form.button(registerForm("Register"), '_label -> null)
-                    </div>
-                </div>
-            </div>
+            @form.button(registerForm("Register"), '_label -> null)
         </div>
     }
 }

@@ -4,19 +4,19 @@
 
 @main("Login - APMatch", "login") {
     @helper.form(routes.Authentication.authenticate, 'class -> "form-horizontal") {
-<div class="section">
-    <div class="w-container">
-        <div class="w-row">
-            <div class="w-col w-col-12">
-                <h1>Sign in</h1>
+        <div class="container">
+            <h1>Log in</h1>
 
-                @form.inputText(loginForm("email"))
-                @form.inputPassword(loginForm("password"))
+            @if(loginForm.hasGlobalErrors) {
+                <p class="error">
+                @loginForm.globalError.message
+                </p>
+            }
 
-                @form.button(loginForm("Log in"), '_label -> null)
-            </div>
+            @form.inputText(loginForm("email"))
+            @form.inputPassword(loginForm("password"))
+
+            @form.button(loginForm("Log in"), '_label -> null)
         </div>
-    </div>
-</div>
     }
 }
