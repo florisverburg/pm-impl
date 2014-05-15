@@ -34,6 +34,14 @@ public class Practical extends Model {
     @Constraints.MaxLength(200)
     private String description;
 
+
+    /**
+     * Secret used to register an user to a practical
+     */
+    @Constraints.Required
+    @Constraints.MaxLength(20)
+    private String secret;
+
     /**
      * Many-to-many relationship between practical and user
      */
@@ -64,9 +72,10 @@ public class Practical extends Model {
      * @param name of the practical
      * @param description of the practical
      */
-    public Practical(String name, String description) {
+    public Practical(String name, String description, String secret) {
         this.name = name;
         this.description = description;
+        this.secret = secret;
     }
 
     /**
@@ -76,6 +85,15 @@ public class Practical extends Model {
      */
     public static Practical findByName(String name) {
         return find.where().eq("name", name).findUnique();
+    }
+
+    /**
+     * Method to find a practical by its id
+     * @param id of the practical to be found
+     * @return the found practical
+     */
+    public static Practical findById(long id) {
+        return find.where().eq("id", id).findUnique();
     }
 
     /**
@@ -143,6 +161,22 @@ public class Practical extends Model {
     }
 
     /**
+     * Getter for the secret
+     * @return secret
+     */
+    public String getSecret() {
+        return secret;
+    }
+
+    /**
+     * Setter for the secret
+     * @param secret to set
+     */
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    /**
      * Getter for users
      * @return users
      */
@@ -189,5 +223,4 @@ public class Practical extends Model {
     public void addPracticalGroup(PracticalGroup practicalGroup) {
         this.practicalGroups.add(practicalGroup);
     }
-
 }
