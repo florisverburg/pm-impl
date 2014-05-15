@@ -47,14 +47,12 @@ public class Practical extends Model {
     @JoinColumn(name = "adminId")
     private User admin;
 
-
     /**
      * Finder defined for the practical
      */
 
     public static Model.Finder<Long, Practical> find =
             new Model.Finder<>(Long.class, Practical.class);
-
 
     /**
      * Constructor of the practical
