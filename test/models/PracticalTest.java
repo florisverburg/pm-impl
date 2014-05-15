@@ -21,6 +21,10 @@ public class PracticalTest extends WithApplication {
     private Practical programmingAssignment;
     private Practical documentingAssingment;
 
+    private PracticalGroup bobsGroup;
+    private PracticalGroup bobAndHendriksGroup;
+    private PracticalGroup hendriksGroup;
+
     @Before
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
@@ -41,15 +45,33 @@ public class PracticalTest extends WithApplication {
         documentingAssingment = new Practical("DocumentingAssignment", "Assignment about documenting");
         documentingAssingment.save();
 
+        // Create a new practicalGroup
+        bobsGroup = new PracticalGroup();
+        bobsGroup.setPractical(programmingAssignment);
+        bobsGroup.save();
+
+        // Create a new practicalGroup
+        hendriksGroup = new PracticalGroup();
+        hendriksGroup.setPractical(programmingAssignment);
+        hendriksGroup.save();
+
+        // Create a new practicalGroup
+        bobAndHendriksGroup = new PracticalGroup();
+        bobAndHendriksGroup.setPractical(documentingAssingment);
+        bobAndHendriksGroup.save();
+
         // Add users to programming assignment
         programmingAssignment.addUsers(bob);
         programmingAssignment.addUsers(hendrik);
         programmingAssignment.setAdmin(bob);
+        programmingAssignment.addPracticalGroup(bobsGroup);
+        programmingAssignment.addPracticalGroup(hendriksGroup);
         programmingAssignment.save();
 
         // Add users to documenting assignment
         documentingAssingment.addUsers(bob);
         documentingAssingment.setAdmin(hendrik);
+        documentingAssingment.addPracticalGroup(bobAndHendriksGroup);
         documentingAssingment.save();
     }
 
@@ -82,11 +104,11 @@ public class PracticalTest extends WithApplication {
     }
 
     /**
-     * Method to test the many-to-many relations of Team with User and Right
+     * Method to test the many-to-many relations of practical with User
      */
     @Test
     public void testManyToMany() {
-        // Get right
+        // Get users
         Practical returnedValue = Practical.findByName("ProgrammingAssignment");
         List<User> returnedUsers = returnedValue.getUsers();
 
@@ -102,5 +124,28 @@ public class PracticalTest extends WithApplication {
         // check whether associated teams are correct
         assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
         assertEquals(returnedUsers.size(), 1);
+    }
+
+    /**
+     * Method to test the one-to-many relationship of practical with practical group
+     */
+    @Test
+    public void testOneToMany() {
+        // Get practical groups
+        Practical returnedValue = Practical.findByName("ProgrammingAssignment");
+        List<PracticalGroup> returnedPracticalGroups = returnedValue.getPracticalGroups();
+
+        // check whether associated teams are correct
+        assertEquals(returnedPracticalGroups.get(0),bobsGroup);
+        assertEquals(returnedPracticalGroups.get(1),hendriksGroup);
+        assertEquals(returnedPracticalGroups.size(), 2);
+
+        // Get the other right
+        returnedValue = Practical.findByName("DocumentingAssignment");
+        returnedPracticalGroups = returnedValue.getPracticalGroups();
+
+        // check whether associated teams are correct
+        assertEquals(returnedPracticalGroups.get(0),bobAndHendriksGroup);
+        assertEquals(returnedPracticalGroups.size(), 1);
     }
 }
