@@ -27,6 +27,9 @@ public class UserTest extends WithApplication {
 
     private Practical programmingAssignment;
     private Practical documentingAssingment;
+
+    private PracticalGroup bobsGroup;
+    private PracticalGroup bobAndHendriksGroup;
     /**
      * Setup method for the UserTest
      */
@@ -67,6 +70,12 @@ public class UserTest extends WithApplication {
         documentingAssingment.setAdmin(bob);
         documentingAssingment.save();
 
+        // Create a new practicalGroup
+        bobsGroup = new PracticalGroup();
+
+        // Create a new practicalGroup
+        bobAndHendriksGroup = new PracticalGroup();
+
         // Add skills to user bob
         bob.addSkill(programming);
         bob.addSkill(documenting);
@@ -79,6 +88,9 @@ public class UserTest extends WithApplication {
         // Add practicals to user bob as admin
         bob.addPracticalAdmin(programmingAssignment);
         bob.addPracticalAdmin(documentingAssingment);
+        // Add practicalGroups to user bob
+        bob.addPracticalGroup(bobsGroup);
+        bob.addPracticalGroup(bobAndHendriksGroup);
         bob.save();
 
         // Add skills to user hendrik
@@ -89,6 +101,8 @@ public class UserTest extends WithApplication {
         hendrik.addPractical(programmingAssignment);
         // Add practicals to user hendrik as admin
         hendrik.addPracticalAdmin(programmingAssignment);
+        // Add practicalGroups to user hendrik
+        hendrik.addPracticalGroup(bobAndHendriksGroup);
         hendrik.save();
 
     }
@@ -192,7 +206,7 @@ public class UserTest extends WithApplication {
     @Test
     public void testManyToManyPracticals() {
         User returnedValue = User.findByName("Bob");
-        // Get teams of the user
+        // Get practicals of the user
         List<Practical> returnedPracticals = returnedValue.getPracticals();
 
         // Check whether associated users are correct
@@ -201,12 +215,35 @@ public class UserTest extends WithApplication {
         assertEquals(returnedPracticals.size(),2);
 
         returnedValue = User.findByName("Hendrik");
-        // Get teams of the user
+        // Get practicals of the user
         returnedPracticals = returnedValue.getPracticals();
 
         // Check whether associated users are correct
         assertEquals(returnedPracticals.get(0).getName(),"ProgrammingAssignment");
         assertEquals(returnedPracticals.size(),1);
+    }
+
+    /**
+     * Method to test the many-to-many relations of User with PracticalGroups
+     */
+    @Test
+    public void testManyToManyPracticalGroups() {
+        User returnedValue = User.findByName("Bob");
+        // Get practicalGroups of the user
+        List<PracticalGroup> returnedPracticalGroups = returnedValue.getPracticalGroups();
+
+        // Check whether associated users are correct
+        assertEquals(returnedPracticalGroups.get(0),bobsGroup);
+        assertEquals(returnedPracticalGroups.get(1),bobAndHendriksGroup);
+        assertEquals(returnedPracticalGroups.size(),2);
+
+        returnedValue = User.findByName("Hendrik");
+        // Get teams of the user
+        returnedPracticalGroups = returnedValue.getPracticalGroups();
+
+        // Check whether associated users are correct
+        assertEquals(returnedPracticalGroups.get(0),bobAndHendriksGroup);
+        assertEquals(returnedPracticalGroups.size(),1);
     }
 
     /**

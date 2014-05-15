@@ -1,7 +1,5 @@
 package models;
-import junit.framework.*;
-import junit.framework.Assert;
-import models.*;
+
 import org.junit.*;
 import org.junit.Test;
 
