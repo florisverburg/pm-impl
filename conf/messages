@@ -4,4 +4,6 @@ email = Email Address
 password = Password
 passwordRepeat = Repeat password
 error.passwordRepeat = The passwords don''t match
+authentication.loggedOut = You successfully logged out!
+authentication.loggedIn = You successfully logged in!
 

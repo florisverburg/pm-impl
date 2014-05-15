@@ -173,17 +173,17 @@ public class UserTest extends WithApplication {
         List<Team> returnedTeams = returnedValue.getTeams();
 
         // Check whether associated users are correct
-        assertEquals(returnedTeams.get(0).getType(),"admin");
-        assertEquals(returnedTeams.get(1).getType(),"user");
-        assertEquals(returnedTeams.size(),2);
+        assertEquals(returnedTeams.get(0).getType(), "admin");
+        assertEquals(returnedTeams.get(1).getType(), "user");
+        assertEquals(returnedTeams.size(), 2);
 
         returnedValue = User.findByName("Hendrik");
         // Get teams of the user
         returnedTeams = returnedValue.getTeams();
 
         // Check whether associated users are correct
-        assertEquals(returnedTeams.get(0).getType(),"user");
-        assertEquals(returnedTeams.size(),1);
+        assertEquals(returnedTeams.get(0).getType(), "user");
+        assertEquals(returnedTeams.size(), 1);
     }
 
     /**
@@ -229,7 +229,7 @@ public class UserTest extends WithApplication {
     public void getByEmail() {
         User createRob = new User("rob", "lastName", "english", "rob@none.com");
         createRob.save();
-        User rob = User.byEmail("rob@none.com");
+        User rob = User.findByEmail("rob@none.com");
 
         assertNotNull(rob);
         assertEquals(createRob, rob);

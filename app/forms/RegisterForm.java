@@ -156,7 +156,7 @@ public class RegisterForm {
         List<ValidationError> errors = new ArrayList<ValidationError>();
 
         // Check if email is already existing in database
-        if(User.byEmail(email) != null) {
+        if(User.findByEmail(email) != null) {
             errors.add(new ValidationError("email", "This email address is already registered."));
         }
 

@@ -70,6 +70,6 @@ public class LoginForm {
      * @return The user
      */
     public User getUser() {
-        return User.byEmail(email);
+        return User.findByEmail(email);
     }
 }
