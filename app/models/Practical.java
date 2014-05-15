@@ -184,10 +184,10 @@ public class Practical extends Model {
 
     /**
      * Add a practicalgroup to the list
-     * @param practicalGroups to add
+     * @param practicalGroup to add
      */
-    public void addPractical(PracticalGroup practicalGroups) {
-        this.practicalGroups.add(practicalGroups);
+    public void addPracticalGroup(PracticalGroup practicalGroup) {
+        this.practicalGroups.add(practicalGroup);
     }
 
 }
