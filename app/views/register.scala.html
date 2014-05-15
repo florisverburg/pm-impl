@@ -1,33 +1,26 @@
-@(form: Form[forms.RegisterForm])
-@import helper.twitterBootstrap._
+@(registerForm: Form[forms.RegisterForm])
 
-@main("Register", "register") {
-    @helper.form(routes.Authentication.registration) {
-        <div class="section">
-            <div class="w-container">
-                <div class="w-row">
-                    <div class="w-col w-col-12">
-                        <h1>Registration</h1>
+@implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
 
-                        @if(form.hasGlobalErrors) {
-                            <p class="error">
-                            @form.globalError.message
-                            </p>
-                        }
+@main("Register - APMatch", "register") {
+    @helper.form(routes.Authentication.registration, 'class -> "form-horizontal") {
+        <div class="container">
+            <h1>Registration</h1>
 
-                        @helper.inputText(form("firstName"))
-                        @helper.inputText(form("lastName"))
-                        @helper.inputText(form("language"))
-                        @helper.inputText(form("email"))
-                        @helper.inputPassword(form("password"))
-                        @helper.inputPassword(form("passwordRepeat"))
+            @if(registerForm.hasGlobalErrors) {
+                <p class="error red-text">
+                @registerForm.globalError.message
+                </p>
+            }
 
-                        <p>
-                            <button type="submit">Register</button>
-                        </p>
-                    </div>
-                </div>
-            </div>
+            @form.inputText(registerForm("firstName"))
+            @form.inputText(registerForm("lastName"))
+            @form.inputText(registerForm("language"))
+            @form.inputText(registerForm("email"))
+            @form.inputPassword(registerForm("password"))
+            @form.inputPassword(registerForm("passwordRepeat"))
+
+            @form.button(registerForm("Register"), '_label -> null)
         </div>
     }
 }
