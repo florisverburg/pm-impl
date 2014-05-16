@@ -1,8 +1,8 @@
-@(loginForm: Form[forms.LoginForm], registerForm: Form[forms.RegisterForm], userId: String)
+@(loginForm: Form[forms.LoginForm], registerForm: Form[forms.RegisterForm])
 
 @implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
 
-@main("Login - APMatch", "login", userId) {
+@main("Login - APMatch", "login") {
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
