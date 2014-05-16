@@ -71,6 +71,7 @@ public class Practical extends Model {
      * Constructor of the practical
      * @param name of the practical
      * @param description of the practical
+     * @param secret of the practical
      */
     public Practical(String name, String description, String secret) {
         this.name = name;
