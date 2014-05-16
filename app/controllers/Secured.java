@@ -10,25 +10,13 @@ import play.mvc.*;
 public class Secured extends Security.Authenticator {
 
     /**
-     * Return the user id from a session
-     * @param session The current session
-     * @return The user id
-     */
-    private Long getUserId(Http.Session session) {
-        String userId = session.get("user_id");
-        return (userId == null)? null : Long.parseLong(userId);
-    }
-
-    /**
-     * Retrieve the username (email address)
+     * Retrieve the username (user id)
      * @param ctx The context of the current application
-     * @return The username (email address)
+     * @return The username (user id)
      */
     @Override
     public String getUsername(Http.Context ctx) {
-        // Search for the user by the user_id in the session
-        Long userId = getUserId(ctx.session());
-        return (userId == null)? null : User.findById(userId).getEmail();
+        return ctx.session().get("user_id");
     }
 
     /**
