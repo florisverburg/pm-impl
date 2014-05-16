@@ -45,7 +45,7 @@ public class Practical extends Model {
     /**
      * Many-to-many relationship between practical and user
      */
-    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.PERSIST)
     List<User> users = new ArrayList<>();
 
     /**
