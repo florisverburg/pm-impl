@@ -18,8 +18,9 @@ public class Authentication extends Controller {
      * @return The login page
      */
     public static Result login() {
+        String userId = session("user_id");
         return ok(
-                login.render(form(LoginForm.class), form(RegisterForm.class))
+                login.render(form(LoginForm.class), form(RegisterForm.class), userId)
         );
     }
 
@@ -29,10 +30,11 @@ public class Authentication extends Controller {
      */
     public static Result authenticate() {
         Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
+        String userId = session("user_id");
 
         // Check for errors in login
         if(loginForm.hasErrors()) {
-            return badRequest(login.render(loginForm, form(RegisterForm.class)));
+            return badRequest(login.render(loginForm, form(RegisterForm.class), userId));
         }
         else {
             // Set the session and redirect to home
@@ -51,10 +53,11 @@ public class Authentication extends Controller {
      */
     public static Result registration() {
         Form<RegisterForm> registerForm = form(RegisterForm.class).bindFromRequest();
+        String userId = session("user_id");
 
         // Check for errors in register
         if(registerForm.hasErrors()) {
-            return badRequest(login.render(form(LoginForm.class), registerForm));
+            return badRequest(login.render(form(LoginForm.class), registerForm, userId));
         }
         else {
             // Create the new user and identity
