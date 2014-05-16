@@ -8,5 +8,9 @@
         @practical.getDescription()
     </p>
 </div>
-
+<ul>
+    @practical.getUsers().map { user =>
+    <li>@user.getFirstName()</li>
+    }
+</ul>
 }
