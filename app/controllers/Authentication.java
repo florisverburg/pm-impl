@@ -19,17 +19,7 @@ public class Authentication extends SecuredController {
      */
     public static Result login() {
         return ok(
-                login.render(form(LoginForm.class))
-        );
-    }
-
-    /**
-     * Shows the register page
-     * @return The register page
-     */
-    public static Result register() {
-        return ok(
-                register.render(form(RegisterForm.class))
+                login.render(form(LoginForm.class), form(RegisterForm.class))
         );
     }
 
@@ -42,7 +32,7 @@ public class Authentication extends SecuredController {
 
         // Check for errors in login
         if(loginForm.hasErrors()) {
-            return badRequest(login.render(loginForm));
+            return badRequest(login.render(loginForm, form(RegisterForm.class)));
         }
         else {
             // Set the session and redirect to home
@@ -64,7 +54,7 @@ public class Authentication extends SecuredController {
 
         // Check for errors in register
         if(registerForm.hasErrors()) {
-            return badRequest(register.render(registerForm));
+            return badRequest(login.render(form(LoginForm.class), registerForm));
         }
         else {
             // Create the new user and identity

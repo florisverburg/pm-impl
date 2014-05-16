@@ -10,6 +10,9 @@
     <Class name="~controllers\.routes.*"/>
   </Match>
   <Match>
+    <Class name="~controllers\.Reverse.*"/>
+  </Match>
+  <Match>
     <Class name="~models.*"/>
     <Field name="find" />
     <Bug pattern="MS_SHOULD_BE_FINAL" />

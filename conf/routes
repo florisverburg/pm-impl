@@ -10,7 +10,7 @@ GET         /contact             controllers.Application.contact()
 # Authentication
 GET         /login               controllers.Authentication.login()
 POST        /login               controllers.Authentication.authenticate()
-GET         /register            controllers.Authentication.register()
+GET         /register            controllers.Authentication.login()
 POST        /register            controllers.Authentication.registration()
 GET         /logout              controllers.Authentication.logout()
 
