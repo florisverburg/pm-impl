@@ -6,6 +6,15 @@
     language: English
     email: test@test.com
 
+# Practical
+  - !!models.Practical
+    id: 1
+    name: Programming
+    description: Programming
+    secret: abc
+    admin:       !!models.User
+      id: 400
+
 #Identities
   - !!models.PasswordIdentity
     user:       !!models.User
