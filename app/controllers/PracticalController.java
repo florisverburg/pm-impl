@@ -9,11 +9,12 @@ import views.html.*;
  * Created by Marijn Goedegebure on 15-5-2014.
  * The class that handles all the actions used with the practicals
  */
-public class PracticalController extends SecuredController{
+public class PracticalController extends SecuredController {
 
     /**
      * Method used to register a new practical to a user
-     * @param id of the practical
+     *
+     * @param id     of the practical
      * @param secret of the practical
      * @return the appropriate view
      */
@@ -21,9 +22,9 @@ public class PracticalController extends SecuredController{
     public static Result register(long id, String secret) {
         Practical practicalToRender = Practical.findById(id);
         // Checks of practical exist
-        if(practicalToRender != null) {
+        if (practicalToRender != null) {
             // Checks of the user is not already a part of the practical
-            if(!practicalToRender.getUsers().contains(getUser())) {
+            if (!practicalToRender.getUsers().contains(getUser())) {
                 // Checks if the secret is correct
                 if (practicalToRender.getSecret().equals(secret)) {
                     practicalToRender.addUsers(getUser());
@@ -31,13 +32,11 @@ public class PracticalController extends SecuredController{
                     Logger.debug("Successful addition");
                     return redirect(routes.PracticalController.
                             viewPractical(practicalToRender.getId()));
-                }
-                else {
+                } else {
                     Logger.debug("Wrong secret");
-                    redirect(routes.PracticalController.viewPractical(practicalToRender.getId()));
+                    return redirect(routes.PracticalController.viewPractical(practicalToRender.getId()));
                 }
-            }
-            else {
+            } else {
                 Logger.debug("User is already coupled to this practical");
                 return redirect(routes.Application.index());
             }
