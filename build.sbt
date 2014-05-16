@@ -6,6 +6,7 @@ version := "1.0"
 
 libraryDependencies ++= Seq(
   javaJdbc,
+  javaWs,
   javaEbean,
   cache,
   "mysql" % "mysql-connector-java" % "5.1.21",

@@ -8,14 +8,14 @@
           <value>
             <package name="java.awt" withSubpackages="false" static="false" />
             <package name="javax.persistence" withSubpackages="false" static="false" />
-            <package name="play.data.validation" withSubpackages="true" static="false" />
-            <package name="play.db.ebean" withSubpackages="true" static="false" />
-            <package name="play.mvc" withSubpackages="true" static="false" />
-            <package name="play.data" withSubpackages="true" static="false" />
-            <package name="play.data.Form" withSubpackages="true" static="true" />
+            <package name="play.data.validation" withSubpackages="false" static="false" />
+            <package name="play.db.ebean" withSubpackages="false" static="false" />
+            <package name="play.mvc" withSubpackages="false" static="false" />
+            <package name="play.data" withSubpackages="false" static="false" />
+            <package name="play.data.Form" withSubpackages="false" static="true" />
             <package name="javax.swing" withSubpackages="false" static="false" />
-            <package name="views.html" withSubpackages="true" static="false" />
-            <package name="models" withSubpackages="true" static="false" />
+            <package name="views.html" withSubpackages="false" static="false" />
+            <package name="models" withSubpackages="false" static="false" />
           </value>
         </option>
         <XML>

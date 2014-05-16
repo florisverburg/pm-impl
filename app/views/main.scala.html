@@ -59,6 +59,11 @@
                 @Messages.get(flash.get("success"))
                 </p>
             }
+            @if(flash.contains("error")) {
+                <p class="error">
+                @Messages.get(flash.get("error"))
+                </p>
+            }
             @content
 
             <div class="row">

@@ -15,3 +15,6 @@ practical.wrongSecret = This secret does not match the practical secret
 firstName = First name
 lastName = Last name
 language = Language
+
+linkedin.unknownError = An unknown error occurred, please try again
+linkedin.expiredError = The login session is expired and needs to be renewed

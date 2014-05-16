@@ -1,6 +1,5 @@
 package models;
 
-import org.hibernate.validator.constraints.Length;
 import play.data.validation.*;
 import play.db.ebean.*;
 import javax.persistence.*;
@@ -27,21 +26,6 @@ public abstract class Identity extends Model {
     @ManyToOne
     @Constraints.Required
     protected User user;
-
-    /**
-     * Identifier of the identity
-     * Depending on the type of identity the data differs.
-     */
-    @Constraints.Required
-    protected String identifier;
-
-    /**
-     * The data of the identity.
-     * Depending on the type of the identity the data differs.
-     */
-    @Length(max=250)
-    @Constraints.Required
-    protected String data;
 
     /**
      * Get the identity id
@@ -73,38 +57,6 @@ public abstract class Identity extends Model {
      */
     public void setUser(User user) {
         this.user = user;
-    }
-
-    /**
-     * Get the identifier of the identity
-     * @return The identifier
-     */
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    /**
-     * Set the identifier of the identity
-     * @param identifier The identifier
-     */
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    /**
-     * Get the data of the identity
-     * @return The data
-     */
-    public String getData() {
-        return data;
-    }
-
-    /**
-     * Set the data of the identity
-     * @param data The data
-     */
-    public void setData(String data) {
-        this.data = data;
     }
 
     /**
