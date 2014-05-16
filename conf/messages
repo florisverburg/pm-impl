@@ -1,20 +1,22 @@
 # Authentication
-name = Name
+firstName = First name
+lastName = Last name
 email = Email address
 password = Password
 passwordRepeat = Repeat password
+
 error.passwordRepeat = The passwords don''t match
 
 authentication.loggedOut = You successfully logged out!
 authentication.loggedIn = You successfully logged in!
-
-practical.doesNotExist = Practial does not exist
-practical.alreadyCoupled = You are already coupled to this practical
-practical.wrongSecret = This secret does not match the practical secret
 
 firstName = First name
 lastName = Last name
 language = Language
 
 linkedin.unknownError = An unknown error occurred, please try again
-linkedin.expiredError = The login session is expired and needs to be renewed
+linkedin.unknownError = An unknown error with Linkedin occurred, please try again later
+
+# Practical
+practical.doesNotExist = Practial does not exist
+practical.wrongSecret = This secret does not match the practical secret

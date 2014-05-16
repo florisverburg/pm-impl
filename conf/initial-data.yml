@@ -9,7 +9,6 @@ users:
   - &user2 !!models.User
     firstName: Test
     lastName: Test
-    language: English
     email: test@test.com
 
   - &user3 !!models.User

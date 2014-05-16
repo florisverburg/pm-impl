@@ -213,7 +213,7 @@ public class Linkedin {
     }
 
     /**
-     * Create a new user based on the information from Linkedin and save
+     * Create a new user based on the information from Linkedin
      * @return The created user
      */
     public User createUser() {
@@ -225,26 +225,19 @@ public class Linkedin {
         }
 
         // Create a new user
-        User user = new User(
+        return new User(
                 response.get("firstName").asText(),
                 response.get("lastName").asText(),
-                "",
                 response.get("emailAddress").asText()
         );
-        user.save();
-
-        return user;
     }
 
+    /**
+     * Create a new identity based on the information from this connection and the given user
+     * @param user The user to link the identity to
+     * @return The newly created identity
+     */
     public LinkedinIdentity createIdentity(User user) {
-        LinkedinIdentity identity = new LinkedinIdentity(user, this.getPersonId());
-        identity.save();
-
-        return identity;
-    }
-
-    public LinkedinIdentity create() {
-        User user = createUser();
-        return createIdentity(user);
+        return new LinkedinIdentity(user, this.getPersonId());
     }
 }

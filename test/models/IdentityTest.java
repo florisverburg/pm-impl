@@ -1,6 +1,5 @@
 package models;
 
-import models.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 import play.test.WithApplication;
@@ -18,7 +17,7 @@ public class IdentityTest extends WithApplication {
         start(fakeApplication(inMemoryDatabase()));
 
         // Create a new user
-        bob = new User("Bob","Verburg","English","bob@example.com");
+        bob = new User("Bob","Verburg","bob@example.com");
         bob.save();
     }
 

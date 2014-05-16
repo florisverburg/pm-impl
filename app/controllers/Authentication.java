@@ -70,33 +70,19 @@ public class Authentication extends SecuredController {
         String sessionState = session().get("linkedin_state");
 
         // First check the state and errors
-        if(!state.equals(sessionState) || !error.isEmpty() || code.isEmpty()) {
+        Linkedin linkedinConnection = Linkedin.fromAccesToken(code);
+        if(!state.equals(sessionState) || !error.isEmpty() || code.isEmpty() || linkedinConnection == null) {
             flash("error", "linkedin.unknownError");
             return redirect(
                     routes.Application.index()
             );
         }
 
-        // Check code is valid
-        Linkedin linkedinConnection = Linkedin.fromAccesToken(code);
-        if(linkedinConnection == null) {
-            flash("error", "linkedin.expiredError");
-            return redirect(
-                    routes.Application.index()
-            );
-        }
-
-        // Save the current linkedin Connection and get the Linkedin userId
+        // Save the current linkedin Connection and get the identity
         linkedinConnection.toSession();
-        String linkedinPersonId = linkedinConnection.getPersonId();
+        LinkedinIdentity identity = LinkedinIdentity.authenticate(linkedinConnection);
 
-        // Check if already exists and else create
-        LinkedinIdentity identity = LinkedinIdentity.byPersonId(linkedinPersonId);
-        if(identity == null) {
-            identity = linkedinConnection.create();
-        }
-
-        // Save login to session
+        // Save login to session and redirect to home
         session().clear();
         session("user_id", identity.getUser().getId().toString());
         flash("success", "authentication.loggedIn");

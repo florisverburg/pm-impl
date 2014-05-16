@@ -36,13 +36,6 @@ public class User extends Model {
     private String lastName;
 
     /**
-     * The language of an user
-     */
-    @Constraints.Required
-    @Constraints.MaxLength(128)
-    private String language;
-
-    /**
      * The email address of an user
      */
     @Constraints.Required
@@ -89,13 +82,11 @@ public class User extends Model {
      * Constructor for the User class
      * @param fName firstName of the user
      * @param lName lastName of the user
-     * @param lang language of the user
      * @param eml email of the user
      */
-    public User(String fName, String lName, String lang, String eml) {
+    public User(String fName, String lName, String eml) {
         firstName = fName;
         lastName = lName;
-        language = lang;
         email = eml;
     }
 
@@ -285,22 +276,6 @@ public class User extends Model {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    /**
-     * Getter of the language
-     * @return language
-     */
-    public String getLanguage() {
-        return language;
-    }
-
-    /**
-     * Setter of the language
-     * @param language to be set
-     */
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     /**

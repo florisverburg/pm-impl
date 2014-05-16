@@ -37,11 +37,11 @@ public class UserTest extends WithApplication {
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
         // Create a new user
-        bob = new User("Bob","Verburg","English","bob@example.com");
+        bob = new User("Bob","Verburg","bob@example.com");
         bob.save();
 
         // Create a new user
-        hendrik = new User("Hendrik","Tienen","Dutch","hendrik@example.com");
+        hendrik = new User("Hendrik","Tienen","hendrik@example.com");
         hendrik.save();
 
         // Create a new skill
@@ -115,7 +115,6 @@ public class UserTest extends WithApplication {
         // Check the values of the setUp() method
         assertThat(bob.getFirstName()).isEqualTo("Bob");
         assertThat(bob.getLastName()).isEqualTo("Verburg");
-        assertThat(bob.getLanguage()).isEqualTo("English");
         assertThat(bob.getEmail()).isEqualTo("bob@example.com");
     }
 
@@ -127,14 +126,12 @@ public class UserTest extends WithApplication {
         // Set different values
         bob.setFirstName("Erica");
         bob.setLastName("Tienen");
-        bob.setLanguage("Dutch");
         bob.setEmail("erica@example.com");
         bob.save();
 
         // Check the new values
         assertThat(bob.getFirstName()).isEqualTo("Erica");
         assertThat(bob.getLastName()).isEqualTo("Tienen");
-        assertThat(bob.getLanguage()).isEqualTo("Dutch");
         assertThat(bob.getEmail()).isEqualTo("erica@example.com");
     }
 
@@ -264,7 +261,7 @@ public class UserTest extends WithApplication {
 
     @Test
     public void getByEmail() {
-        User createRob = new User("rob", "lastName", "english", "rob@none.com");
+        User createRob = new User("rob", "lastName", "rob@none.com");
         createRob.save();
         User rob = User.findByEmail("rob@none.com");
 

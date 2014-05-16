@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Ebean;
+import helpers.Linkedin;
 import play.data.validation.*;
 import play.mvc.*;
 
@@ -39,25 +40,45 @@ public class LinkedinIdentity extends Identity {
         this.personId = personId;
     }
 
+    /**
+     * Create new Linkedin identity which is linked to a user
+     * @param user The user where it is linked to
+     * @param personId The person id of linkedin
+     */
     public LinkedinIdentity(User user, String personId) {
         this.user = user;
         this.personId = personId;
     }
 
     /**
-     * Check the authentication code from linkedin
-     * @param session The current session
-     * @param code The code from linkedin
+     * Search for an Linkedin identity by his linkedin person id
+     * @param personId The linkedin person id
      * @return The identity if found else null
      */
-    public static Identity authenticate(Http.Session session, String code) {
-        //
-        return null;
-    }
-
     public static LinkedinIdentity byPersonId(String personId) {
         return Ebean.find(LinkedinIdentity.class)
                 .where().eq("personId", personId)
                 .findUnique();
+    }
+
+    /**
+     * Authenticate using a Linkedin connection, where the user gets created if it doesn't exists
+     * @param linkedin The linkedin connection
+     * @return The identity linked to the Linkedin user
+     */
+    public static LinkedinIdentity authenticate(Linkedin linkedin) {
+        // First check if the user already exists
+        LinkedinIdentity identity = byPersonId(linkedin.getPersonId());
+
+        // Create and save if the user doesn't exist
+        if(identity == null) {
+            User user = linkedin.createUser();
+            user.save();
+
+            identity = linkedin.createIdentity(user);
+            identity.save();
+        }
+
+        return identity;
     }
 }

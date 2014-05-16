@@ -1,8 +1,6 @@
 package models;
 
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import play.test.WithApplication;
 
 import java.util.ArrayList;
@@ -30,11 +28,11 @@ public class PracticalGroupTest extends WithApplication {
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
         // Create a new user
-        bob = new User("Bob","Verburg","English","bob@example.com");
+        bob = new User("Bob","Verburg","bob@example.com");
         bob.save();
 
         // Create a new user
-        hendrik = new User("Hendrik","Tienen","Dutch","hendrik@example.com");
+        hendrik = new User("Hendrik","Tienen","hendrik@example.com");
         hendrik.save();
 
         // Create a new practicalGroup
