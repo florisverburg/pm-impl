@@ -2,18 +2,11 @@
 
 @main("View - Practical", "view") {
 
-    <div class="section">
-        <div class="w-container">
-            <div class="w-row">
-                <div class="w-col w-col-12">
-                    <div class="main-text">
-                        <p>
-                            <h2>@practical.getName()<h2>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="main-text jumbotron">
+    <h2>@practical.getName()</h2>
+    <p>
+        @practical.getDescription()
+    </p>
+</div>
 
 }

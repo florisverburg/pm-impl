@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import play.Logger;
 import play.mvc.*;
 import views.html.*;
 
@@ -18,12 +19,13 @@ public class PracticalController extends SecuredController{
                 getUser().addPractical(practicalToRender);
                 return redirect(routes.PracticalController.viewPractical(practicalToRender.getId()));
             } else {
-                return redirect(routes.PracticalController.viewPractical(practicalToRender.getId()));
+                return redirect(routes.Application.about());
+                        //redirect(routes.PracticalController.viewPractical(practicalToRender.getId()));
             }
         }
         // When practical does not exist, show correct error
         else {
-            return redirect(routes.Application.index());
+            return redirect(routes.Application.contact());
         }
     }
 

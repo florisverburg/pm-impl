@@ -10,7 +10,7 @@
   - !!models.Practical
     id: 1
     name: Programming
-    description: Programming
+    description: A programming assignment about programming
     secret: abc
     admin:       !!models.User
       id: 400
