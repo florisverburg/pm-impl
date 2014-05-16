@@ -32,11 +32,14 @@ public class PracticalController extends SecuredController {
                     Logger.debug("Successful addition");
                     return redirect(routes.PracticalController.
                             viewPractical(practicalToRender.getId()));
-                } else {
-                    Logger.debug("Wrong secret");
-                    return redirect(routes.PracticalController.viewPractical(practicalToRender.getId()));
                 }
-            } else {
+                else {
+                    Logger.debug("Wrong secret");
+                    return redirect(routes.PracticalController.
+                            viewPractical(practicalToRender.getId()));
+                }
+            }
+            else {
                 Logger.debug("User is already coupled to this practical");
                 return redirect(routes.Application.index());
             }
