@@ -70,7 +70,7 @@ public class Practical extends Model {
     /**
      * One-to-many relationship between practical and practical group
      */
-    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "practical", cascade = CascadeType.PERSIST)
     List<PracticalGroup> practicalGroups = new ArrayList<>();
 
     /**
@@ -114,6 +114,20 @@ public class Practical extends Model {
      */
     public static Practical findById(long id) {
         return find.where().eq("id", id).findUnique();
+    }
+
+    /**
+     * Method to add a user to a practical(group)
+     * @param practical to add a user to
+     * @param user to add
+     */
+    public static void addUserToPractical(Practical practical, User user) {
+        practical.addUsers(user);
+        PracticalGroup newPracticalGroup = new PracticalGroup(practical);
+        newPracticalGroup.addUser(user);
+        newPracticalGroup.save();
+        practical.addPracticalGroup(newPracticalGroup);
+        practical.save();
     }
 
     /**

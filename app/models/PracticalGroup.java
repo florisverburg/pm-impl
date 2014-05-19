@@ -29,7 +29,7 @@ public class PracticalGroup extends Model {
     /**
      * Many-to-many relationship of the practicalgroups and users
      */
-    @ManyToMany(mappedBy = "practicalGroups", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "practicalGroups", cascade = CascadeType.PERSIST)
     List<User> users = new ArrayList<User>();
 
     /**
@@ -39,9 +39,17 @@ public class PracticalGroup extends Model {
             new Model.Finder<Long, PracticalGroup>(Long.class, PracticalGroup.class);
 
     /**
-     * function to find a practicalgroup by it's id
-     * @param id of the practicalgroup to be found
-     * @return practicalgroup that was found
+     * Constructor of practical group
+     * @param practical to which this group belongs to
+     */
+    public PracticalGroup(Practical practical) {
+        this.practical = practical;
+    }
+
+    /**
+     * function to find a practical group by it's id
+     * @param id of the practical group to be found
+     * @return practical group that was found
      */
     public static PracticalGroup findById(long id) {
         return find.where().eq("id", id).findUnique();
@@ -66,7 +74,7 @@ public class PracticalGroup extends Model {
      * Add user to list
      * @param user to add
      */
-    public void addUsers(User user) {
+    public void addUser(User user) {
         users.add(user);
     }
 

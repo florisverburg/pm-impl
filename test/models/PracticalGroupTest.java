@@ -54,13 +54,13 @@ public class PracticalGroupTest extends WithApplication {
         documentingAssingment.save();
 
         // Add users to the practicalGroup
-        bobsGroup.addUsers(bob);
+        bobsGroup.addUser(bob);
         bobsGroup.setPractical(programmingAssignment);
         bobsGroup.save();
 
         // Add users to the practicalGroup
-        bobAndHendriksGroup.addUsers(bob);
-        bobAndHendriksGroup.addUsers(hendrik);
+        bobAndHendriksGroup.addUser(bob);
+        bobAndHendriksGroup.addUser(hendrik);
         bobAndHendriksGroup.setPractical(programmingAssignment);
         bobAndHendriksGroup.save();
     }
