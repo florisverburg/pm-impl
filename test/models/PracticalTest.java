@@ -38,11 +38,11 @@ public class PracticalTest extends WithApplication {
         hendrik.save();
 
         // Create a new practical
-        programmingAssignment = new Practical("ProgrammingAssignment", "Assignment about programming", "programming");
+        programmingAssignment = new Practical("ProgrammingAssignment", "Assignment about programming");
         programmingAssignment.save();
 
         // Create a new practical
-        documentingAssingment = new Practical("DocumentingAssignment", "Assignment about documenting", "documenting");
+        documentingAssingment = new Practical("DocumentingAssignment", "Assignment about documenting");
         documentingAssingment.save();
 
         // Create a new practicalGroup

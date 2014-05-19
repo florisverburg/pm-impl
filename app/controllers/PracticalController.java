@@ -22,32 +22,28 @@ public class PracticalController extends SecuredController {
     public static Result register(long id, String secret) {
         Practical practicalToRender = Practical.findById(id);
         // Checks of practical exist
-        if (practicalToRender != null) {
-            // Checks of the user is not already a part of the practical
-            if (!practicalToRender.getUsers().contains(getUser())) {
-                // Checks if the secret is correct
-                if (practicalToRender.getSecret().equals(secret)) {
-                    practicalToRender.addUsers(getUser());
-                    practicalToRender.save();
-                    Logger.debug("Successful addition");
-                    return redirect(routes.PracticalController.
-                            viewPractical(practicalToRender.getId()));
-                }
-                else {
-                    Logger.debug("Wrong secret");
-                    return redirect(routes.PracticalController.
-                            viewPractical(practicalToRender.getId()));
-                }
-            }
-            else {
-                Logger.debug("User is already coupled to this practical");
-                return redirect(routes.Application.index());
-            }
+        if(practicalToRender == null) {
+            // When practical does not exist, show correct error
+            flash("Error", "practical.doesNotExist");
+            return redirect(routes.Application.index());
         }
-        // When practical does not exist, show correct error
+        else if (practicalToRender.getUsers().contains(getUser())){
+            // Checks of the user is not already a part of the practical
+            flash("Error", "practical.alreadyCoupled");
+            return redirect(routes.Application.index());
+        }
+        else if (!practicalToRender.getSecret().equals(secret)) {
+            // Checks if the secret is correct
+            flash("Error", "practical.wrongSecret");
+            return redirect(routes.PracticalController.
+                    viewPractical(practicalToRender.getId()));
+        }
+        // if everything is correct
         else {
-            Logger.debug("Practical does not exist");
-            return redirect(routes.Application.contact());
+            practicalToRender.addUsers(getUser());
+            practicalToRender.save();
+            return redirect(routes.PracticalController.
+                    viewPractical(practicalToRender.getId()));
         }
     }
 

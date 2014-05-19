@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * Created by Freek on 13/05/14.
+ * Handles global settings, it overrides methods for onstart and onstop functionality
  */
 public class Global extends GlobalSettings {
 

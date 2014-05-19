@@ -4,6 +4,8 @@ import play.data.validation.*;
 import play.db.ebean.*;
 
 import javax.persistence.*;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,16 @@ public class Practical extends Model {
     private String secret;
 
     /**
+     * The amount of random bits that needs to be generated for the state
+     * */
+    private static final int STATE_RANDOM_BITS = 130;
+
+    /**
+     * The base number of the random state generated number
+     */
+    private static final int STATE_RANDOM_BASE = 16;
+
+    /**
      * Many-to-many relationship between practical and user
      */
     @ManyToMany(mappedBy = "practicals", cascade = CascadeType.PERSIST)
@@ -71,12 +83,19 @@ public class Practical extends Model {
      * Constructor of the practical
      * @param name of the practical
      * @param description of the practical
-     * @param secret of the practical
      */
-    public Practical(String name, String description, String secret) {
+    public Practical(String name, String description) {
         this.name = name;
         this.description = description;
-        this.secret = secret;
+        this.secret = generateSecret();
+    }
+
+    /**
+     * Method that returns a random generated secret
+     * @return random generated secret
+     */
+    public String generateSecret() {
+        return new BigInteger(STATE_RANDOM_BITS, new SecureRandom()).toString(STATE_RANDOM_BASE);
     }
 
     /**
