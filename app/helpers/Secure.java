@@ -57,12 +57,7 @@ public final class Secure {
                 List<User.Type> types = Arrays.asList(configuration.types());
                 if(user == null || !types.contains(user.getType())) {
                     Result unauthorized = Authentication.onUnauthorized();
-                    if (unauthorized instanceof AsyncResult) {
-                        return ((AsyncResult) unauthorized).getPromise();
-                    }
-                    else {
-                        return F.Promise.pure((SimpleResult) unauthorized);
-                    }
+                    return F.Promise.pure((SimpleResult) unauthorized);
                 } else {
                     try {
                         ctx.args.put("user", user);

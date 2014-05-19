@@ -14,6 +14,7 @@ import java.util.List;
  * Right model class for the database model
  */
 @Entity
+@SuppressWarnings("serial")
 public class Skill extends Model {
 
     /**
@@ -61,7 +62,7 @@ public class Skill extends Model {
      * The many-to-many relationship defined for the skills and users
      */
     @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList();
+    private List<User> users = new ArrayList<User>();
 
     /**
      * Finder defined for the Skills, used in the many-to-many relationship

@@ -12,6 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @DiscriminatorValue("LINKEDIN")
+@SuppressWarnings("serial")
 public class LinkedinIdentity extends Identity {
 
     /**

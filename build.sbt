@@ -10,7 +10,9 @@ libraryDependencies ++= Seq(
   cache,
   "mysql" % "mysql-connector-java" % "5.1.21",
   "org.mindrot" % "jbcrypt" % "0.3m"
-  ) 
-    
+  )
+
+javacOptions += "-Xlint"
+
 // Setup Play for Java
 play.Project.playJavaSettings

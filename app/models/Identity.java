@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Inheritance
 @DiscriminatorColumn(name="type")
+@SuppressWarnings("serial")
 public abstract class Identity extends Model {
 
     /**

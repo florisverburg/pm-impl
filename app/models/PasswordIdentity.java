@@ -12,6 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @DiscriminatorValue("PASSWORD")
+@SuppressWarnings("serial")
 public class PasswordIdentity extends Identity {
 
     /**

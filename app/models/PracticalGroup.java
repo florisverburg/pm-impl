@@ -11,6 +11,7 @@ import java.util.List;
  * Class for the model representation of the database table practicalgroup
  */
 @Entity
+@SuppressWarnings("serial")
 public class PracticalGroup extends Model {
 
     /**

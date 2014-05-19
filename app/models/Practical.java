@@ -14,6 +14,7 @@ import java.util.List;
  * Model class for the database practical
  */
 @Entity
+@SuppressWarnings("serial")
 public class Practical extends Model {
 
     /**

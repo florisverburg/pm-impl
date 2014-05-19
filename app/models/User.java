@@ -14,6 +14,7 @@ import java.util.List;
  * This is the user representation of the database
  */
 @Entity
+@SuppressWarnings("serial")
 public class User extends Model {
 
     /**
