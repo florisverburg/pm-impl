@@ -79,7 +79,7 @@ public class PracticalTest extends WithApplication {
      * Method to test whether the creation of a skill has been successful
      */
     @Test
-    public void testCreationSkill() {
+    public void testCreationPractical() {
         // Check the values of the setUp() method
         assertEquals(programmingAssignment.getName(), "ProgrammingAssignment");
         assertEquals(programmingAssignment.getDescription(), "Assignment about programming");

@@ -75,6 +75,12 @@ public class Practical extends Model {
     List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
 
     /**
+     * One-to-many relationship between practical and invite
+     */
+    @OneToMany(mappedBy = "practical", cascade =  CascadeType.PERSIST)
+    List<Invite> invites = new ArrayList<>();
+
+    /**
      * Finder defined for the practical
      */
     public static Model.Finder<Long, Practical> find =
@@ -241,5 +247,29 @@ public class Practical extends Model {
      */
     public void addPracticalGroup(PracticalGroup practicalGroup) {
         this.practicalGroups.add(practicalGroup);
+    }
+
+    /**
+     * Getter for invites
+     * @return invites
+     */
+    public List<Invite> getInvites() {
+        return invites;
+    }
+
+    /**
+     * Setter for invites
+     * @param invites to set
+     */
+    public void setInvites(List<Invite> invites) {
+        this.invites = invites;
+    }
+
+    /**
+     * Add invite to the list of invites
+     * @param invite
+     */
+    public void addInvites(Invite invite) {
+        this.invites.add(invite);
     }
 }

@@ -19,6 +19,7 @@ public class UserTest extends WithApplication {
     private User bob;
     private User hendrik;
     private User hans;
+    private User peter;
 
     private Skill programming;
     private Skill documenting;
@@ -28,6 +29,12 @@ public class UserTest extends WithApplication {
 
     private PracticalGroup bobsGroup;
     private PracticalGroup bobAndHendriksGroup;
+
+    private Invite programmingBobToHendrik;
+    private Invite documentingHendrikToBoB;
+    private Invite programmingBobToPeter;
+    private Invite programmingPeterToHendrik;
+
     /**
      * Setup method for the UserTest
      */
@@ -45,6 +52,9 @@ public class UserTest extends WithApplication {
         // Create a new user
         hendrik = new User("Hendrik", "Tienen", "hendrik@example.com");
         hendrik.save();
+
+        peter = new User("Peter", "Goedegebure", "peter@example.com");
+        peter.save();
 
         // Create a new skill
         programming = new Skill("Programming", Skill.Type.PROGRAMMING,10);
@@ -65,10 +75,10 @@ public class UserTest extends WithApplication {
         documentingAssingment.save();
 
         // Create a new practicalGroup
-        bobsGroup = new PracticalGroup();
+        bobsGroup = new PracticalGroup(programmingAssignment);
 
         // Create a new practicalGroup
-        bobAndHendriksGroup = new PracticalGroup();
+        bobAndHendriksGroup = new PracticalGroup(documentingAssingment);
 
         // Add skills to user bob
         bob.addSkill(programming);
@@ -94,6 +104,27 @@ public class UserTest extends WithApplication {
         hendrik.addPracticalGroup(bobAndHendriksGroup);
         hendrik.save();
 
+        // Create a new invite
+        programmingBobToHendrik = new Invite(programmingAssignment, bob, hendrik);
+        programmingBobToHendrik.save();
+
+        // Create a new invite
+        programmingBobToPeter = new Invite(programmingAssignment, bob, peter);
+        programmingBobToPeter.save();
+
+        // Create a new invite
+        programmingPeterToHendrik = new Invite(documentingAssingment, peter, hendrik);
+        programmingPeterToHendrik.save();
+
+        // Create a new invite
+        documentingHendrikToBoB = new Invite(documentingAssingment, hendrik, bob);
+        documentingHendrikToBoB.save();
+
+        // Save all changes made by invite addition
+        bob.save();
+        hendrik.save();
+        documentingAssingment.save();
+        programmingAssignment.save();
     }
 
     /**
@@ -215,7 +246,7 @@ public class UserTest extends WithApplication {
     @Test
     public void testOneToManyPracticalAdmin() {
         User returnedValue = User.findByName("Bob");
-        // Get prac of the user
+        // Get practical of the user
         List<Practical> returnedPracticalsAdmin = returnedValue.getPracticalsAdmin();
 
         // Check whether associated users are correct
@@ -223,6 +254,55 @@ public class UserTest extends WithApplication {
         assertEquals(returnedPracticalsAdmin.get(0).getName(), "ProgrammingAssignment");
         assertEquals(returnedPracticalsAdmin.get(1).getName(), "DocumentingAssignment");
         assertEquals(returnedPracticalsAdmin.size(), 2);
+    }
+
+    /**
+     * Method to test the one-to-many relationship of User and Invite
+     */
+    @Test
+    public void testOneToManyInviteSender() {
+        User returnedValue = User.findByName("Bob");
+        // Get sent invites of the user
+        List<Invite> returnedSendInvites = returnedValue.getInvitesSend();
+
+        // Check whether associated invites are correct
+        // Check the invites send
+        assertEquals(returnedSendInvites.size(), 2);
+        assertEquals(returnedSendInvites.get(0).getId(), programmingBobToHendrik.getId());
+        assertEquals(returnedSendInvites.get(1).getId(), programmingBobToPeter.getId());
+
+        // Other user
+        returnedValue = User.findByName("Hendrik");
+        // Get sent invites of the user
+        returnedSendInvites = returnedValue.getInvitesSend();
+
+        // Check whether associated invites are correct
+        // Check the invites send
+        assertEquals(returnedSendInvites.size(), 1);
+        assertEquals(returnedSendInvites.get(0).getId(), programmingBobToHendrik.getId());
+    }
+
+    @Test
+    public void testOneToManyInviteReceiver() {
+        User returnedValue = User.findByName("Bob");
+        // Get sent invites of the user
+        List<Invite> returnedReceivedInvites = returnedValue.getInvitesReceived();
+
+        // Check whether associated invites are correct
+        // Check the invites received
+        assertEquals(returnedReceivedInvites.size(), 1);
+        assertEquals(returnedReceivedInvites.get(0).getId(), documentingHendrikToBoB.getId());
+
+        // Other user
+        returnedValue = User.findByName("Hendrik");
+        // Get received invites of the user
+        returnedReceivedInvites = returnedValue.getInvitesReceived();
+
+        // Check whether associated invites are correct
+        // Check the invites received
+        assertEquals(returnedReceivedInvites.size(), 2);
+        assertEquals(returnedReceivedInvites.get(0).getId(), documentingHendrikToBoB.getId());
+        assertEquals(returnedReceivedInvites.get(1).getId(), programmingBobToPeter.getId());
     }
 
     @Test

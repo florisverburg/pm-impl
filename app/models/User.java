@@ -119,8 +119,8 @@ public class User extends Model {
     /**
      * One-to-many relationship between practical and user
      */
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
-    private List<Practical> practicalsAdmin = new ArrayList<Practical>();
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.PERSIST)
+    private List<Practical> practicalsAdmin = new ArrayList<>();
 
     /**
      * Many-to-many relationship defined for the users and practicalGroups
@@ -132,6 +132,18 @@ public class User extends Model {
      * The client identifier of the Linkedin API
      */
     private static final String EMAIL = Play.application().configuration().getString("email.address");
+
+    /**
+     * One-to-many relationship between user and invite (sender)
+     */
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.PERSIST)
+    private List<Invite> invitesSend = new ArrayList<>();
+
+    /**
+     * One-to-many relationship between user and invite (receiver)
+     */
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.PERSIST)
+    private List<Invite> invitesReceived = new ArrayList<>();
 
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill
@@ -410,11 +422,59 @@ public class User extends Model {
         MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
         mail.setSubject("APMatch - Verify your mail");
         mail.setRecipient(this.getFullName() + " <" + this.getEmail() + ">");
-        mail.setFrom("APMatch <"+EMAIL+">");
+        mail.setFrom("APMatch <" + EMAIL + ">");
         //sends text/text
         String link = controllers.routes.Authentication.verify(this.getEmail(), this.getToken()).absoluteURL(false,
                 Http.Context.current()._requestHeader());
         String message = "Verify your account by opening this link: " + link;
         mail.send(message);
+    }
+
+    /**
+     * Getter invites send
+     * @return invites send
+     */
+    public List<Invite> getInvitesSend() {
+        return invitesSend;
+    }
+
+    /**
+     * Setter invites send
+     * @param invitesSend to set
+     */
+    public void setInvitesSend(List<Invite> invitesSend) {
+        this.invitesSend = invitesSend;
+    }
+
+    /**
+     * add invite to the invites send
+     * @param invite to add
+     */
+    public void addInvitesSend(Invite invite) {
+        this.invitesSend.add(invite);
+    }
+
+    /**
+     * Getter invites received
+     * @return invites received
+     */
+    public List<Invite> getInvitesReceived() {
+        return invitesReceived;
+    }
+
+    /**
+     * Setter invites received
+     * @param invitesReceived to set
+     */
+    public void setInvitesReceived(List<Invite> invitesReceived) {
+        this.invitesReceived = invitesReceived;
+    }
+
+    /**
+     * Add invite to the invites received
+     * @param invite to add
+     */
+    public void addInvitesReceived(Invite invite) {
+        this.invitesReceived.add(invite);
     }
 }
