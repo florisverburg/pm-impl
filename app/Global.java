@@ -13,6 +13,33 @@ import java.util.Map;
  */
 public class Global extends GlobalSettings {
 
+    /**
+     * Insert objects into the database
+     * @param objects The objects to insert
+     */
+    private void insertObjects(List<Object> objects) {
+        if(objects != null) {
+            Ebean.save(objects);
+        }
+    }
+
+    /**
+     * Insert Many to Many relation into the database
+     * @param objects The objects with the Many to Many relation
+     * @param key The key used in the Many to Many relation
+     */
+    private void insertManyToMany(List<Object> objects, String key) {
+        if(objects != null) {
+            for(Object obj : objects) {
+                Ebean.saveManyToManyAssociations(objects, key);
+            }
+        }
+    }
+
+    /**
+     * When the application starts and the database isn't populated, populate the database
+     * @param app The application that is started
+     */
     @Override
     public void onStart(Application app) {
         // Check if the database is empty
@@ -21,33 +48,19 @@ public class Global extends GlobalSettings {
             Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml
                     .load("initial-data.yml");
 
-            // Insert users first
-            if (all.get("users") != null) {
-                Ebean.save(all.get("users"));
-            }
+            // Insert users
+            insertObjects(all.get("users"));
 
             // Insert projects
-            if (all.get("practicals") != null) {
-                Ebean.save(all.get("practicals"));
-                for (Object practical : all.get("practicals")) {
-                    // Insert the project/user relation
-                    Ebean.saveManyToManyAssociations(practical, "users");
-                }
-            }
+            insertObjects(all.get("practicals"));
+            insertManyToMany(all.get("practicals"), "users");
 
             // Insert identities
-            if (all.get("identities") != null) {
-                Ebean.save(all.get("identities"));
-            }
+            insertObjects(all.get("identities"));
 
             // Insert practical groups
-            if (all.get("practicalGroups") != null) {
-                Ebean.save(all.get("practicalGroups"));
-                for (Object practicalGroup : all.get("practicalGroups")) {
-                    // Insert the practicalGroup to user relationship
-                    Ebean.saveManyToManyAssociations(practicalGroup, "users");
-                }
-            }
+            insertObjects(all.get("practicalGroups"));
+            insertManyToMany(all.get("practicalGroups"), "users");
         }
     }
 }
