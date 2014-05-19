@@ -5,7 +5,7 @@
 # Application
 GET         /                    controllers.Application.index()
 GET         /about               controllers.Application.about()
-GET         /contact             controllers.Application.contact
+GET         /contact             controllers.Application.contact()
 
 # Practical
 GET         /practical/:id      controllers.PracticalController.viewPractical(id: Long)
