@@ -2,7 +2,7 @@ package controllers;
 
 import forms.LoginForm;
 import forms.RegisterForm;
-import helpers.Linkedin;
+import helpers.LinkedinConnection;
 import helpers.Secure;
 import models.*;
 import play.mvc.*;
@@ -21,10 +21,10 @@ public class Authentication extends Controller {
      * @return The linkedin URL
      */
     private static String generateLinkedinUri() {
-        String state = Linkedin.generateState();
+        String state = LinkedinConnection.generateState();
         session().put("linkedin_state", state);
 
-        return Linkedin.generateRedirectUri(state);
+        return LinkedinConnection.generateRedirectUri(state);
     }
 
     /**
@@ -71,8 +71,8 @@ public class Authentication extends Controller {
         String sessionState = session().get("linkedin_state");
 
         // First check the state and errors
-        Linkedin linkedinConnection = Linkedin.fromAccesToken(code);
-        if(!state.equals(sessionState) || !error.isEmpty() || code.isEmpty() || linkedinConnection == null) {
+        LinkedinConnection linkedinConnectionConnection = LinkedinConnection.fromAccesToken(code);
+        if(!state.equals(sessionState) || !error.isEmpty() || code.isEmpty() || linkedinConnectionConnection == null) {
             flash("error", "linkedin.unknownError");
             return redirect(
                     routes.Application.index()
@@ -80,8 +80,8 @@ public class Authentication extends Controller {
         }
 
         // Save the current linkedin Connection and get the identity
-        linkedinConnection.toSession();
-        LinkedinIdentity identity = LinkedinIdentity.authenticate(linkedinConnection);
+        linkedinConnectionConnection.toSession();
+        LinkedinIdentity identity = LinkedinIdentity.authenticate(linkedinConnectionConnection);
 
         // Save login to session and redirect to home
         session().clear();

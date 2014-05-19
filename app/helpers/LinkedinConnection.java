@@ -15,7 +15,7 @@ import java.security.SecureRandom;
  * Created by Freek on 16/05/14.
  * Linkedin helper for OAuth 2 authentication and api calls to Linkedin.
  */
-public class Linkedin {
+public class LinkedinConnection {
 
     /**
      * The timeout parameter after
@@ -95,7 +95,7 @@ public class Linkedin {
      * @param accessToken the access token
      * @param expires the expires
      */
-    public Linkedin(String accessToken, Long expires) {
+    public LinkedinConnection(String accessToken, Long expires) {
         this.accessToken = accessToken;
         this.expires = expires;
     }
@@ -135,7 +135,7 @@ public class Linkedin {
      * @param code The access code
      * @return The Linkedin OAuth object if successful else null
      */
-    public static Linkedin fromAccesToken(String code) {
+    public static LinkedinConnection fromAccesToken(String code) {
         WS.Response response = WS.url("https://www.linkedin.com/uas/oauth2/accessToken")
                 .setQueryParameter("grant_type", "authorization_code")
                 .setQueryParameter("code", code)
@@ -154,14 +154,14 @@ public class Linkedin {
         Long expiresIn = json.get("expires_in").asLong();
         String accessToken = json.get("access_token").asText();
 
-        return new Linkedin(accessToken, expiresIn);
+        return new LinkedinConnection(accessToken, expiresIn);
     }
 
     /**
      * Generate a new Linkedin OAuth connection from the current session
      * @return The Linkedin OAuth connection of successful else null
      */
-    public static Linkedin fromSession() {
+    public static LinkedinConnection fromSession() {
         Http.Session currentSession = Http.Context.current().session();
 
         // Check if exists and isn't expired
@@ -170,7 +170,7 @@ public class Linkedin {
             return null;
         }
 
-        return new Linkedin(currentSession.get("linkedin_accessToken"),
+        return new LinkedinConnection(currentSession.get("linkedin_accessToken"),
                 Long.parseLong(currentSession.get("linkedin_expires")));
     }
 

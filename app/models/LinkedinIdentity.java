@@ -1,9 +1,8 @@
 package models;
 
 import com.avaje.ebean.Ebean;
-import helpers.Linkedin;
+import helpers.LinkedinConnection;
 import play.data.validation.*;
-import play.mvc.*;
 
 import javax.persistence.*;
 
@@ -63,19 +62,19 @@ public class LinkedinIdentity extends Identity {
 
     /**
      * Authenticate using a Linkedin connection, where the user gets created if it doesn't exists
-     * @param linkedin The linkedin connection
+     * @param linkedinConnection The linkedin connection
      * @return The identity linked to the Linkedin user
      */
-    public static LinkedinIdentity authenticate(Linkedin linkedin) {
+    public static LinkedinIdentity authenticate(LinkedinConnection linkedinConnection) {
         // First check if the user already exists
-        LinkedinIdentity identity = byPersonId(linkedin.getPersonId());
+        LinkedinIdentity identity = byPersonId(linkedinConnection.getPersonId());
 
         // Create and save if the user doesn't exist
         if(identity == null) {
-            User user = linkedin.createUser();
+            User user = linkedinConnection.createUser();
             user.save();
 
-            identity = linkedin.createIdentity(user);
+            identity = linkedinConnection.createIdentity(user);
             identity.save();
         }
 
