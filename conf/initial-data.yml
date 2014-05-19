@@ -27,7 +27,13 @@ practicals:
     admin: *user3
     users:
       - *user1
-      - *user2
+
+# PracticalGroup
+practicalGroups:
+  - &practicalGroup1 !!models.PracticalGroup
+    practical: *practical1
+    users:
+      - *user1
 
 
 #Identities

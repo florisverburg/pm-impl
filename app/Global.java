@@ -39,6 +39,15 @@ public class Global extends GlobalSettings {
             if (all.get("identities") != null) {
                 Ebean.save(all.get("identities"));
             }
+
+            // Insert practical groups
+            if (all.get("practicalGroups") != null) {
+                Ebean.save(all.get("practicalGroups"));
+                for (Object practicalGroup : all.get("practicalGroups")) {
+                    // Insert the practicalGroup to user relationship
+                    Ebean.saveManyToManyAssociations(practicalGroup, "users");
+                }
+            }
         }
     }
 }

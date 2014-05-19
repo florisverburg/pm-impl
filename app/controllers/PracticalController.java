@@ -38,9 +38,8 @@ public class PracticalController extends SecuredController {
             return redirect(routes.PracticalController.
                     viewPractical(practicalToRender.getId()));
         }
-        // if everything is correct
-        practicalToRender.addUsers(getUser());
-        practicalToRender.save();
+        // if everything is correct, add user to practical
+        Practical.addUserToPractical(practicalToRender, getUser());
         return redirect(routes.PracticalController.
                 viewPractical(practicalToRender.getId()));
     }

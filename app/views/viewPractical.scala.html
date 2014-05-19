@@ -8,9 +8,16 @@
         @practical.getDescription()
     </p>
 </div>
+<h2>Users of practical:</h2>
 <ul>
     @practical.getUsers().map { user =>
-    <li>@user.getFirstName()</li>
+        <li>@user.getFirstName()</li>
+    }
+</ul>
+<h2>Group practicals:</h2>
+<ul>
+    @practical.getPracticalGroups().map { practicalGroup =>
+        <li>@practicalGroup.getId()</li>
     }
 </ul>
 }
