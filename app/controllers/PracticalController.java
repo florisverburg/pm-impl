@@ -24,7 +24,7 @@ public class PracticalController extends SecuredController {
         // Checks of practical exist
         if(practicalToRender == null) {
             // When practical does not exist, show correct error
-            flash("Error", "practical.doesNotExist");
+            flash("error", "practical.doesNotExist");
             return redirect(routes.Application.index());
         }
         else if (practicalToRender.getUsers().contains(getUser())){
@@ -34,7 +34,7 @@ public class PracticalController extends SecuredController {
         }
         else if (!practicalToRender.getSecret().equals(secret)) {
             // Checks if the secret is correct
-            flash("Error", "practical.wrongSecret");
+            flash("error", "practical.wrongSecret");
             return redirect(routes.PracticalController.
                     viewPractical(practicalToRender.getId()));
         }
@@ -53,15 +53,15 @@ public class PracticalController extends SecuredController {
     @Security.Authenticated(Secured.class)
     public static Result viewPractical(long id) {
         Practical practicalToRender = Practical.findById(id);
-
         // If practical does not exist
-        if (practicalToRender != null) {
-            Logger.debug("Practical does exist");
-            return ok(viewPractical.render(practicalToRender));
+        if (practicalToRender == null) {
+            Logger.debug("Practical does not exist");
+            flash("error", "practical.doesNotExist");
+            return redirect(routes.Application.index());
         }
         else {
-            Logger.debug("Practical does not exist");
-            return redirect(routes.Application.index());
+            Logger.debug("Practical does exist");
+            return ok(viewPractical.render(practicalToRender));
         }
     }
 }
