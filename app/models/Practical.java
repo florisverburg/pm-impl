@@ -58,7 +58,7 @@ public class Practical extends Model {
      * Many-to-many relationship between practical and user
      */
     @ManyToMany(mappedBy = "practicals", cascade = CascadeType.PERSIST)
-    List<User> users = new ArrayList<>();
+    List<User> users = new ArrayList<User>();
 
     /**
      * One-to-many relationship between practical and user
@@ -71,13 +71,13 @@ public class Practical extends Model {
      * One-to-many relationship between practical and practical group
      */
     @OneToMany(mappedBy = "practical", cascade = CascadeType.PERSIST)
-    List<PracticalGroup> practicalGroups = new ArrayList<>();
+    List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
 
     /**
      * Finder defined for the practical
      */
     public static Model.Finder<Long, Practical> find =
-            new Model.Finder<>(Long.class, Practical.class);
+            new Finder<Long, Practical>(Long.class, Practical.class);
 
     /**
      * Constructor of the practical

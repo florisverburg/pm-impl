@@ -21,10 +21,10 @@ object ApiDocSettings {
   new Scaladoc(10, cs.scalac)("Scala API", sourceFiles, classpath.map(_.data), file(apiDir + "/scala"), Nil, s.log)
           
   // Javadoc
-  val javaSources = Seq(file("test"), file("app")).mkString(":")
+  val javaSources = Seq(file("app")).mkString(":")
   val javaApiTarget = file(apiDir + "/java")
   val javaClasspath = classpath.map(_.data).mkString(":")
-  val javaPackages = "controllers:models:tests"
+  val javaPackages = "controllers:models:helpers"
 
   val cmd = <x>javadoc -linksource -sourcepath {javaSources} -d {javaApiTarget} -subpackages {javaPackages} -classpath {javaClasspath}</x>
   //println("Executing: "+cmd.text)

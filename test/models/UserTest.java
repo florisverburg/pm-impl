@@ -22,9 +22,6 @@ public class UserTest extends WithApplication {
     private Skill programming;
     private Skill documenting;
 
-    private Team admin;
-    private Team user;
-
     private Practical programmingAssignment;
     private Practical documentingAssingment;
 
@@ -37,11 +34,11 @@ public class UserTest extends WithApplication {
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
         // Create a new user
-        bob = new User("Bob","Verburg","English","bob@example.com");
+        bob = new User("Bob", "Verburg", "bob@example.com");
         bob.save();
 
         // Create a new user
-        hendrik = new User("Hendrik","Tienen","Dutch","hendrik@example.com");
+        hendrik = new User("Hendrik", "Tienen", "hendrik@example.com");
         hendrik.save();
 
         // Create a new skill
@@ -51,14 +48,6 @@ public class UserTest extends WithApplication {
         // Create a new skill
         documenting = new Skill("Documenting", Skill.Type.DOCUMENTING,10);
         documenting.save();
-
-        // Create a new team
-        admin = new Team("admin", "Admin of the system, has right to everything");
-        admin.save();
-
-        // Create a new team for users
-        user = new Team("user", "User of the system, can read");
-        user.save();
 
         // Create a new practical
         programmingAssignment = new Practical("ProgrammingAssignment", "Assignment about programming");
@@ -79,9 +68,6 @@ public class UserTest extends WithApplication {
         // Add skills to user bob
         bob.addSkill(programming);
         bob.addSkill(documenting);
-        // Add teams to user bob
-        bob.addTeam(admin);
-        bob.addTeam(user);
         // Add practicals to user bob
         bob.addPractical(programmingAssignment);
         bob.addPractical(documentingAssingment);
@@ -95,8 +81,6 @@ public class UserTest extends WithApplication {
 
         // Add skills to user hendrik
         hendrik.addSkill(programming);
-        // Add teams to user hendrik
-        hendrik.addTeam(user);
         // Add practicals to user hendrik
         hendrik.addPractical(programmingAssignment);
         // Add practicals to user hendrik as admin
@@ -115,7 +99,6 @@ public class UserTest extends WithApplication {
         // Check the values of the setUp() method
         assertThat(bob.getFirstName()).isEqualTo("Bob");
         assertThat(bob.getLastName()).isEqualTo("Verburg");
-        assertThat(bob.getLanguage()).isEqualTo("English");
         assertThat(bob.getEmail()).isEqualTo("bob@example.com");
     }
 
@@ -127,14 +110,12 @@ public class UserTest extends WithApplication {
         // Set different values
         bob.setFirstName("Erica");
         bob.setLastName("Tienen");
-        bob.setLanguage("Dutch");
         bob.setEmail("erica@example.com");
         bob.save();
 
         // Check the new values
         assertThat(bob.getFirstName()).isEqualTo("Erica");
         assertThat(bob.getLastName()).isEqualTo("Tienen");
-        assertThat(bob.getLanguage()).isEqualTo("Dutch");
         assertThat(bob.getEmail()).isEqualTo("erica@example.com");
     }
 
@@ -178,29 +159,6 @@ public class UserTest extends WithApplication {
     }
 
     /**
-     * Method to test the many-to-many relations of User with Team
-     */
-    @Test
-    public void testManyToManyTeams() {
-        User returnedValue = User.findByName("Bob");
-        // Get teams of the user
-        List<Team> returnedTeams = returnedValue.getTeams();
-
-        // Check whether associated users are correct
-        assertEquals(returnedTeams.get(0).getType(), "admin");
-        assertEquals(returnedTeams.get(1).getType(), "user");
-        assertEquals(returnedTeams.size(), 2);
-
-        returnedValue = User.findByName("Hendrik");
-        // Get teams of the user
-        returnedTeams = returnedValue.getTeams();
-
-        // Check whether associated users are correct
-        assertEquals(returnedTeams.get(0).getType(), "user");
-        assertEquals(returnedTeams.size(), 1);
-    }
-
-    /**
      * Method to test the many-to-many relations of User with Practical
      */
     @Test
@@ -210,17 +168,17 @@ public class UserTest extends WithApplication {
         List<Practical> returnedPracticals = returnedValue.getPracticals();
 
         // Check whether associated users are correct
-        assertEquals(returnedPracticals.get(0).getName(),"ProgrammingAssignment");
-        assertEquals(returnedPracticals.get(1).getName(),"DocumentingAssignment");
-        assertEquals(returnedPracticals.size(),2);
+        assertEquals(returnedPracticals.get(0).getName(), "ProgrammingAssignment");
+        assertEquals(returnedPracticals.get(1).getName(), "DocumentingAssignment");
+        assertEquals(returnedPracticals.size(), 2);
 
         returnedValue = User.findByName("Hendrik");
         // Get practicals of the user
         returnedPracticals = returnedValue.getPracticals();
 
         // Check whether associated users are correct
-        assertEquals(returnedPracticals.get(0).getName(),"ProgrammingAssignment");
-        assertEquals(returnedPracticals.size(),1);
+        assertEquals(returnedPracticals.get(0).getName(), "ProgrammingAssignment");
+        assertEquals(returnedPracticals.size(), 1);
     }
 
     /**
@@ -233,17 +191,17 @@ public class UserTest extends WithApplication {
         List<PracticalGroup> returnedPracticalGroups = returnedValue.getPracticalGroups();
 
         // Check whether associated users are correct
-        assertEquals(returnedPracticalGroups.get(0),bobsGroup);
-        assertEquals(returnedPracticalGroups.get(1),bobAndHendriksGroup);
-        assertEquals(returnedPracticalGroups.size(),2);
+        assertEquals(returnedPracticalGroups.get(0), bobsGroup);
+        assertEquals(returnedPracticalGroups.get(1), bobAndHendriksGroup);
+        assertEquals(returnedPracticalGroups.size(), 2);
 
         returnedValue = User.findByName("Hendrik");
         // Get teams of the user
         returnedPracticalGroups = returnedValue.getPracticalGroups();
 
         // Check whether associated users are correct
-        assertEquals(returnedPracticalGroups.get(0),bobAndHendriksGroup);
-        assertEquals(returnedPracticalGroups.size(),1);
+        assertEquals(returnedPracticalGroups.get(0), bobAndHendriksGroup);
+        assertEquals(returnedPracticalGroups.size(), 1);
     }
 
     /**
@@ -258,13 +216,13 @@ public class UserTest extends WithApplication {
         // Check whether associated users are correct
         assertNotNull(returnedPracticalsAdmin);
         assertEquals(returnedPracticalsAdmin.get(0).getName(), "ProgrammingAssignment");
-        assertEquals(returnedPracticalsAdmin.get(1).getName(),"DocumentingAssignment");
-        assertEquals(returnedPracticalsAdmin.size(),2);
+        assertEquals(returnedPracticalsAdmin.get(1).getName(), "DocumentingAssignment");
+        assertEquals(returnedPracticalsAdmin.size(), 2);
     }
 
     @Test
     public void getByEmail() {
-        User createRob = new User("rob", "lastName", "english", "rob@none.com");
+        User createRob = new User("rob", "lastName", "rob@none.com");
         createRob.save();
         User rob = User.findByEmail("rob@none.com");
 

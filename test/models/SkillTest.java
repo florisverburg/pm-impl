@@ -35,11 +35,11 @@ public class SkillTest extends WithApplication {
         documenting.save();
 
         // Create a new user
-        bob = new User("Bob","Verburg","English","bob@example.com");
+        bob = new User("Bob","Verburg","bob@example.com");
         bob.save();
 
         // Create a new user
-        hendrik = new User("Hendrik","Tienen","Dutch","hendrik@example.com");
+        hendrik = new User("Hendrik","Tienen","hendrik@example.com");
         hendrik.save();
 
         // Add bob to skills

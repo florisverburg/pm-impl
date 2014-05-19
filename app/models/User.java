@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 
+import com.avaje.ebean.annotation.EnumValue;
 import play.data.validation.*;
 import play.db.ebean.*;
 
@@ -14,6 +15,32 @@ import java.util.List;
  */
 @Entity
 public class User extends Model {
+
+    /**
+     * The different types the user can be
+     */
+    public enum Type {
+        /**
+         * The ADMIN.
+         */
+        @EnumValue("ADMIN")
+        ADMIN,
+        /**
+         * The TEACHER.
+         */
+        @EnumValue("TEACHER")
+        TEACHER,
+        /**
+         * The USER.
+         */
+        @EnumValue("USER")
+        USER,
+        /**
+         * The GUEST.
+         */
+        @EnumValue("GUEST")
+        GUEST
+    }
 
     /**
      * The user identifier
@@ -36,13 +63,6 @@ public class User extends Model {
     private String lastName;
 
     /**
-     * The language of an user
-     */
-    @Constraints.Required
-    @Constraints.MaxLength(128)
-    private String language;
-
-    /**
      * The email address of an user
      */
     @Constraints.Required
@@ -50,53 +70,67 @@ public class User extends Model {
     private String email;
 
     /**
+     * The type of user (also named group)
+     */
+    @Constraints.Required
+    @Constraints.Min(1)
+    private Type type;
+
+    /**
      * The many-to-many relationship defined by the skills and users
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Skill> skills = new ArrayList();
-
-    /**
-     * The many-to-many relationship defined for the users and teams
-     */
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Team> teams = new ArrayList();
+    private List<Skill> skills = new ArrayList<Skill>();
 
     /**
      * The many-to-many relationship defined for the users and practicals
      */
     @ManyToMany(cascade = CascadeType.PERSIST)
-    private List<Practical> practicals = new ArrayList<>();
+    private List<Practical> practicals = new ArrayList<Practical>();
 
     /**
      * One-to-many relationship between practical and user
      */
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
-    private List<Practical> practicalsAdmin = new ArrayList<>();
+    private List<Practical> practicalsAdmin = new ArrayList<Practical>();
 
     /**
      * Many-to-many relationship defined for the users and practicalgroups
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<PracticalGroup> practicalGroups = new ArrayList<>();
+    private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
 
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
     public static Model.Finder<Long, User> find =
-            new Model.Finder<>(Long.class, User.class);
+            new Finder<Long, User>(Long.class, User.class);
 
     /**
      * Constructor for the User class
-     * @param fName firstName of the user
-     * @param lName lastName of the user
-     * @param lang language of the user
-     * @param eml email of the user
+     * @param firstName firstName of the user
+     * @param lastName lastName of the user
+     * @param email email of the user
+     * @param type The type of user
      */
-    public User(String fName, String lName, String lang, String eml) {
-        firstName = fName;
-        lastName = lName;
-        language = lang;
-        email = eml;
+    public User(String firstName, String lastName, String email, Type type) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.type = type;
+    }
+
+    /**
+     * Constructor for the User class with default type USER
+     * @param firstName firstName of the user
+     * @param lastName lastName of the user
+     * @param email email of the user
+     */
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.type = Type.USER;
     }
 
     /**
@@ -151,19 +185,27 @@ public class User extends Model {
     }
 
     /**
+     * Gets type.
+     * @return The type
+     */
+    public Type getType() {
+        return type;
+    }
+
+    /**
+     * Sets type.
+     * @param type The type
+     */
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    /**
      * Method to add a skill to the list, used for the many-to-many relationship
      * @param skill skill to add to the list
      */
     public void addSkill(Skill skill) {
         skills.add(skill);
-    }
-
-    /**
-     * Method to add a team to the list
-     * @param team to be added to the list
-     */
-    public void addTeam(Team team) {
-        teams.add(team);
     }
 
     /**
@@ -183,16 +225,8 @@ public class User extends Model {
     }
 
     /**
-     * Used to return the list of teams this user has
-     * @return list of teams
-     */
-    public List<Team> getTeams() {
-        return teams;
-    }
-
-    /**
      * Used to return the list of practicals
-     * @return practicals
+     * @return practicals practicals
      */
     public List<Practical> getPracticals() {
         return practicals;
@@ -206,9 +240,9 @@ public class User extends Model {
         return practicalsAdmin;
     }
 
-     /**
+    /**
      * Getter for practicalgroups
-     * @return practicalgroups
+     * @return practicalgroups practical groups
      */
     public List<PracticalGroup> getPracticalGroups() {
         return practicalGroups;
@@ -257,7 +291,7 @@ public class User extends Model {
 
     /**
      * Getter of the firstName
-     * @return firstName
+     * @return firstName first name
      */
     public String getFirstName() {
         return firstName;
@@ -273,7 +307,7 @@ public class User extends Model {
 
     /**
      * Getter of the lastName
-     * @return lastName
+     * @return lastName last name
      */
     public String getLastName() {
         return lastName;
@@ -288,24 +322,8 @@ public class User extends Model {
     }
 
     /**
-     * Getter of the language
-     * @return language
-     */
-    public String getLanguage() {
-        return language;
-    }
-
-    /**
-     * Setter of the language
-     * @param language to be set
-     */
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    /**
      * Getter of the email
-     * @return email
+     * @return email email
      */
     public String getEmail() {
         return email;

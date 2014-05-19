@@ -27,12 +27,6 @@ public class RegisterForm {
     private String lastName;
 
     /**
-     * The registration last name
-     */
-    @Constraints.Required
-    private String language;
-
-    /**
      * The registration email address
      */
     @Constraints.Required
@@ -82,22 +76,6 @@ public class RegisterForm {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    /**
-     * Gets language.
-     * @return The language
-     */
-    public String getLanguage() {
-        return language;
-    }
-
-    /**
-     * Sets language.
-     * @param language The language
-     */
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     /**
@@ -173,7 +151,7 @@ public class RegisterForm {
      * @return The new user
      */
     private User getUser() {
-        return new User(firstName, lastName, language, email);
+        return new User(firstName, lastName, email);
     }
 
     /**

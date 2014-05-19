@@ -1,4 +1,4 @@
-@(loginForm: Form[forms.LoginForm], registerForm: Form[forms.RegisterForm])
+@(linkedInUri: String, loginForm: Form[forms.LoginForm], registerForm: Form[forms.RegisterForm])
 
 @implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
 
@@ -20,6 +20,7 @@
                         @form.inputPassword(loginForm("password"))
 
                         @form.button(loginForm("Log in"), '_label -> null)
+                        <a href="@linkedInUri">Login with LinkedIn</a>
                     }
                 </div>
             </div>
@@ -37,7 +38,6 @@
 
                         @form.inputText(registerForm("firstName"))
                         @form.inputText(registerForm("lastName"))
-                        @form.inputText(registerForm("language"))
                         @form.inputText(registerForm("email"))
                         @form.inputPassword(registerForm("password"))
                         @form.inputPassword(registerForm("passwordRepeat"))
