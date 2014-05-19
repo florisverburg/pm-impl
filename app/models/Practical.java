@@ -4,6 +4,8 @@ import play.data.validation.*;
 import play.db.ebean.*;
 
 import javax.persistence.*;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +36,28 @@ public class Practical extends Model {
     @Constraints.MaxLength(200)
     private String description;
 
+
+    /**
+     * Secret used to register an user to a practical
+     */
+    @Constraints.Required
+    @Constraints.MaxLength(20)
+    private String secret;
+
+    /**
+     * The amount of random bits that needs to be generated for the state
+     * */
+    private static final int STATE_RANDOM_BITS = 130;
+
+    /**
+     * The base number of the random state generated number
+     */
+    private static final int STATE_RANDOM_BASE = 16;
+
     /**
      * Many-to-many relationship between practical and user
      */
-    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.PERSIST)
     List<User> users = new ArrayList<>();
 
     /**
@@ -67,6 +87,15 @@ public class Practical extends Model {
     public Practical(String name, String description) {
         this.name = name;
         this.description = description;
+        this.secret = generateSecret();
+    }
+
+    /**
+     * Method that returns a random generated secret
+     * @return random generated secret
+     */
+    public String generateSecret() {
+        return new BigInteger(STATE_RANDOM_BITS, new SecureRandom()).toString(STATE_RANDOM_BASE);
     }
 
     /**
@@ -76,6 +105,15 @@ public class Practical extends Model {
      */
     public static Practical findByName(String name) {
         return find.where().eq("name", name).findUnique();
+    }
+
+    /**
+     * Method to find a practical by its id
+     * @param id of the practical to be found
+     * @return the found practical
+     */
+    public static Practical findById(long id) {
+        return find.where().eq("id", id).findUnique();
     }
 
     /**
@@ -143,6 +181,22 @@ public class Practical extends Model {
     }
 
     /**
+     * Getter for the secret
+     * @return secret
+     */
+    public String getSecret() {
+        return secret;
+    }
+
+    /**
+     * Setter for the secret
+     * @param secret to set
+     */
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    /**
      * Getter for users
      * @return users
      */
@@ -189,5 +243,4 @@ public class Practical extends Model {
     public void addPracticalGroup(PracticalGroup practicalGroup) {
         this.practicalGroups.add(practicalGroup);
     }
-
 }

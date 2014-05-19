@@ -13,7 +13,7 @@ public abstract class SecuredController extends Controller {
      * Get the currently logged in user id
      * @return The user id
      */
-    protected Long getUserId() {
+    protected static Long getUserId() {
         String userId = request().username();
         return (userId == null)? null : Long.parseLong(userId);
     }
@@ -22,7 +22,7 @@ public abstract class SecuredController extends Controller {
      * Get the currently logged in user
      * @return The user
      */
-    protected User getUser() {
+    protected static User getUser() {
         Long userId = getUserId();
         return (userId == null)? null : User.findById(userId);
     }

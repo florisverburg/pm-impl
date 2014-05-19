@@ -1,14 +1,38 @@
 # Users
-  - !!models.User
-    id: 500
+users:
+  - &user1 !!models.User
+    firstName: MisterTest
+    lastName: Test
+    language: English
+    email: mistertest@test.com
+
+  - &user2 !!models.User
     firstName: Test
     lastName: Test
     language: English
     email: test@test.com
 
+  - &user3 !!models.User
+    firstName: admin
+    lastName: TestAdmin
+    language: English
+    email: admin@test.com
+
+# Practical
+practicals:
+  - &practical1 !!models.Practical
+    name: Programming
+    description: A programming assignment about programming
+    secret: abc
+    admin: *user3
+    users:
+      - *user1
+      - *user2
+
+
 #Identities
+identities:
   - !!models.PasswordIdentity
-    user:       !!models.User
-      id: 500
+    user: *user2
     identifier: test@test.com
     data: $2a$10$Q8Y7D1igQHlsZYCzUm9M7u7TUV/j5nyZU37Qzuea9KUFyA1YrlHfu

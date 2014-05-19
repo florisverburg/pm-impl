@@ -7,6 +7,10 @@ GET         /                    controllers.Application.index()
 GET         /about               controllers.Application.about()
 GET         /contact             controllers.Application.contact()
 
+# Practical
+GET         /practical/:id      controllers.PracticalController.viewPractical(id: Long)
+GET         /practical/:id/:secret      controllers.PracticalController.register(id: Long, secret: String)
+
 # Authentication
 GET         /login               controllers.Authentication.login()
 POST        /login               controllers.Authentication.authenticate()

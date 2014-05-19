@@ -62,8 +62,8 @@ public class UserTest extends WithApplication {
 
         // Create a new practical
         programmingAssignment = new Practical("ProgrammingAssignment", "Assignment about programming");
-        programmingAssignment.setAdmin(bob);
         programmingAssignment.save();
+        programmingAssignment.setAdmin(bob);
 
         // Create a new practical
         documentingAssingment = new Practical("DocumentingAssignment", "Assignment about documenting");

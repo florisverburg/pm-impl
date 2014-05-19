@@ -8,6 +8,10 @@ error.passwordRepeat = The passwords don''t match
 authentication.loggedOut = You successfully logged out!
 authentication.loggedIn = You successfully logged in!
 
+practical.doesNotExist = Practial does not exist
+practical.alreadyCoupled = You are already coupled to this practical
+practical.wrongSecret = This secret does not match the practical secret
+
 firstName = First name
 lastName = Last name
 language = Language
