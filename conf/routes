@@ -12,6 +12,9 @@ GET         /courses                      controllers.Application.courses()
 GET         /practical/:id                controllers.PracticalController.viewPractical(id: Long)
 GET         /practical/:id/:secret        controllers.PracticalController.register(id: Long, secret: String)
 
+# Profile
+GET         /profile                      controllers.Profile.view()
+
 # Authentication
 GET         /login                        controllers.Authentication.login()
 POST        /login                        controllers.Authentication.authenticate()

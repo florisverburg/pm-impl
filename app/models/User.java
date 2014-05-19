@@ -22,25 +22,25 @@ public class User extends Model {
      */
     public enum Type {
         /**
-         * The ADMIN.
+         * The Admin.
          */
-        @EnumValue("ADMIN")
-        ADMIN,
+        @EnumValue("Admin")
+        Admin,
         /**
-         * The TEACHER.
+         * The Teacher.
          */
-        @EnumValue("TEACHER")
-        TEACHER,
+        @EnumValue("Teacher")
+        Teacher,
         /**
-         * The USER.
+         * The User.
          */
-        @EnumValue("USER")
-        USER,
+        @EnumValue("User")
+        User,
         /**
-         * The GUEST.
+         * The Guest.
          */
-        @EnumValue("GUEST")
-        GUEST
+        @EnumValue("Guest")
+        Guest
     }
 
     /**
@@ -122,7 +122,7 @@ public class User extends Model {
     }
 
     /**
-     * Constructor for the User class with default type USER
+     * Constructor for the User class with default type User
      * @param firstName firstName of the user
      * @param lastName lastName of the user
      * @param email email of the user
@@ -131,7 +131,7 @@ public class User extends Model {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.type = Type.USER;
+        this.type = Type.User;
     }
 
     /**
@@ -336,5 +336,13 @@ public class User extends Model {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * Get the users' full name
+     * @return The full name
+     */
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
     }
 }
