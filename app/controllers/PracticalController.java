@@ -29,8 +29,8 @@ public class PracticalController extends SecuredController {
         }
         else if (practicalToRender.getUsers().contains(getUser())){
             // Checks of the user is not already a part of the practical
-            flash("Error", "practical.alreadyCoupled");
-            return redirect(routes.Application.index());
+            return redirect(routes.PracticalController.
+                    viewPractical(practicalToRender.getId()));
         }
         else if (!practicalToRender.getSecret().equals(secret)) {
             // Checks if the secret is correct
@@ -39,12 +39,10 @@ public class PracticalController extends SecuredController {
                     viewPractical(practicalToRender.getId()));
         }
         // if everything is correct
-        else {
-            practicalToRender.addUsers(getUser());
-            practicalToRender.save();
-            return redirect(routes.PracticalController.
-                    viewPractical(practicalToRender.getId()));
-        }
+        practicalToRender.addUsers(getUser());
+        practicalToRender.save();
+        return redirect(routes.PracticalController.
+                viewPractical(practicalToRender.getId()));
     }
 
     /**
