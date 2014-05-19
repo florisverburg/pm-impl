@@ -103,7 +103,7 @@
         <!-- Checks for imports                              -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <module name="AvoidStarImport">
-            <property name="excludes" value="javax.persistence,java.io,play.data.validation,play.db.ebean,play.mvc,play.data,play.data.Form,views.html,models"/>
+            <property name="excludes" value="java.lang.annotation,play.mvc.Http,javax.persistence,java.io,play.data.validation,play.db.ebean,play.mvc,play.data,play.data.Form,views.html,models"/>
         </module>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
@@ -151,6 +151,7 @@
         <module name="LeftCurly"/>
         <module name="NeedBraces"/>
         <module name="RightCurly">
+          <property name="tokens" value="LITERAL_ELSE"/>
           <property name="option" value="alone"/>
         </module>
 

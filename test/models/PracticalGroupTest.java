@@ -28,11 +28,11 @@ public class PracticalGroupTest extends WithApplication {
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
         // Create a new user
-        bob = new User("Bob","Verburg","bob@example.com");
+        bob = new User("Bob", "Verburg", "bob@example.com");
         bob.save();
 
         // Create a new user
-        hendrik = new User("Hendrik","Tienen","hendrik@example.com");
+        hendrik = new User("Hendrik", "Tienen", "hendrik@example.com");
         hendrik.save();
 
         // Create a new practicalGroup
@@ -81,7 +81,7 @@ public class PracticalGroupTest extends WithApplication {
         // Set different values
         bobsGroup.setId(200);
         bobsGroup.setPractical(documentingAssingment);
-        List<User> hendriksGroupList = new ArrayList<>();
+        List<User> hendriksGroupList = new ArrayList<User>();
         hendriksGroupList.add(hendrik);
         bobsGroup.setUsers(hendriksGroupList);
         programmingAssignment.save();
@@ -89,7 +89,7 @@ public class PracticalGroupTest extends WithApplication {
         // Check the new values
         assertEquals(bobsGroup.getId(), 200);
         assertEquals(bobsGroup.getPractical(), documentingAssingment);
-        assertEquals(bobsGroup.getUsers().size(),1);
+        assertEquals(bobsGroup.getUsers().size(), 1);
     }
 
     /**()
@@ -102,8 +102,8 @@ public class PracticalGroupTest extends WithApplication {
         List<User> returnedUsers = returnedValue.getUsers();
 
         // check whether associated teams are correct
-        assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
-        assertEquals(returnedUsers.get(1).getFirstName(),"Hendrik");
+        assertEquals(returnedUsers.get(0).getFirstName(), "Bob");
+        assertEquals(returnedUsers.get(1).getFirstName(), "Hendrik");
         assertEquals(returnedUsers.size(), 2);
 
         // Get the other right
@@ -111,7 +111,7 @@ public class PracticalGroupTest extends WithApplication {
         returnedUsers = returnedValue.getUsers();
 
         // check whether associated teams are correct
-        assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
+        assertEquals(returnedUsers.get(0).getFirstName(), "Bob");
         assertEquals(returnedUsers.size(), 1);
     }
 }

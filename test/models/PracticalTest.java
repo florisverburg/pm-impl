@@ -30,11 +30,11 @@ public class PracticalTest extends WithApplication {
         start(fakeApplication(inMemoryDatabase()));
 
         // Create a new user
-        bob = new User("Bob","Verburg","bob@example.com");
+        bob = new User("Bob", "Verburg", "bob@example.com");
         bob.save();
 
         // Create a new user
-        hendrik = new User("Hendrik","Tienen","hendrik@example.com");
+        hendrik = new User("Hendrik", "Tienen", "hendrik@example.com");
         hendrik.save();
 
         // Create a new practical
@@ -113,8 +113,8 @@ public class PracticalTest extends WithApplication {
         List<User> returnedUsers = returnedValue.getUsers();
 
         // check whether associated teams are correct
-        assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
-        assertEquals(returnedUsers.get(1).getFirstName(),"Hendrik");
+        assertEquals(returnedUsers.get(0).getFirstName(), "Bob");
+        assertEquals(returnedUsers.get(1).getFirstName(), "Hendrik");
         assertEquals(returnedUsers.size(), 2);
 
         // Get the other right
@@ -122,7 +122,7 @@ public class PracticalTest extends WithApplication {
         returnedUsers = returnedValue.getUsers();
 
         // check whether associated teams are correct
-        assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
+        assertEquals(returnedUsers.get(0).getFirstName(), "Bob");
         assertEquals(returnedUsers.size(), 1);
     }
 
@@ -136,8 +136,8 @@ public class PracticalTest extends WithApplication {
         List<PracticalGroup> returnedPracticalGroups = returnedValue.getPracticalGroups();
 
         // check whether associated teams are correct
-        assertEquals(returnedPracticalGroups.get(0),bobsGroup);
-        assertEquals(returnedPracticalGroups.get(1),hendriksGroup);
+        assertEquals(returnedPracticalGroups.get(0), bobsGroup);
+        assertEquals(returnedPracticalGroups.get(1), hendriksGroup);
         assertEquals(returnedPracticalGroups.size(), 2);
 
         // Get the other right
@@ -145,7 +145,7 @@ public class PracticalTest extends WithApplication {
         returnedPracticalGroups = returnedValue.getPracticalGroups();
 
         // check whether associated teams are correct
-        assertEquals(returnedPracticalGroups.get(0),bobAndHendriksGroup);
+        assertEquals(returnedPracticalGroups.get(0), bobAndHendriksGroup);
         assertEquals(returnedPracticalGroups.size(), 1);
     }
 }

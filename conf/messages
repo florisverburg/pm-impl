@@ -9,12 +9,12 @@ error.passwordRepeat = The passwords don''t match
 
 authentication.loggedOut = You successfully logged out!
 authentication.loggedIn = You successfully logged in!
+authentication.unauthorized = You aren''t authorized to access this page
 
 firstName = First name
 lastName = Last name
 language = Language
 
-linkedin.unknownError = An unknown error occurred, please try again
 linkedin.unknownError = An unknown error with Linkedin occurred, please try again later
 
 # Practical

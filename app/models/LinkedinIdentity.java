@@ -12,7 +12,7 @@ import javax.persistence.*;
  * This includes the Linkedin OAuth 2 identity authentication method
  */
 @Entity
-@DiscriminatorValue("L")
+@DiscriminatorValue("LINKEDIN")
 public class LinkedinIdentity extends Identity {
 
     /**

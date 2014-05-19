@@ -3,6 +3,7 @@ package controllers;
 import forms.LoginForm;
 import forms.RegisterForm;
 import helpers.Linkedin;
+import helpers.Secure;
 import models.*;
 import play.mvc.*;
 import play.data.*;
@@ -13,7 +14,7 @@ import static play.data.Form.*;
  * Created by Freek on 12/05/14.
  * This class handles all the authentication methods like login and register.
  */
-public class Authentication extends SecuredController {
+public class Authentication extends Controller {
 
     /**
      * Generates a new Linkedin URL with a new state saved in the session
@@ -116,12 +117,23 @@ public class Authentication extends SecuredController {
      * Logs out the current user
      * @return Redirects to the application home page
      */
-    @Security.Authenticated(Secured.class)
+    @Secure.Authenticated
     public static Result logout() {
         flash("success", "authentication.loggedOut");
         session().clear();
         return redirect(
                 routes.Application.index()
+        );
+    }
+
+    /**
+     * Generates an alternative result if the user is not authenticated.
+     * @return Redirect to the login page
+     */
+    public static Result onUnauthorized() {
+        flash("error", "authentication.unauthorized");
+        return redirect(
+                routes.Authentication.login()
         );
     }
 }

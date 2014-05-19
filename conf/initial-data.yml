@@ -1,20 +1,21 @@
 # Users
 users:
   - &user1 !!models.User
+    type: TEACHER
     firstName: MisterTest
     lastName: Test
-    language: English
     email: mistertest@test.com
 
   - &user2 !!models.User
+    type: USER
     firstName: Test
     lastName: Test
     email: test@test.com
 
   - &user3 !!models.User
+    type: ADMIN
     firstName: admin
     lastName: TestAdmin
-    language: English
     email: admin@test.com
 
 # Practical

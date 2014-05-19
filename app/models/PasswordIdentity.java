@@ -11,7 +11,7 @@ import javax.persistence.*;
  * This includes the Password identity authentication method
  */
 @Entity
-@DiscriminatorValue("P")
+@DiscriminatorValue("PASSWORD")
 public class PasswordIdentity extends Identity {
 
     /**

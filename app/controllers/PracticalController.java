@@ -1,5 +1,6 @@
 package controllers;
 
+import helpers.Secure;
 import models.*;
 import play.Logger;
 import play.mvc.*;
@@ -9,7 +10,7 @@ import views.html.*;
  * Created by Marijn Goedegebure on 15-5-2014.
  * The class that handles all the actions used with the practicals
  */
-public class PracticalController extends SecuredController {
+public class PracticalController extends Controller {
 
     /**
      * Method used to register a new practical to a user
@@ -18,16 +19,17 @@ public class PracticalController extends SecuredController {
      * @param secret of the practical
      * @return the appropriate view
      */
-    @Security.Authenticated(Secured.class)
+    @Secure.Authenticated
     public static Result register(long id, String secret) {
         Practical practicalToRender = Practical.findById(id);
+        User user = Secure.getUser();
         // Checks of practical exist
         if(practicalToRender == null) {
             // When practical does not exist, show correct error
             flash("error", "practical.doesNotExist");
             return redirect(routes.Application.index());
         }
-        else if (practicalToRender.getUsers().contains(getUser())){
+        else if (practicalToRender.getUsers().contains(user)){
             // Checks of the user is not already a part of the practical
             return redirect(routes.PracticalController.
                     viewPractical(practicalToRender.getId()));
@@ -39,7 +41,7 @@ public class PracticalController extends SecuredController {
                     viewPractical(practicalToRender.getId()));
         }
         // if everything is correct, add user to practical
-        Practical.addUserToPractical(practicalToRender, getUser());
+        Practical.addUserToPractical(practicalToRender, Secure.getUser());
         return redirect(routes.PracticalController.
                 viewPractical(practicalToRender.getId()));
     }
@@ -49,7 +51,7 @@ public class PracticalController extends SecuredController {
      * @param id of the practical
      * @return appropriate url
      */
-    @Security.Authenticated(Secured.class)
+    @Secure.Authenticated
     public static Result viewPractical(long id) {
         Practical practicalToRender = Practical.findById(id);
         // If practical does not exist
