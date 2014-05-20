@@ -37,14 +37,6 @@ public abstract class Identity extends Model {
     }
 
     /**
-     * Set the identity id
-     * @param id The id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
      * Get the user linked to the identity
      * @return The user
      */

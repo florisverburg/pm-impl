@@ -184,14 +184,6 @@ public class User extends Model {
     }
 
     /**
-     * Set the user id
-     * @param id The id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
      * Gets type.
      * @return The type
      */
@@ -256,27 +248,11 @@ public class User extends Model {
     }
 
     /**
-     * Setter for practicalgroups
-     * @param practicalGroups to set
-     */
-    public void setPracticalGroups(List<PracticalGroup> practicalGroups) {
-        this.practicalGroups = practicalGroups;
-    }
-
-    /**
      * Add a practicalgroup to the list
      * @param practicalGroup to add
      */
     public void addPracticalGroup(PracticalGroup practicalGroup) {
         this.practicalGroups.add(practicalGroup);
-    }
-
-    /**
-     * Setter of the list of practicals the user is admin of
-     * @param practicalsAdmin the user is admin of
-     */
-    public void setPracticalsAdmin(List<Practical> practicalsAdmin) {
-        this.practicalsAdmin = practicalsAdmin;
     }
 
     /**
@@ -293,14 +269,6 @@ public class User extends Model {
      */
     public List<Identity> getIdentities() {
         return identities;
-    }
-
-    /**
-     * Sets identities.
-     * @param identities The identities
-     */
-    public void setIdentities(List<Identity> identities) {
-        this.identities = identities;
     }
 
     /**

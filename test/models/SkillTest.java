@@ -1,4 +1,5 @@
 package models;
+
 import models.*;
 import org.junit.*;
 import play.test.WithApplication;

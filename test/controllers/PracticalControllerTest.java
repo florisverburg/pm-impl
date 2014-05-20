@@ -35,7 +35,17 @@ public class PracticalControllerTest extends WithApplication {
     }
 
     @Test
-    public void testRegisterAlreadyCoupled() {
+    public void RegisterNonExisting() {
+        Result result = callAction(controllers.routes.ref.PracticalController.register(99999L, "test"),
+                fakeRequest().withSession("user_id",
+                        User.findByEmail("admin@test.com").getId().toString()));
+
+        assertEquals(SEE_OTHER, status(result));
+        assertEquals("practical.doesNotExist", flash(result).get("error"));
+    }
+
+    @Test
+    public void registerAlreadyCoupled() {
         Practical practical = Practical.findById(1);
         assertEquals(practical.getUsers().size(), 2);
         assert(practical.getUsers().contains(practical.getUsers().get(0)));
@@ -48,7 +58,7 @@ public class PracticalControllerTest extends WithApplication {
     }
 
     @Test
-    public void testRegisterNotAuthenticated() {
+    public void registerNotAuthenticated() {
         Practical practical = Practical.findById(1);
         assertEquals(practical.getUsers().size(), 2);
 
@@ -59,7 +69,7 @@ public class PracticalControllerTest extends WithApplication {
     }
 
     @Test
-    public void testRegisterWrongSecret() {
+    public void registerWrongSecret() {
         Practical practical = Practical.findById(1);
         assertEquals(practical.getUsers().size(), 2);
 
