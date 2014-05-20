@@ -43,3 +43,12 @@ h1, h2, h3, h4, h5, h6 {
 .inverse-dropdown>li>a>.divider {
   background-color: #000 !important;
 }
+
+.page-header {
+  background-color: #eee;
+  padding: 15px;
+}
+
+.container .page-header {
+    border-radius: 6px; // Only round corners at higher resolutions if contained in a container
+}

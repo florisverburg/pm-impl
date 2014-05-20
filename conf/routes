@@ -3,21 +3,22 @@
 # ~~~~
 
 # Application
-GET         /                    controllers.Application.index()
-GET         /about               controllers.Application.about()
-GET         /contact             controllers.Application.contact()
+GET         /                             controllers.Application.index()
+GET         /about                        controllers.Application.about()
+GET         /contact                      controllers.Application.contact()
+GET         /courses                      controllers.Application.courses()
 
 # Practical
-GET         /practical/:id      controllers.PracticalController.viewPractical(id: Long)
-GET         /practical/:id/:secret      controllers.PracticalController.register(id: Long, secret: String)
+GET         /practical/:id                controllers.PracticalController.viewPractical(id: Long)
+GET         /practical/:id/:secret        controllers.PracticalController.register(id: Long, secret: String)
 
 # Authentication
-GET         /login               controllers.Authentication.login()
-POST        /login               controllers.Authentication.authenticate()
-GET         /register            controllers.Authentication.login()
-POST        /register            controllers.Authentication.registration()
-GET         /logout              controllers.Authentication.logout()
-GET         /auth                controllers.Authentication.auth(code: String ?= "", state: String, error: String ?= "", error_description: String ?= "")
+GET         /login                        controllers.Authentication.login()
+POST        /login                        controllers.Authentication.authenticate()
+GET         /register                     controllers.Authentication.login()
+POST        /register                     controllers.Authentication.registration()
+GET         /logout                       controllers.Authentication.logout()
+GET         /auth                         controllers.Authentication.auth(code: String ?= "", state: String, error: String ?= "", error_description: String ?= "")
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /assets/*file                 controllers.Assets.at(path="/public", file)
