@@ -1,0 +1,32 @@
+@(profileForm: Form[forms.ProfileForm])
+
+@implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
+
+@main("Profile", "profile") {
+    <div>
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-user"></span> Profile
+            </h1>
+        </div>
+
+        @helper.form(routes.Authentication.authenticate, 'class -> "form-horizontal") {
+            @if(profileForm.hasGlobalErrors) {
+                <p class="error red-text">
+                @profileForm.globalError.message
+                </p>
+            }
+
+            @form.inputText(profileForm("firstName"))
+            @form.inputText(profileForm("lastName"))
+            @form.inputText(profileForm("email"))
+
+            @if(profileForm.get.hasPassword()) {
+                @form.inputPassword(profileForm("password"))
+                @form.inputPassword(profileForm("passwordRepeat"))
+            }
+
+            @form.submit("Save")
+        }
+    </div>
+}

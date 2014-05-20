@@ -78,6 +78,12 @@ public class User extends Model {
     private Type type;
 
     /**
+     *
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Identity> identities = new ArrayList<Identity>();
+
+    /**
      * The many-to-many relationship defined by the skills and users
      */
     @ManyToMany(cascade = CascadeType.ALL)
@@ -96,7 +102,7 @@ public class User extends Model {
     private List<Practical> practicalsAdmin = new ArrayList<Practical>();
 
     /**
-     * Many-to-many relationship defined for the users and practicalgroups
+     * Many-to-many relationship defined for the users and practicalGroups
      */
     @ManyToMany(cascade = CascadeType.ALL)
     private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
@@ -279,6 +285,22 @@ public class User extends Model {
      */
     public void addPracticalAdmin(Practical practical) {
         practicalsAdmin.add(practical);
+    }
+
+    /**
+     * Gets identities.
+     * @return The identities
+     */
+    public List<Identity> getIdentities() {
+        return identities;
+    }
+
+    /**
+     * Sets identities.
+     * @param identities The identities
+     */
+    public void setIdentities(List<Identity> identities) {
+        this.identities = identities;
     }
 
     /**

@@ -1,0 +1,18 @@
+@(user: User)
+
+@main("Profile", "profile") {
+    <div>
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-user"></span> Profile
+                <a href="@controllers.routes.Profile.edit()" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
+            </h1>
+        </div>
+
+        <div>
+            <p>Name: @user.getFullName()</p>
+            <p>Type: @user.getType()</p>
+            <p>Email: @user.getEmail()</p>
+        </div>
+    </div>
+}

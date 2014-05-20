@@ -23,7 +23,7 @@ public class MenuClickTests {
             browser.$("#navbarToggle").click();
             browser.$("#linkHome").click();
             assertThat(browser.url()).isEqualTo("http://localhost:3333/");
-            assertThat(browser.title()).isEqualTo("Welcome to APMatch");
+            assertThat(browser.title()).isEqualTo("Welcome - APMatch");
             }
         });
     }

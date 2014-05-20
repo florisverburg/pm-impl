@@ -46,7 +46,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle='dropdown'>
                                     Welcome, @user.getFullName()<b class="caret"></b></a>
                                 <ul class="dropdown-menu inverse-dropdown">
-                                    <li class="@{if(active == "profile") "active"}"><a href="@routes.Profile.view()">Profile</a></li>
+                                    <li class="@{if(active == "profile") "active"}"><a href="@routes.Profile.view()"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                                     <li><a href="@routes.Authentication.logout()">Log out</a></li>
                                 </ul>
                             </li>
