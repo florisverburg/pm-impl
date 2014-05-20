@@ -43,7 +43,7 @@ public class AuthenticationTest extends WithApplication {
         );
 
         assertEquals(400, status(result));
-        assertTrue(contentAsString(result).contains("Invalid user or password"));
+        assertTrue(contentAsString(result).contains("Wrong login information supplied"));
         assertNotEquals(User.findByEmail("test@test.com").getId().toString(), session(result).get("user_id"));
     }
 
