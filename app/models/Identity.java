@@ -24,7 +24,7 @@ public abstract class Identity extends Model {
     /**
      * The user which the identity is linked to
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @Constraints.Required
     protected User user;
 

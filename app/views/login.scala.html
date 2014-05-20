@@ -2,7 +2,7 @@
 
 @implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
 
-@main("Login - APMatch", "login") {
+@main("Login", "login") {
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
@@ -19,7 +19,7 @@
                         @form.inputText(loginForm("email"))
                         @form.inputPassword(loginForm("password"))
 
-                        @form.button(loginForm("Log in"), '_label -> null)
+                        @form.submit("Log in")
                         <p class="text-center">-or-</p>
                         <p>
                             <a href="@linkedInUri" class="btn btn-default btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-user"></span> Sign in with LinkedIn</a>
@@ -45,7 +45,7 @@
                         @form.inputPassword(registerForm("password"))
                         @form.inputPassword(registerForm("passwordRepeat"))
 
-                        @form.button(registerForm("Register"), '_label -> null)
+                        @form.submit("Register")
                     }
                 </div>
             </div>

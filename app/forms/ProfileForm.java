@@ -7,47 +7,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Freek on 13/05/14.
- * The registration form
+ * Created by Freek on 20/05/14.
+ * Profile editing form
  */
-public class RegisterForm {
-
+public class ProfileForm {
     /**
-     * The registration first name
+     * The profile first name
      */
     @Constraints.Required
     @Constraints.MaxLength(128)
     private String firstName;
 
     /**
-     * The registration last name
+     * The profile last name
      */
     @Constraints.Required
     @Constraints.MaxLength(128)
     private String lastName;
 
     /**
-     * The registration email address
+     * The profile email address
      */
     @Constraints.Required
     @Constraints.Email
     private String email;
 
     /**
-     * The registration password
+     * The profile password
      */
-    @Constraints.Required
     @Constraints.MinLength(8)
     private String password;
 
     /**
      * The registration password repeat
      */
-    @Constraints.Required
     private String passwordRepeat;
 
     /**
-     * Gets the first name.
+     * Generate an empty form
+     */
+    public ProfileForm() {
+
+    }
+
+    /**
+     * Create a new Profile form based on a user
+     * @param user The user
+     */
+    public ProfileForm(User user) {
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
+    }
+
+    /**
+     * Gets first name.
      * @return The first name
      */
     public String getFirstName() {
@@ -55,7 +69,7 @@ public class RegisterForm {
     }
 
     /**
-     * Sets the first name.
+     * Sets first name.
      * @param firstName The first name
      */
     public void setFirstName(String firstName) {
@@ -127,19 +141,14 @@ public class RegisterForm {
     }
 
     /**
-     * Validates the registration form
+     * Validates the profile form
      * @return A list of errors
      */
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<ValidationError>();
 
-        // Check if email is already existing in database
-        if(User.findByEmail(email) != null) {
-            errors.add(new ValidationError("email", "error.doubleEmail"));
-        }
-
         // Check if passwords match
-        if(!password.equals(passwordRepeat)) {
+        if(password != null && !password.equals(passwordRepeat)) {
             errors.add(new ValidationError("passwordRepeat", "error.passwordRepeat"));
         }
 
@@ -147,28 +156,24 @@ public class RegisterForm {
     }
 
     /**
-     * Return a new user based on the registration form
-     * @return The new user
+     * Update a user with the new profile information
+     * @param user The user to update
      */
-    private User getUser() {
-        return new User(firstName, lastName, email);
-    }
+    public void updateUser(User user) {
+        user.setFirstName(this.firstName);
+        user.setLastName(this.lastName);
+        user.setEmail(this.email);
 
-    /**
-     * Returns a new password based identity based on the registration form
-     * @param user The user which the identity must be linked to
-     * @return The new password identity
-     */
-    private Identity getIdentity(User user) {
-        return new PasswordIdentity(user, email, password);
-    }
+        // Update identity if needed
+        if(this.password != null && !this.password.isEmpty() && user.hasPassword()) {
+            for(Identity identity : user.getIdentities()) {
+                if(identity instanceof PasswordIdentity) {
+                    ((PasswordIdentity) identity).setPassword(this.password);
+                    identity.save();
+                }
+            }
+        }
 
-    /**
-     * Generate the user and identity based on the entered form information
-     */
-    public void save() {
-        User user = this.getUser();
         user.save();
-        this.getIdentity(user).save();
     }
 }

@@ -5,18 +5,18 @@ email = Email address
 password = Password
 passwordRepeat = Repeat password
 
-error.passwordRepeat = The passwords don''t match
-
 authentication.loggedOut = You successfully logged out!
 authentication.loggedIn = You successfully logged in!
 authentication.unauthorized = You aren''t authorized to access this page
 
-firstName = First name
-lastName = Last name
-language = Language
-
+error.passwordRepeat = The passwords don''t match
+error.doubleEmail = The email address is already registered
+error.wrongAuthentication = Wrong login information supplied
 linkedin.unknownError = An unknown error with Linkedin occurred, please try again later
 
 # Practical
-practical.doesNotExist = Practial does not exist
+practical.doesNotExist = Practical does not exist
 practical.wrongSecret = This secret does not match the practical secret
+
+# Profile
+profile.saved = Your profile is saved

@@ -1,19 +1,19 @@
 # Users
 users:
   - &user1 !!models.User
-    type: TEACHER
+    type: Teacher
     firstName: MisterTest
     lastName: Test
     email: mistertest@test.com
 
   - &user2 !!models.User
-    type: USER
+    type: User
     firstName: Test
     lastName: Test
     email: test@test.com
 
   - &user3 !!models.User
-    type: ADMIN
+    type: Admin
     firstName: admin
     lastName: TestAdmin
     email: admin@test.com

@@ -12,7 +12,5 @@ libraryDependencies ++= Seq(
   "org.mindrot" % "jbcrypt" % "0.3m"
   )
 
-javacOptions += "-Xlint"
-
 // Setup Play for Java
 play.Project.playJavaSettings

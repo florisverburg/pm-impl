@@ -22,25 +22,25 @@ public class User extends Model {
      */
     public enum Type {
         /**
-         * The ADMIN.
+         * The Admin.
          */
-        @EnumValue("ADMIN")
-        ADMIN,
+        @EnumValue("Admin")
+        Admin,
         /**
-         * The TEACHER.
+         * The Teacher.
          */
-        @EnumValue("TEACHER")
-        TEACHER,
+        @EnumValue("Teacher")
+        Teacher,
         /**
-         * The USER.
+         * The User.
          */
-        @EnumValue("USER")
-        USER,
+        @EnumValue("User")
+        User,
         /**
-         * The GUEST.
+         * The Guest.
          */
-        @EnumValue("GUEST")
-        GUEST
+        @EnumValue("Guest")
+        Guest
     }
 
     /**
@@ -78,6 +78,12 @@ public class User extends Model {
     private Type type;
 
     /**
+     *
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Identity> identities = new ArrayList<Identity>();
+
+    /**
      * The many-to-many relationship defined by the skills and users
      */
     @ManyToMany(cascade = CascadeType.ALL)
@@ -96,7 +102,7 @@ public class User extends Model {
     private List<Practical> practicalsAdmin = new ArrayList<Practical>();
 
     /**
-     * Many-to-many relationship defined for the users and practicalgroups
+     * Many-to-many relationship defined for the users and practicalGroups
      */
     @ManyToMany(cascade = CascadeType.ALL)
     private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
@@ -122,7 +128,7 @@ public class User extends Model {
     }
 
     /**
-     * Constructor for the User class with default type USER
+     * Constructor for the User class with default type User
      * @param firstName firstName of the user
      * @param lastName lastName of the user
      * @param email email of the user
@@ -131,7 +137,7 @@ public class User extends Model {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.type = Type.USER;
+        this.type = Type.User;
     }
 
     /**
@@ -282,6 +288,22 @@ public class User extends Model {
     }
 
     /**
+     * Gets identities.
+     * @return The identities
+     */
+    public List<Identity> getIdentities() {
+        return identities;
+    }
+
+    /**
+     * Sets identities.
+     * @param identities The identities
+     */
+    public void setIdentities(List<Identity> identities) {
+        this.identities = identities;
+    }
+
+    /**
      * Method to search a User by name
      * @param name that will be used to search for
      * @return returns the User that has a name equal to the input
@@ -336,5 +358,28 @@ public class User extends Model {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * Get the users' full name
+     * @return The full name
+     */
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
+
+    /**
+     * Check if we have a password identity
+     * @return True if found else false
+     */
+    public Boolean hasPassword() {
+        // Go trough all identities and see if we have a password identity
+        for(Identity identity : identities) {
+            if(identity instanceof PasswordIdentity) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

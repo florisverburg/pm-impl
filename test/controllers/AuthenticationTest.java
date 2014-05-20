@@ -21,6 +21,15 @@ public class AuthenticationTest extends WithApplication {
     }
 
     @Test
+    public void authenticationPage() {
+        Result result = callAction(
+                controllers.routes.ref.Authentication.login()
+        );
+
+        assertEquals(OK, status(result));
+    }
+
+    @Test
     public void authenticationSuccess() {
         Result result = callAction(
                 controllers.routes.ref.Authentication.authenticate(),
@@ -29,7 +38,7 @@ public class AuthenticationTest extends WithApplication {
                         "password", "floor"))
         );
 
-        assertEquals(303, status(result));
+        assertEquals(SEE_OTHER, status(result));
         assertEquals(User.findByEmail("test@test.com").getId().toString(), session(result).get("user_id"));
     }
 
@@ -42,8 +51,8 @@ public class AuthenticationTest extends WithApplication {
                         "password", "wrongpass"))
         );
 
-        assertEquals(400, status(result));
-        assertTrue(contentAsString(result).contains("Invalid user or password"));
+        assertEquals(BAD_REQUEST, status(result));
+        assertTrue(contentAsString(result).contains("Wrong login information supplied"));
         assertNotEquals(User.findByEmail("test@test.com").getId().toString(), session(result).get("user_id"));
     }
 
@@ -61,7 +70,7 @@ public class AuthenticationTest extends WithApplication {
                 routes.ref.Authentication.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
-        assertEquals(400, status(result));
+        assertEquals(BAD_REQUEST, status(result));
         assertTrue(contentAsString(result).contains("Valid email required"));
         assertTrue(contentAsString(result).contains("This field is required"));
     }
@@ -80,7 +89,7 @@ public class AuthenticationTest extends WithApplication {
                 routes.ref.Authentication.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
-        assertEquals(400, status(result));
+        assertEquals(BAD_REQUEST, status(result));
         assertTrue(contentAsString(result).contains("The passwords don&#x27;t match"));
     }
 
@@ -98,7 +107,7 @@ public class AuthenticationTest extends WithApplication {
                 routes.ref.Authentication.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
-        assertEquals(400, status(result));
+        assertEquals(BAD_REQUEST, status(result));
         assertTrue(contentAsString(result).contains("Minimum length is"));
     }
 
@@ -120,7 +129,7 @@ public class AuthenticationTest extends WithApplication {
         User user = User.findByEmail("mybob@example.com");
         User userAuth = User.authenticate("mybob@example.com", "myVeryGoodPass");
 
-        assertEquals(303, status(result));
+        assertEquals(SEE_OTHER, status(result));
         assertNotNull(user);
         assertNotNull(userAuth);
         assertEquals(user, userAuth);
@@ -134,7 +143,7 @@ public class AuthenticationTest extends WithApplication {
                 controllers.routes.ref.Authentication.logout(),
                 fakeRequest()
         );
-        assertEquals(303, status(result));
+        assertEquals(SEE_OTHER, status(result));
         assertEquals("/login", header("Location", result));
     }
 
@@ -144,7 +153,7 @@ public class AuthenticationTest extends WithApplication {
                 controllers.routes.ref.Authentication.logout(),
                 fakeRequest().withSession("user_id", "500")
         );
-        assertEquals(303, status(result));
+        assertEquals(SEE_OTHER, status(result));
     }
 
 }

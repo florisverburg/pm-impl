@@ -35,7 +35,7 @@ public final class Secure {
         /**
          * The types of users that should be able to access the action
          */
-        User.Type[] types() default {User.Type.USER, User.Type.TEACHER, User.Type.ADMIN};
+        User.Type[] types() default {User.Type.User, User.Type.Teacher, User.Type.Admin};
     }
 
     /**

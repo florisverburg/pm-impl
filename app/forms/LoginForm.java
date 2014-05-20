@@ -2,6 +2,7 @@ package forms;
 
 import models.*;
 import play.data.validation.*;
+import play.i18n.Messages;
 
 /**
  * Created by Freek on 13/05/14.
@@ -60,7 +61,7 @@ public class LoginForm {
      */
     public String validate() {
         if (User.authenticate(email, password) == null) {
-            return "Invalid user or password";
+            return Messages.get("error.wrongAuthentication");
         }
         return null;
     }
