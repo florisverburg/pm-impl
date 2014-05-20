@@ -1,0 +1,26 @@
+@(invite : Invite)
+@import helpers._
+
+@main("View - Practical", "view") {
+
+<div class="main-text jumbotron">
+    <h2>Invite #@invite.getId()</h2>
+</div>
+<h2>Practical</h2>
+@invite.getPractical().getName()
+
+<h2>Sender</h2>
+@invite.getSender().getFirstName() @invite.getSender().getLastName()
+
+<h2>Receiver</h2>
+@invite.getReceiver().getFirstName() @invite.getReceiver().getLastName()
+
+@{if(invite.getReceiver().getId().equals(Secure.getUser().getId())) {
+    Html("<div class = \"row\">" +
+        "<div class = \"col-xs-3\">" +
+            "<a href='"+routes.InviteController.acceptInvite(invite.getId())+"' class = 'btn btn-primary'>accept invite</a>" +
+            "</div>" +
+        "</div>")
+    }
+    }
+}

@@ -1,4 +1,5 @@
 @(practical : Practical)
+@import helpers._
 
 @main("Practical", "practicals") {
 
@@ -11,19 +12,92 @@
 <h2>Currently enrolled participants:</h2>
 <ul>
     @practical.getUsers().map { user =>
-        <li>@user.getFirstName()</li>
+        <li>@user.getFirstName() @user.getLastName()</li>
     }
 </ul>
-<h2>Group practicals:</h2>
-@practical.getPracticalGroups().map { practicalGroup =>
-    <div class = "row">
-
-        <div class = "col-xs-4">
-            <a href="@routes.PracticalController.viewPracticalGroup(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
-        </div>
-        <div class = "col-xs-8">
-            <button type="button" class="btn btn-ttc">Invite</button>
-        </div>
+<h2> Your sent invites</h2>
+<div class = "row">
+    <div class = "col-xs-4">
+        Sender:
     </div>
+    <div class = "col-xs-4">
+        Receiver:
+    </div>
+    <div class = "col-xs-4">
+        Accepted:
+    </div>
+</div>
+@practical.getInvites().map { invite =>
+        @{if(invite.getSender().getId().equals(Secure.getUser().getId())) {
+            Html("<div class = \"row\">" +
+                "<div class = \"col-xs-3\">" +
+                    "<p>"+invite.getSender().getFirstName()+ " " +invite.getSender().getLastName()+"</p>" +
+                "</div>" +
+                "<div class = \"col-xs-3\">" +
+                    "<p>"+invite.getReceiver().getFirstName()+ " " +invite.getReceiver().getLastName()+"</p>" +
+                "</div>" +
+                "<div class = \"col-xs-3\">" +
+                    "<p>"+invite.isAccepted()+"</p>" +
+                "</div>" +
+                "<div class = \"col-xs-3\">" +
+                    "<a href='"+routes.InviteController.viewInvite(invite.getId())+"' class = 'btn btn-primary'>view invite</a>" +
+                "</div>" +
+            "</div>")
+        }
+        }
+   }
+<h2> Your received invites</h2>
+<div class = "row">
+    <div class = "col-xs-4">
+        Sender:
+    </div>
+    <div class = "col-xs-4">
+        Receiver:
+    </div>
+    <div class = "col-xs-4">
+        Accepted:
+    </div>
+</div>
+@practical.getInvites().map { invite =>
+    @{if(invite.getReceiver().getId().equals(Secure.getUser().getId())) {
+        Html("<div class = \"row\">" +
+            "<div class = \"col-xs-3\">" +
+                "<p>"+invite.getSender().getFirstName()+ " " +invite.getSender().getLastName()+"</p>" +
+            "</div>" +
+            "<div class = \"col-xs-3\">" +
+                "<p>"+invite.getReceiver().getFirstName()+ " " +invite.getReceiver().getLastName()+"</p>" +
+            "</div>" +
+            "<div class = \"col-xs-3\">" +
+                "<p>"+invite.isAccepted()+"</p>" +
+            "</div>" +
+            "<div class = \"col-xs-3\">" +
+                "<a href='"+routes.InviteController.viewInvite(invite.getId())+"' class = 'btn btn-primary'>view invite</a>" +
+            "</div>" +
+        "</div>")
+    }
+    }
+}
+<h2>Practical Groups:</h2>
+@practical.getPracticalGroups().map { practicalGroup =>
+        @{if(!practicalGroup.getUsers().contains(Secure.getUser())) {
+            Html("<div class = \"row\">" +
+                "<div class = \"col-xs-4\">" +
+                    "<a href='"+routes.PracticalController.viewPracticalGroup(practicalGroup.getId())+"'>Practical group #"+practicalGroup.getId()+"</a>" +
+                "</div>" +
+                "<div class = \"col-xs-8\">" +
+                    "<a href='"+routes.PracticalController.sendInvitePracticalGroup(practicalGroup.getId())+"' class = 'btn btn-primary'>Invite</a>" +
+                "</div>" +
+            "</div>")
+        }
+        else {
+            Html("<div class = \"row\">" +
+                "<div class = \"col-xs-4\">" +
+                    "<a href='"+routes.PracticalController.viewPracticalGroup(practicalGroup.getId())+"'>Your practical group #"+practicalGroup.getId()+"</a>" +
+                "</div>" +
+                "<div class = \"col-xs-8\">" +
+                "</div>" +
+            "</div>")
+        }
+        }
     }
 }

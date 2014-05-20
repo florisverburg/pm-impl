@@ -64,7 +64,24 @@ public class PracticalController extends Controller {
         else {
             Logger.debug("Practical does exist");
             return ok(view.render(practicalToRender));
+            Logger.debug("Practical does exist");
+            return ok(viewPractical.render(practicalToRender));
         }
+    }
+
+    @Secure.Authenticated
+    public static Result sendInvitePracticalGroup(long id) {
+        PracticalGroup practicalGroup = PracticalGroup.findById(id);
+        User receiver =  practicalGroup.getUsers().get(0);
+        User sender = Secure.getUser();
+        if(!Invite.sendInvite(practicalGroup.getPractical(), sender, receiver)) {
+            Logger.debug("Sending invitation unsuccessful");
+            flash("error", "practical.UnsuccessfulSend");
+            return redirect(routes.PracticalController.viewPractical(practicalGroup.getPractical().getId()));
+        }
+        Logger.debug("Successful invitation created");
+        flash("success", "practical.InviteSend");
+        return redirect(routes.PracticalController.viewPractical(practicalGroup.getPractical().getId()));
     }
 
     /**
@@ -79,6 +96,10 @@ public class PracticalController extends Controller {
     @Secure.Authenticated
     public static Result viewPracticalGroup(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
+        if(!Secure.getUser().getPracticals().contains(practicalGroup.getPractical())){
+            flash("error", "practical.userIsNotEnrolled");
+            return redirect(routes.Application.index());
+        }
         return ok(viewPracticalGroup.render(practicalGroup));
     }
 }

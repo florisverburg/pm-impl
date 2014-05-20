@@ -10,6 +10,7 @@ import javax.persistence.*;
  * Class representation of the database table invite
  */
 @Entity
+@SuppressWarnings("serial")
 public class Invite extends Model {
 
     /**
@@ -45,6 +46,13 @@ public class Invite extends Model {
     @JoinColumn(name = "receiverId")
     private User receiver;
 
+    public static Model.Finder<Long, Invite> find =
+            new Finder<Long, Invite>(Long.class, Invite.class);
+
+    public static Invite findById(long id) {
+        return find.where().eq("id", id).findUnique();
+    }
+
     /**
      * Constructor of an invite
      * @param practical of the new invite
@@ -56,6 +64,43 @@ public class Invite extends Model {
         this.practical = practical;
         this.sender = sender;
         this.receiver = receiver;
+    }
+
+    /**
+     * Method to send an invite, the method checks whether the invite has not already been send
+     * @param practical which the invite is for
+     * @param sender of the new invite
+     * @param receiver of the new invite
+     * @return
+     */
+    public static boolean sendInvite(Practical practical, User sender, User receiver) {
+        // Check whether the sender has not already send an invite to the receiver
+        if(!checkInvite(sender, receiver)) {
+            return false;
+        }
+        // Check whether the receiver has not already send an invite to the receiver
+        if(!checkInvite(receiver, sender)) {
+            return false;
+        }
+        Invite newInvite = new Invite(practical, sender, receiver);
+        newInvite.save();
+        return true;
+    }
+
+    /**
+     * Returns true if the first user has not send an invite to the second user
+     * @param sender first user
+     * @param receiver second user
+     * @return
+     */
+    private static boolean checkInvite(User sender, User receiver) {
+        // Check whether the sender has not already send an invite to the receiver
+        for (Invite invite : sender.getInvitesSend()) {
+            if(invite.getReceiver().getId().equals(receiver.getId())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -120,5 +165,21 @@ public class Invite extends Model {
      */
     public void setReceiver(User receiver) {
         this.receiver = receiver;
+    }
+
+    /**
+     * Getter for accepted
+     * @return accepted
+     */
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    /**
+     * Setter for accepted
+     * @param accepted to set
+     */
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 }

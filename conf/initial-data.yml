@@ -15,7 +15,25 @@ users:
     token: 123456
 
   - &user3 !!models.User
-    type: Admin
+    type: USER
+    firstName: Bob
+    lastName: Verburg
+    email: bob@example.com
+
+  - &user4 !!models.User
+    type: USER
+    firstName: Hendrik
+    lastName: Tienen
+    email: hendrik@example.com
+
+  - &user5 !!models.User
+    type: USER
+    firstName: Peter
+    lastName: Goedegebure
+    email: peter@example.com
+
+  - &user6 !!models.User
+    type: ADMIN
     firstName: admin
     lastName: TestAdmin
     email: admin@test.com
@@ -27,17 +45,43 @@ practicals:
     name: Programming
     description: A programming assignment about programming
     secret: abc
-    admin: *user3
+    admin: *user1
     users:
-      - *user1
+      - *user2
+      - *user3
+      - *user4
+      - *user5
 
 # PracticalGroup
 practicalGroups:
   - &practicalGroup1 !!models.PracticalGroup
     practical: *practical1
     users:
-      - *user1
+      - *user2
+  - &practicalGroup2 !!models.PracticalGroup
+    practical: *practical1
+    users:
+      - *user3
+  - &practicalGroup3 !!models.PracticalGroup
+    practical: *practical1
+    users:
+      - *user4
+  - &practicalGroup4 !!models.PracticalGroup
+    practical: *practical1
+    users:
+      - *user5
 
+# Invites
+invites:
+  - &invite1 !!models.Invite
+    practical: *practical1
+    sender: *user2
+    receiver: *user3
+
+  - &invite2 !!models.Invite
+    practical: *practical1
+    sender: *user4
+    receiver: *user2
 
 #Identities
 identities:
