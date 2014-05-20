@@ -49,14 +49,6 @@ public class PasswordIdentity extends Identity {
     }
 
     /**
-     * Gets password.
-     * @return The password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
      * Sets password.
      * @param password The password
      */

@@ -140,14 +140,6 @@ public class Practical extends Model {
     }
 
     /**
-     * Setter for id
-     * @param id to set
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Getter for name
      * @return name
      */
@@ -241,14 +233,6 @@ public class Practical extends Model {
      */
     public List<PracticalGroup> getPracticalGroups() {
         return practicalGroups;
-    }
-
-    /**
-     * Setter for practicalGroups
-     * @param practicalGroups to set
-     */
-    public void setPracticalGroups(List<PracticalGroup> practicalGroups) {
-        this.practicalGroups = practicalGroups;
     }
 
     /**

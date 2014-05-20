@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Ebean;
 import helpers.LinkedinConnection;
 import play.data.validation.*;
+import static org.mockito.Mockito.*;
 
 import javax.persistence.*;
 

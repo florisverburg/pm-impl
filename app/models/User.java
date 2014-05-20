@@ -272,14 +272,6 @@ public class User extends Model {
     }
 
     /**
-     * Sets identities.
-     * @param identities The identities
-     */
-    public void setIdentities(List<Identity> identities) {
-        this.identities = identities;
-    }
-
-    /**
      * Method to search a User by name
      * @param name that will be used to search for
      * @return returns the User that has a name equal to the input
