@@ -41,7 +41,7 @@ public class Application extends Controller {
      */
     @Secure.Authenticated
     public static Result courses() {
-        return ok(courses.render("test"));
+        return ok(courses.render());
     }
 
 
