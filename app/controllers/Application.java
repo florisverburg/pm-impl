@@ -43,7 +43,4 @@ public class Application extends Controller {
     public static Result courses() {
         return ok(courses.render());
     }
-
-
-
 }
