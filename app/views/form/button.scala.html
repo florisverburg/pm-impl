@@ -15,5 +15,5 @@
     @inputType = @{ args.toMap.get('type).map(_.toString).getOrElse("text") }
 
 @input(field, args.filter(_._1 != 'type):_*) { (id, name, value, htmlArgs) =>
-    <button type="@inputType" id="@id" name="@name" value="@value" class="btn btn-default" @toHtmlArgs(htmlArgs)>@id</button>
+    <button type="@inputType" id="@id" name="@name" value="@value" class="btn btn-default btn-primary btn-lg" @toHtmlArgs(htmlArgs)>@id</button>
 }

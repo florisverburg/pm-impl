@@ -1,5 +1,6 @@
 package controllers;
 
+import helpers.Secure;
 import play.mvc.*;
 import views.html.*;
 
@@ -34,6 +35,12 @@ public class Application extends Controller {
                 "contact@apmatch.nl"));
     }
 
-
-
+    /**
+     * Create the courses page
+     * @return The courses page
+     */
+    @Secure.Authenticated
+    public static Result courses() {
+        return ok(courses.render());
+    }
 }

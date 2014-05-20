@@ -32,6 +32,12 @@
                         <li class="@{if(active=="index") "active"}"><a id="linkHome" href="@routes.Application.index()">Home</a></li>
                         <li class="@{if(active=="about") "active"}"><a id="linkAbout" href="@routes.Application.about()">About</a></li>
                         <li class="@{if(active=="contact") "active"}"><a id="linkContact" href="@routes.Application.contact()">Contact</a></li>
+                        @{if(session.get("user_id")!=null) {
+                            Html("<li class=" + {
+                                if(active == "courses") "active"
+                            } + "><a href=" + routes.Application.courses() + ">Courses</a></li>")
+                        }
+                        }
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @{if(Secure.getUser() != null) {
@@ -56,14 +62,16 @@
         </div>
         <div class="container">
             @if(flash.contains("success")) {
-                <p class="success">
-                @Messages.get(flash.get("success"))
-                </p>
+                <div class="alert alert-success success">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    @Messages.get(flash.get("success"))
+                </div>
             }
             @if(flash.contains("error")) {
-                <p class="error">
-                @Messages.get(flash.get("error"))
-                </p>
+                <div class="alert alert-danger error">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    @Messages.get(flash.get("error"))
+                </div>
             }
             @content
 

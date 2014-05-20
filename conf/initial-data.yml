@@ -1,13 +1,13 @@
 # Users
 users:
   - &user1 !!models.User
-    type: TEACHER
+    type: USER
     firstName: MisterTest
     lastName: Test
     email: mistertest@test.com
 
   - &user2 !!models.User
-    type: USER
+    type: TEACHER
     firstName: Test
     lastName: Test
     email: test@test.com
@@ -38,7 +38,12 @@ practicalGroups:
 
 #Identities
 identities:
-  - !!models.PasswordIdentity
+  - &identity1 !!models.PasswordIdentity
+    user: *user1
+    email: mistertest@test.com
+    password: freak
+
+  - &identity2 !!models.PasswordIdentity
     user: *user2
     email: test@test.com
     password: floor
