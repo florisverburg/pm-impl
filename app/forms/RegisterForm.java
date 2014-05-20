@@ -135,7 +135,7 @@ public class RegisterForm {
 
         // Check if email is already existing in database
         if(User.findByEmail(email) != null) {
-            errors.add(new ValidationError("email", "This email address is already registered."));
+            errors.add(new ValidationError("email", "error.doubleEmail"));
         }
 
         // Check if passwords match

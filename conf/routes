@@ -15,6 +15,7 @@ GET         /practical/:id/:secret        controllers.PracticalController.regist
 # Profile
 GET         /profile                      controllers.Profile.view()
 GET         /profile/edit                 controllers.Profile.edit()
+POST        /profile/edit                 controllers.Profile.save()
 
 # Authentication
 GET         /login                        controllers.Authentication.login()

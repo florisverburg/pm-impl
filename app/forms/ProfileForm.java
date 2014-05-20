@@ -3,6 +3,7 @@ package forms;
 import models.*;
 import play.data.validation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,11 +44,6 @@ public class ProfileForm {
     private String passwordRepeat;
 
     /**
-     * Whether the user had a password login
-     */
-    private boolean hasPassword;
-
-    /**
      * Generate an empty form
      */
     public ProfileForm() {
@@ -62,15 +58,6 @@ public class ProfileForm {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
-        this.hasPassword = false;
-
-        // Go trough all identities and see if we have a password identity
-        List<Identity> identities = user.getIdentities();
-        for(Identity identity : identities) {
-            if(identity instanceof PasswordIdentity) {
-                this.hasPassword = true;
-            }
-        }
     }
 
     /**
@@ -154,30 +141,39 @@ public class ProfileForm {
     }
 
     /**
-     * If the user has a password login
-     * @return Whether the user has a password login
+     * Validates the profile form
+     * @return A list of errors
      */
-    public boolean hasPassword() {
-        return hasPassword;
-    }
+    public List<ValidationError> validate() {
+        List<ValidationError> errors = new ArrayList<ValidationError>();
 
-    /**
-     * Sets if the user has a password login
-     * @param hasPassword Whether the user has a password login
-     */
-    public void setHasPassword(boolean hasPassword) {
-        this.hasPassword = hasPassword;
+        // Check if passwords match
+        if(password != null && !password.equals(passwordRepeat)) {
+            errors.add(new ValidationError("passwordRepeat", "error.passwordRepeat"));
+        }
+
+        return errors.isEmpty() ? null : errors;
     }
 
     /**
      * Update a user with the new profile information
      * @param user The user to update
-     * @return The updated user
      */
-    public User updateUser(User user) {
+    public void updateUser(User user) {
         user.setFirstName(this.firstName);
         user.setLastName(this.lastName);
         user.setEmail(this.email);
-        return user;
+
+        // Update identity if needed
+        if(this.password != null && !this.password.isEmpty() && user.hasPassword()) {
+            for(Identity identity : user.getIdentities()) {
+                if(identity instanceof PasswordIdentity) {
+                    ((PasswordIdentity) identity).setPassword(this.password);
+                    identity.save();
+                }
+            }
+        }
+
+        user.save();
     }
 }

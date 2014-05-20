@@ -367,4 +367,19 @@ public class User extends Model {
     public String getFullName() {
         return getFirstName() + " " + getLastName();
     }
+
+    /**
+     * Check if we have a password identity
+     * @return True if found else false
+     */
+    public Boolean hasPassword() {
+        // Go trough all identities and see if we have a password identity
+        for(Identity identity : identities) {
+            if(identity instanceof PasswordIdentity) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
