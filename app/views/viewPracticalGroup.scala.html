@@ -1,0 +1,16 @@
+@(practicalGroup : PracticalGroup)
+
+@main("View - Practical", "view") {
+<h2>Practical group #@practicalGroup.getId()</h2>
+<h1>Group participants:</h1>
+@practicalGroup.getUsers().map { user =>
+    <div class = "row">
+        <div class = "col-xs-4">
+            <p>@user.getFirstName() @user.getLastName()</p>
+        </div>
+        <div class = "col-xs-8">
+            <button type="button" class="btn btn-ttc">Show profile</button>
+        </div>
+    </div>
+    }
+}

@@ -8,6 +8,7 @@ GET         /about                        controllers.Application.about()
 GET         /contact                      controllers.Application.contact()
 
 # Practical
+<<<<<<< HEAD
 GET         /practical/:id                controllers.PracticalController.view(id: Long)
 GET         /practical/:id/:secret        controllers.PracticalController.register(id: Long, secret: String)
 GET         /practical                    controllers.PracticalController.list()
@@ -16,6 +17,9 @@ GET         /practical                    controllers.PracticalController.list()
 GET         /profile                      controllers.Profile.view()
 GET         /profile/edit                 controllers.Profile.edit()
 POST        /profile/edit                 controllers.Profile.save()
+
+# Practical group
+GET         /practicalgroup/:id        controllers.PracticalController.viewPracticalGroup(id: Long)
 
 # Authentication
 GET         /login                        controllers.Authentication.login()

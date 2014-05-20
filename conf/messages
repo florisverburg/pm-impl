@@ -26,3 +26,4 @@ practical.wrongSecret = This secret does not match the practical secret
 
 # Profile
 profile.saved = Your profile is saved
+practical.userIsNotEnrolled = The user is not enrolled to this practical

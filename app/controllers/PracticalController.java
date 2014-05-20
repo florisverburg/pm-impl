@@ -23,7 +23,7 @@ public class PracticalController extends Controller {
     public static Result register(long id, String secret) {
         Practical practicalToRender = Practical.findById(id);
         User user = Secure.getUser();
-        // Checks of practical exist
+        // Checks if practical exist
         if(practicalToRender == null) {
             // When practical does not exist, show correct error
             flash("error", "practical.doesNotExist");
@@ -56,6 +56,11 @@ public class PracticalController extends Controller {
             flash("error", "practical.doesNotExist");
             return redirect(routes.Application.index());
         }
+        // If user is not enrolled to practical, it can't view it
+        if (!practicalToRender.getUsers().contains(Secure.getUser())) {
+            flash("error", "practical.userIsNotEnrolled");
+            return redirect(routes.Application.index());
+        }
         else {
             Logger.debug("Practical does exist");
             return ok(view.render(practicalToRender));
@@ -69,5 +74,11 @@ public class PracticalController extends Controller {
     public static Result list() {
         User user = Secure.getUser();
         return ok(list.render(user.getPracticals()));
+    }
+
+    @Secure.Authenticated
+    public static Result viewPracticalGroup(long id) {
+        PracticalGroup practicalGroup = PracticalGroup.findById(id);
+        return ok(viewPracticalGroup.render(practicalGroup));
     }
 }
