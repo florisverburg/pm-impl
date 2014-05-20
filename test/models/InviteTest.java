@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import play.test.WithApplication;
 import static junit.framework.TestCase.assertEquals;
+import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.inMemoryDatabase;
 
 /**
  * Created by Marijn Goedegebure on 19-5-2014.
@@ -22,7 +24,7 @@ public class InviteTest extends WithApplication {
 
     @Before
     public void setUp() {
-
+        start(fakeApplication(inMemoryDatabase()));
         // Create a new user
         bob = new User("Bob", "Verburg", "bob@example.com");
         bob.save();
@@ -46,39 +48,29 @@ public class InviteTest extends WithApplication {
         // Create a new invite
         documentingHendrikToBoB = new Invite(documentingAssingment, hendrik, bob);
         documentingHendrikToBoB.save();
-
-        // Save all changes
-        bob.save();
-        hendrik.save();
-        documentingAssingment.save();
-        programmingAssignment.save();
     }
 
     @Test
     public void testCreationInvite() {
         // Test the values set in the before method
         assertEquals(documentingHendrikToBoB.getPractical().getId(), documentingAssingment.getId());
-        assertEquals(documentingHendrikToBoB.getSender().getId(), bob.getId());
-        assertEquals(documentingHendrikToBoB.getReceiver().getId(), hendrik.getId());
+        assertEquals(documentingHendrikToBoB.getSender().getId(), hendrik.getId());
+        assertEquals(documentingHendrikToBoB.getReceiver().getId(), bob.getId());
     }
 
     @Test
     public void testSetters() {
         // Set new values
-        documentingHendrikToBoB.setId(3);
         documentingHendrikToBoB.setPractical(programmingAssignment);
-        documentingHendrikToBoB.setSender(hendrik);
+        documentingHendrikToBoB.setReceiver(hendrik);
         documentingHendrikToBoB.setSender(bob);
-
-        // Save new values
         documentingHendrikToBoB.save();
-        bob.save();
-        hendrik.save();
-        programmingAssignment.save();
+
+
 
         // Test new values
         assertEquals(documentingHendrikToBoB.getPractical().getId(), programmingAssignment.getId());
-        assertEquals(documentingHendrikToBoB.getSender().getId(), hendrik.getId());
-        assertEquals(documentingHendrikToBoB.getReceiver().getId(), bob.getId());
+        assertEquals(documentingHendrikToBoB.getSender().getId(), bob.getId());
+        assertEquals(documentingHendrikToBoB.getReceiver().getId(), hendrik.getId());
     }
 }

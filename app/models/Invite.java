@@ -47,9 +47,13 @@ public class Invite extends Model {
 
     /**
      * Constructor of an invite
+     * @param practical of the new invite
+     * @param sender of the new invite
+     * @param receiver of the new invite
      */
     public Invite(Practical practical, User sender, User receiver) {
         this.accepted = false;
+        this.practical = practical;
         this.sender = sender;
         this.receiver = receiver;
     }

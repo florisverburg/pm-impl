@@ -267,7 +267,7 @@ public class Practical extends Model {
 
     /**
      * Add invite to the list of invites
-     * @param invite
+     * @param invite to add
      */
     public void addInvites(Invite invite) {
         this.invites.add(invite);

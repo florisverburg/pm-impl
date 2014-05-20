@@ -76,9 +76,11 @@ public class UserTest extends WithApplication {
 
         // Create a new practicalGroup
         bobsGroup = new PracticalGroup(programmingAssignment);
+        bobsGroup.save();
 
         // Create a new practicalGroup
         bobAndHendriksGroup = new PracticalGroup(documentingAssingment);
+        bobAndHendriksGroup.save();
 
         // Add skills to user bob
         bob.addSkill(programming);
@@ -113,18 +115,12 @@ public class UserTest extends WithApplication {
         programmingBobToPeter.save();
 
         // Create a new invite
-        programmingPeterToHendrik = new Invite(documentingAssingment, peter, hendrik);
+        programmingPeterToHendrik = new Invite(programmingAssignment, peter, hendrik);
         programmingPeterToHendrik.save();
 
         // Create a new invite
         documentingHendrikToBoB = new Invite(documentingAssingment, hendrik, bob);
         documentingHendrikToBoB.save();
-
-        // Save all changes made by invite addition
-        bob.save();
-        hendrik.save();
-        documentingAssingment.save();
-        programmingAssignment.save();
     }
 
     /**
@@ -204,9 +200,9 @@ public class UserTest extends WithApplication {
         List<Practical> returnedPracticals = returnedValue.getPracticals();
 
         // Check whether associated users are correct
+        assertEquals(returnedPracticals.size(), 2);
         assertEquals(returnedPracticals.get(0).getName(), "ProgrammingAssignment");
         assertEquals(returnedPracticals.get(1).getName(), "DocumentingAssignment");
-        assertEquals(returnedPracticals.size(), 2);
 
         returnedValue = User.findByName("Hendrik");
         // Get practicals of the user
@@ -279,7 +275,7 @@ public class UserTest extends WithApplication {
         // Check whether associated invites are correct
         // Check the invites send
         assertEquals(returnedSendInvites.size(), 1);
-        assertEquals(returnedSendInvites.get(0).getId(), programmingBobToHendrik.getId());
+        assertEquals(returnedSendInvites.get(0).getId(), documentingHendrikToBoB.getId());
     }
 
     @Test
@@ -301,8 +297,8 @@ public class UserTest extends WithApplication {
         // Check whether associated invites are correct
         // Check the invites received
         assertEquals(returnedReceivedInvites.size(), 2);
-        assertEquals(returnedReceivedInvites.get(0).getId(), documentingHendrikToBoB.getId());
-        assertEquals(returnedReceivedInvites.get(1).getId(), programmingBobToPeter.getId());
+        assertEquals(returnedReceivedInvites.get(0).getId(), programmingBobToHendrik.getId());
+        assertEquals(returnedReceivedInvites.get(1).getId(), programmingPeterToHendrik.getId());
     }
 
     @Test
