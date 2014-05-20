@@ -10,7 +10,7 @@ authentication.loggedIn = You successfully logged in!
 authentication.unauthorized = You aren''t authorized to access this page
 
 error.passwordRepeat = The passwords don''t match
-error.doubleEmail = The email is already registered
+error.doubleEmail = The email address is already registered
 error.wrongAuthentication = Wrong login information supplied
 linkedin.unknownError = An unknown error with Linkedin occurred, please try again later
 
