@@ -18,6 +18,7 @@ public class UserTest extends WithApplication {
 
     private User bob;
     private User hendrik;
+    private User hans;
 
     private Skill programming;
     private Skill documenting;
@@ -36,6 +37,10 @@ public class UserTest extends WithApplication {
         // Create a new user
         bob = new User("Bob", "Verburg", "bob@example.com");
         bob.save();
+
+        // Create a new teacher
+        hans = new User("Hans", "Goedegeburen", "hg@test.com", User.Type.Teacher);
+        hans.save();
 
         // Create a new user
         hendrik = new User("Hendrik", "Tienen", "hendrik@example.com");
@@ -244,5 +249,17 @@ public class UserTest extends WithApplication {
 
         assertNull(User.authenticate("floor@wrongemail.com", "florina"));
         assertNull(User.authenticate(bob.getEmail(), "wrongpass"));
+    }
+
+    @Test
+    public void typeTest() {
+        assertEquals(hans.getType(), User.Type.Teacher);
+        assertNotEquals(hans.getType(), User.Type.User);
+    }
+
+    @Test
+    public void testEquals() {
+        assertEquals(bob, bob);
+        assertNotEquals(bob, hendrik);
     }
 }
