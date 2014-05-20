@@ -189,7 +189,7 @@ public class PracticalTest extends WithApplication {
 
         // check whether associated teams are correct
         assertEquals(returnedInvites.size(), 2);
-        assertEquals(returnedInvites.get(0), documentingPeterToHendrik.getId());
-        assertEquals(returnedInvites.get(1), documentingHendrikToBoB.getId());
+        assertEquals(returnedInvites.get(0).getId(), documentingPeterToHendrik.getId());
+        assertEquals(returnedInvites.get(1).getId(), documentingHendrikToBoB.getId());
     }
 }
