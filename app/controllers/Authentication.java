@@ -109,7 +109,6 @@ public class Authentication extends Controller {
         }
         else {
             // Create the new user and identity
-
             registerForm.get().save();
 
             flash("success", "authentication.emailSent");

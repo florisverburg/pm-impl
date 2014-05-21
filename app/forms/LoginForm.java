@@ -64,7 +64,7 @@ public class LoginForm {
         if (user == null) {
             return Messages.get("error.wrongAuthentication");
         }
-        else if (!(user.getToken() == null)) {
+        else if (user.getToken() != null) {
             return Messages.get("error.notValidated");
         }
         return null;

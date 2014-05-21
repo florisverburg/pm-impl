@@ -3,6 +3,8 @@ package models;
 import javax.persistence.*;
 
 import com.avaje.ebean.annotation.EnumValue;
+import controllers.routes;
+import play.Play;
 import play.data.validation.*;
 import play.db.ebean.*;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.typesafe.plugin.*;
+import play.mvc.*;
 
 /**
  * Created by Freek on 09/05/14.
@@ -125,6 +128,11 @@ public class User extends Model {
      */
     @ManyToMany(cascade = CascadeType.ALL)
     private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
+
+    /**
+     * The client identifier of the Linkedin API
+     */
+    private static final String EMAIL = Play.application().configuration().getString("email.address");
 
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill
@@ -403,9 +411,10 @@ public class User extends Model {
         MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
         mail.setSubject("APMatch - Verify your mail");
         mail.setRecipient(this.getFullName() + " <" + this.getEmail() + ">");
-        mail.setFrom("APMatch <apmatching@gmail.com>");
+        mail.setFrom("APMatch <"+EMAIL+">");
         //sends text/text
-        String link = "http://localhost:9000/verify/" + this.getEmail() + "/" + this.getToken();
+        String link = controllers.routes.Authentication.verify(this.getEmail(), this.getToken()).absoluteURL(false,
+                Http.Context.current()._requestHeader());
         String message = "Verify your account by opening this link: " + link;
         mail.send(message);
     }
