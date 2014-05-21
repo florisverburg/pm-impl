@@ -29,12 +29,6 @@
                         <li class="@{if(active=="index") "active"}"><a id="linkHome" href="@routes.Application.index()">Home</a></li>
                         <li class="@{if(active=="about") "active"}"><a id="linkAbout" href="@routes.Application.about()">About</a></li>
                         <li class="@{if(active=="contact") "active"}"><a id="linkContact" href="@routes.Application.contact()">Contact</a></li>
-                        @{if(session.get("user_id")!=null) {
-                            Html("<li class=" + {
-                                if(active == "courses") "active"
-                            } + "><a href=" + routes.Application.courses() + ">Courses</a></li>")
-                        }
-                        }
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @user = @{ Secure.getUser() }
@@ -44,6 +38,7 @@
                                     Welcome, @user.getFullName()<b class="caret"></b></a>
                                 <ul class="dropdown-menu inverse-dropdown">
                                     <li class="@{if(active == "profile") "active"}"><a href="@routes.Profile.view()"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                                    <li class="@{if(active == "practicals") "active"}"><a href="@routes.PracticalController.list()"><span class="glyphicon glyphicon-briefcase"></span> Practicals</a></li>
                                     <li><a href="@routes.Authentication.logout()">Log out</a></li>
                                 </ul>
                             </li>

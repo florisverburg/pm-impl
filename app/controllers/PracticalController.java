@@ -4,22 +4,22 @@ import helpers.Secure;
 import models.*;
 import play.Logger;
 import play.mvc.*;
-import views.html.*;
+import views.html.practical.list;
+import views.html.practical.view;
 
 /**
  * Created by Marijn Goedegebure on 15-5-2014.
- * The class that handles all the actions used with the practicals
+ * The class that handles all the practical controller actions
  */
+@Secure.Authenticated
 public class PracticalController extends Controller {
 
     /**
-     * Method used to register a new practical to a user
-     *
-     * @param id     of the practical
-     * @param secret of the practical
-     * @return the appropriate view
+     * Method used to register a practical to a user
+     * @param id The id of the practical
+     * @param secret The secret of the practical
+     * @return Shows either the practical page itself or an error
      */
-    @Secure.Authenticated
     public static Result register(long id, String secret) {
         Practical practicalToRender = Practical.findById(id);
         User user = Secure.getUser();
@@ -31,28 +31,24 @@ public class PracticalController extends Controller {
         }
         else if (practicalToRender.getUsers().contains(user)){
             // Checks of the user is not already a part of the practical
-            return redirect(routes.PracticalController.
-                    viewPractical(practicalToRender.getId()));
+            return redirect(routes.PracticalController.view(practicalToRender.getId()));
         }
         else if (!practicalToRender.getSecret().equals(secret)) {
             // Checks if the secret is correct
             flash("error", "practical.wrongSecret");
-            return redirect(routes.PracticalController.
-                    viewPractical(practicalToRender.getId()));
+            return redirect(routes.PracticalController.view(practicalToRender.getId()));
         }
         // if everything is correct, add user to practical
         Practical.addUserToPractical(practicalToRender, Secure.getUser());
-        return redirect(routes.PracticalController.
-                viewPractical(practicalToRender.getId()));
+        return redirect(routes.PracticalController.view(practicalToRender.getId()));
     }
 
     /**
-     * Method to view the practical specified by the url
+     * View the practical specified by the url
      * @param id of the practical
-     * @return appropriate url
+     * @return Show the practical information
      */
-    @Secure.Authenticated
-    public static Result viewPractical(long id) {
+    public static Result view(long id) {
         Practical practicalToRender = Practical.findById(id);
         // If practical does not exist
         if (practicalToRender == null) {
@@ -62,7 +58,16 @@ public class PracticalController extends Controller {
         }
         else {
             Logger.debug("Practical does exist");
-            return ok(viewPractical.render(practicalToRender));
+            return ok(view.render(practicalToRender));
         }
+    }
+
+    /**
+     * List the practicals where the user is registered to
+     * @return Shows a list of registered practicals
+     */
+    public static Result list() {
+        User user = Secure.getUser();
+        return ok(list.render(user.getPracticals()));
     }
 }
