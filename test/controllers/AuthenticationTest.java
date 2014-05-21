@@ -156,4 +156,111 @@ public class AuthenticationTest extends WithApplication {
         assertEquals(SEE_OTHER, status(result));
     }
 
+    @Test
+    public void tokenAdded() {
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", "Bob");
+        body.put("lastName", "Verburg");
+        body.put("language", "english");
+        body.put("email", "mybob@example.com");
+        body.put("password", "myVeryGoodPass");
+        body.put("passwordRepeat", "myVeryGoodPass");
+
+        callAction(
+                routes.ref.Authentication.registration(),
+                fakeRequest().withFormUrlEncodedBody(body));
+
+
+        User user = User.findByEmail("mybob@example.com");
+        User userAuth = User.authenticate("mybob@example.com", "myVeryGoodPass");
+
+        assertNotNull(user);
+        assertNotNull(userAuth);
+        assertNotNull(user.getToken());
+    }
+
+    @Test
+    public void notLoggedInBeforeVerification() {
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", "Bob");
+        body.put("lastName", "Verburg");
+        body.put("language", "english");
+        body.put("email", "mybob@example.com");
+        body.put("password", "myVeryGoodPass");
+        body.put("passwordRepeat", "myVeryGoodPass");
+
+        callAction(
+                controllers.routes.ref.Authentication.registration(),
+                fakeRequest().withFormUrlEncodedBody(body));
+
+        Result result = callAction(
+                controllers.routes.ref.Authentication.authenticate(),
+                fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
+                        "email", "mybob@example.com",
+                        "password", "myVeryGoodPass"))
+        );
+
+        assertTrue(contentAsString(result).contains("The email address is not yet verified"));
+        assertNotEquals(User.findByEmail("mybob@example.com").getId().toString(), session(result).get("user_id"));
+    }
+
+    @Test
+    public void tokenDeletedAfterVerification() {
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", "Bob");
+        body.put("lastName", "Verburg");
+        body.put("language", "english");
+        body.put("email", "mybob@example.com");
+        body.put("password", "myVeryGoodPass");
+        body.put("passwordRepeat", "myVeryGoodPass");
+
+        callAction(
+                routes.ref.Authentication.registration(),
+                fakeRequest().withFormUrlEncodedBody(body));
+
+
+        User user = User.findByEmail("mybob@example.com");
+        User userAuth = User.authenticate("mybob@example.com", "myVeryGoodPass");
+
+        assertNotNull(user);
+        assertNotNull(userAuth);
+        assertNotNull(user.getToken());
+        assertNotNull(user.getEmail());
+
+        callAction(routes.ref.Authentication.verify(user.getEmail(), user.getToken()));
+
+        user = User.findByEmail("mybob@example.com");
+
+        assertNotNull(user);
+        assertNotNull(userAuth);
+        assertNull(user.getToken());
+    }
+
+    @Test
+    public void loggedInAfterVerification() {
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", "Bob");
+        body.put("lastName", "Verburg");
+        body.put("language", "english");
+        body.put("email", "mybob@example.com");
+        body.put("password", "myVeryGoodPass");
+        body.put("passwordRepeat", "myVeryGoodPass");
+
+        callAction(
+                controllers.routes.ref.Authentication.registration(),
+                fakeRequest().withFormUrlEncodedBody(body));
+
+        User user = User.findByEmail("mybob@example.com");
+        callAction(routes.ref.Authentication.verify(user.getEmail(), user.getToken()));
+
+        Result result = callAction(
+                controllers.routes.ref.Authentication.authenticate(),
+                fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
+                        "email", "mybob@example.com",
+                        "password", "myVeryGoodPass"))
+        );
+
+        assertEquals(User.findByEmail("mybob@example.com").getId().toString(), session(result).get("user_id"));
+    }
+
 }

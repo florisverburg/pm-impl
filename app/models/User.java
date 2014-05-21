@@ -6,8 +6,12 @@ import com.avaje.ebean.annotation.EnumValue;
 import play.data.validation.*;
 import play.db.ebean.*;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.typesafe.plugin.*;
 
 /**
  * Created by Freek on 09/05/14.
@@ -44,6 +48,16 @@ public class User extends Model {
     }
 
     /**
+     * The amount of random bits that needs to be generated for the state
+     * */
+    private static final int STATE_RANDOM_BITS = 130;
+
+    /**
+     * The base number of the random state generated number
+     */
+    private static final int STATE_RANDOM_BASE = 16;
+
+    /**
      * The user identifier
      */
     @Id
@@ -76,6 +90,11 @@ public class User extends Model {
     @Constraints.Required
     @Constraints.Min(1)
     private Type type;
+
+    /**
+     * The token for the email validation
+     */
+    private String token;
 
     /**
      *
@@ -125,6 +144,7 @@ public class User extends Model {
         this.lastName = lastName;
         this.email = email;
         this.type = type;
+        this.token = generateSecret();
     }
 
     /**
@@ -138,6 +158,15 @@ public class User extends Model {
         this.lastName = lastName;
         this.email = email;
         this.type = Type.User;
+        this.token = generateSecret();
+    }
+
+    /**
+     * Method that returns a random generated secret
+     * @return random generated secret
+     */
+    public String generateSecret() {
+        return new BigInteger(STATE_RANDOM_BITS, new SecureRandom()).toString(STATE_RANDOM_BASE);
     }
 
     /**
@@ -349,5 +378,35 @@ public class User extends Model {
         }
 
         return false;
+    }
+
+    /**
+     * Getter of the token
+     * @return token token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Setter of the token
+     * @param token to be set
+     */
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    /**
+     * Sends an email with verification link
+     */
+    public void sendVerification() {
+        MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
+        mail.setSubject("APMatch - Verify your mail");
+        mail.setRecipient(this.getFullName() + " <" + this.getEmail() + ">");
+        mail.setFrom("APMatch <apmatching@gmail.com>");
+        //sends text/text
+        String link = "http://localhost:9000/verify/" + this.getEmail() + "/" + this.getToken();
+        String message = "Verify your account by opening this link: " + link;
+        mail.send(message);
     }
 }
