@@ -1,16 +1,30 @@
 @(practicalGroup : PracticalGroup)
+@import helpers._
 
 @main("View - Practical", "view") {
-<h2>Practical group #@practicalGroup.getId()</h2>
-<h1>Group participants:</h1>
+@if(practicalGroup.getUsers().contains(Secure.getUser())) {
+<h1>This is your practical group #@practicalGroup.getId()</h2>
+<h2>Group participants:</h1>
 @practicalGroup.getUsers().map { user =>
     <div class = "row">
         <div class = "col-xs-4">
             <p>@user.getFirstName() @user.getLastName()</p>
         </div>
         <div class = "col-xs-8">
-            <button type="button" class="btn btn-ttc">Show profile</button>
         </div>
     </div>
     }
+} else {
+<h1>Practical group #@practicalGroup.getId()</h1>
+<h2>Group participants:</h2>
+@practicalGroup.getUsers().map { user =>
+<div class = "row">
+    <div class = "col-xs-4">
+        <p>@user.getFirstName() @user.getLastName()</p>
+    </div>
+    <div class = "col-xs-8">
+    </div>
+</div>
+}
+}
 }
