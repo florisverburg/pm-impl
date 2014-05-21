@@ -22,4 +22,34 @@
             </div>
         </div>
     }
+@if(invite.getReceiver().getId().equals(Secure.getUser().getId())  && invite.getState().equals(Invite.State.ACCEPTED)) {
+<div class = "row">
+    <div class = "col-xs-3">
+        <a href="@routes.InviteController.rejectInvite(invite.getId(), Secure.getUser().getId() )" class = "btn btn-primary">reject invite</a>
+    </div>
+</div>
+}
+@if(invite.getSender().getId().equals(Secure.getUser().getId())  && invite.getState().equals(Invite.State.ACCEPTED)) {
+<div class = "row">
+    <div class = "col-xs-3">
+        <a href="@routes.InviteController.rejectInvite(invite.getId(), Secure.getUser().getId())" class = "btn btn-primary">reject invite</a>
+    </div>
+</div>
+}
+@if(invite.getSender().getId().equals(Secure.getUser().getId())  && invite.getState().equals(Invite.State.WITHDRAWN)) {
+<div class = "row">
+    <div class = "col-xs-3">
+        <a href="@routes.InviteController.resendInvite(invite.getId())" class = "btn btn-primary">resend invite</a>
+    </div>
+</div>
+}
+
+@if(invite.getSender().getId().equals(Secure.getUser().getId())  && invite.getState().equals(Invite.State.PENDING)) {
+    <div class = "row">
+        <div class = "col-xs-3">
+            <a href="@routes.InviteController.withdrawInvite(invite.getId())" class = "btn btn-primary">withdraw invite</a>
+        </div>
+    </div>
+    }
+
 }

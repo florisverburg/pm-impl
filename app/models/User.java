@@ -107,7 +107,7 @@ public class User extends Model {
     /**
      * The many-to-many relationship defined by the skills and users
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Skill> skills = new ArrayList<Skill>();
 
     /**

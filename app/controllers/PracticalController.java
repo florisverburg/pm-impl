@@ -52,7 +52,6 @@ public class PracticalController extends Controller {
         Practical practicalToRender = Practical.findById(id);
         // If practical does not exist
         if (practicalToRender == null) {
-            Logger.debug("Practical does not exist");
             flash("error", "practical.doesNotExist");
             return redirect(routes.Application.index());
         }
@@ -67,6 +66,7 @@ public class PracticalController extends Controller {
             Logger.debug("Practical does exist");
             return ok(viewPractical.render(practicalToRender));
         }
+        return ok(viewPractical.render(practicalToRender));
     }
 
     @Secure.Authenticated

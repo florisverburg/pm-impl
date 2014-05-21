@@ -2,15 +2,12 @@ package models;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.EnumValue;
-import play.Logger;
 import play.data.validation.*;
 import play.db.ebean.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.avaje.ebean.Expr.eq;
 
 /**
  * Created by Marijn Goedegebure on 19-5-2014.
@@ -38,7 +35,12 @@ public class Invite extends Model {
          * The state rejected.
          */
         @EnumValue("REJECTED")
-        REJECTED
+        REJECTED,
+        /**
+         * The state withdrawn
+         */
+        @EnumValue("WITHDRAWN")
+        WITHDRAWN
     }
 
     /**
@@ -87,11 +89,7 @@ public class Invite extends Model {
      * @return list of pending invites
      */
     public static List<Invite> findPendingInvites() {
-        List<Invite> list = find.where().eq("state", State.PENDING).findList();
-        for (int i = 0; i < list.size(); i++) {
-            Logger.debug("pendingInvites:" + list.get(i).getId() + " " + list.get(i).getSender().getFirstName());
-        }
-        return list;
+        return find.where().eq("state", State.PENDING).findList();
     }
 
     /**
@@ -162,6 +160,64 @@ public class Invite extends Model {
         PracticalGroup sendersPracticalGroup = PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), sender);
         sendersPracticalGroup.addUser(receiver);
         sendersPracticalGroup.save();
+    }
+
+    /**
+     * Method to reject an invite
+     * @param invite to reject
+     */
+    public static void rejectInvite(Invite invite, User user) {
+        PracticalGroup practicalGroupOfRejecter = PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), user);
+        Practical practical = invite.getPractical();
+        // If the sender of the invite is equal to the user that rejects the invite
+        if(invite.getSender().getId().equals(user.getId())) {
+            // Delete each user from the practicalgroup and put them in a new one
+            for(User practicalGroupUser : practicalGroupOfRejecter.getUsers()) {
+                // Delete practical group from user
+                practicalGroupUser.removePracticalGroup(practicalGroupOfRejecter);
+                practicalGroupUser.save();
+
+                // Delete practical group from practical
+                practical.removePracticalGroup(practicalGroupOfRejecter);
+                PracticalGroup newPracticalGroup = new PracticalGroup(practical);
+                newPracticalGroup.addUser(practicalGroupUser);
+                newPracticalGroup.save();
+            }
+            for(Invite inviteSend : invite.getSender().getInvitesSend()) {
+                inviteSend.setState(State.REJECTED);
+                inviteSend.save();
+            }
+            Ebean.delete(practicalGroupOfRejecter);
+        }
+        else {
+            // Only remove the receiver from the group and update the group
+            practicalGroupOfRejecter.removeUser(user);
+            practicalGroupOfRejecter.save();
+            // Create a new practical group for the removed user
+            PracticalGroup newPracticalGroup = new PracticalGroup(practicalGroupOfRejecter.getPractical());
+            newPracticalGroup.addUser(user);
+            newPracticalGroup.save();
+            invite.setState(State.REJECTED);
+            invite.save();
+        }
+    }
+
+    /**
+     * Method to withdraw invite
+     * @param invite to withdraw
+     */
+    public static void withdrawInvite(Invite invite) {
+        invite.setState(State.WITHDRAWN);
+        invite.save();
+    }
+
+    /**
+     * Method to resend invite
+     * @param invite
+     */
+    public static void resendInvite(Invite invite) {
+        invite.setState(State.PENDING);
+        invite.save();
     }
 
     /**

@@ -87,6 +87,14 @@ public class PracticalGroup extends Model {
     }
 
     /**
+     * Remove user from list
+     * @param user to remove
+     */
+    public void removeUser(User user) {
+        users.remove(user);
+    }
+
+    /**
      * Getter for Id
      * @return id
      */

@@ -61,7 +61,7 @@ public class Skill extends Model {
     /**
      * The many-to-many relationship defined for the skills and users
      */
-    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "skills", cascade = CascadeType.PERSIST)
     private List<User> users = new ArrayList<User>();
 
     /**
@@ -100,6 +100,14 @@ public class Skill extends Model {
      */
     public List<User> getUsers() {
         return users;
+    }
+
+    /**
+     * Setter for the users list
+     * @param users to set
+     */
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     /**
