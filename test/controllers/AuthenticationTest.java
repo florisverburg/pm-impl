@@ -16,8 +16,7 @@ import play.test.WithApplication;
 public class AuthenticationTest extends WithApplication {
     @Before
     public void setUp() {
-        start(fakeApplication(inMemoryDatabase(), fakeGlobal()));
-        TestHelper.loadYamlFile("test-data.yml");
+        start(fakeApplication(inMemoryDatabase()));
     }
 
     @Test

@@ -45,6 +45,22 @@ users:
     email: admin@test.com
     token: 12345
 
+# Skills
+skills:
+  - &skill1 !!models.Skill
+    name: Programming
+    type: PROGRAMMING
+    maxValue: 10
+    users:
+      - *user3
+      - *user4
+  - &skill2 !!models.Skill
+    name: Documenting
+    type: DOCUMENTING
+    maxValue: 10
+    users:
+      - *user3
+
 # Practical
 practicals:
   - &practical1 !!models.Practical
@@ -58,6 +74,14 @@ practicals:
       - *user4
       - *user5
       - *user6
+
+  - &practical2 !!models.Practical
+    name: Documenting
+    description: Assignment about documenting
+    secret: abc
+    admin: *user1
+    users:
+      - *user3
 
 # PracticalGroup
 practicalGroups:
@@ -81,6 +105,12 @@ practicalGroups:
     practical: *practical1
     users:
       - *user6
+  - &practicalGroup6 !!models.PracticalGroup
+    practical: *practical2
+    users:
+      - *user3
+      - *user4
+
 
 # Invites
 invites:
@@ -99,6 +129,26 @@ invites:
     practical: *practical1
     sender: *user2
     receiver: *user5
+  - &invite4 !!models.Invite
+    state: PENDING
+    practical: *practical1
+    sender: *user3
+    receiver: *user4
+  - &invite5 !!models.Invite
+    state: PENDING
+    practical: *practical1
+    sender: *user3
+    receiver: *user5
+  - &invite6 !!models.Invite
+    state: PENDING
+    practical: *practical1
+    sender: *user5
+    receiver: *user4
+  - &invite7 !!models.Invite
+    state: PENDING
+    practical: *practical2
+    sender: *user4
+    receiver: *user3
 
 #Identities
 identities:

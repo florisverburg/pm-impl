@@ -66,8 +66,6 @@ public class InviteTest extends WithApplication {
         documentingHendrikToBoB.setSender(bob);
         documentingHendrikToBoB.save();
 
-
-
         // Test new values
         assertEquals(documentingHendrikToBoB.getPractical().getId(), programmingAssignment.getId());
         assertEquals(documentingHendrikToBoB.getSender().getId(), bob.getId());

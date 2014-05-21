@@ -91,27 +91,4 @@ public class PracticalGroupTest extends WithApplication {
         assertEquals(bobsGroup.getPractical(), documentingAssingment);
         assertEquals(bobsGroup.getUsers().size(), 1);
     }
-
-    /**()
-     * Method to test the many-to-many relations of PracticalGroup with User
-     */
-    @Test
-    public void testManyToMany() {
-        // Get practicalGroup
-        PracticalGroup returnedValue = PracticalGroup.findById(bobAndHendriksGroup.getId());
-        List<User> returnedUsers = returnedValue.getUsers();
-
-        // check whether associated teams are correct
-        assertEquals(returnedUsers.get(0).getFirstName(), "Bob");
-        assertEquals(returnedUsers.get(1).getFirstName(), "Hendrik");
-        assertEquals(returnedUsers.size(), 2);
-
-        // Get the other right
-        returnedValue = PracticalGroup.findById(bobsGroup.getId());
-        returnedUsers = returnedValue.getUsers();
-
-        // check whether associated teams are correct
-        assertEquals(returnedUsers.get(0).getFirstName(), "Bob");
-        assertEquals(returnedUsers.size(), 1);
-    }
 }
