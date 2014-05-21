@@ -111,6 +111,7 @@ public class Authentication extends Controller {
             // Create the new user and identity
             registerForm.get().save();
 
+            flash("success", "authentication.emailSent");
             return redirect(
                     routes.Application.index()
             );
@@ -150,5 +151,34 @@ public class Authentication extends Controller {
         return redirect(
                 routes.Application.index()
         );
+    }
+
+     /** Checks if the mail and token are valid. If so, the email address is validated
+     * @param mail The email address
+     * @param token The token
+     * @return Redirect to index if params aren't valid, to login otherwise
+     */
+    public static Result verify(String mail, String token) {
+        User user = User.findByEmail(mail);
+        if(user == null || token == null) {
+            flash("error", "error.unknownValidation");
+            return redirect(
+                    routes.Application.index()
+            );
+        }
+        else if (!token.equals(user.getToken())) {
+            flash("error", "error.wrongToken");
+            return redirect(
+                    routes.Application.index()
+            );
+        }
+        else {
+            user.setToken(null);
+            user.save();
+            flash("success", "authentication.verified");
+            return redirect(
+                    routes.Authentication.login()
+            );
+        }
     }
 }

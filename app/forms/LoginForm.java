@@ -60,8 +60,12 @@ public class LoginForm {
      * @return Returns null if login is correct, else an error message
      */
     public String validate() {
-        if (User.authenticate(email, password) == null) {
+        User user = User.authenticate(email, password);
+        if (user == null) {
             return Messages.get("error.wrongAuthentication");
+        }
+        else if (user.getToken() != null) {
+            return Messages.get("error.notValidated");
         }
         return null;
     }

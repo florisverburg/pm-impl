@@ -169,6 +169,7 @@ public class RegisterForm {
     public void save() {
         User user = this.getUser();
         user.save();
+        user.sendVerification();
         this.getIdentity(user).save();
     }
 }

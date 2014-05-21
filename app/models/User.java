@@ -3,11 +3,17 @@ package models;
 import javax.persistence.*;
 
 import com.avaje.ebean.annotation.EnumValue;
+import play.Play;
 import play.data.validation.*;
 import play.db.ebean.*;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.typesafe.plugin.*;
+import play.mvc.*;
 
 /**
  * Created by Freek on 09/05/14.
@@ -44,6 +50,16 @@ public class User extends Model {
     }
 
     /**
+     * The amount of random bits that needs to be generated for the token
+     * */
+    private static final int TOKEN_RANDOM_BITS = 130;
+
+    /**
+     * The base number of the random token generated number
+     */
+    private static final int TOKEN_RANDOM_BASE = 16;
+
+    /**
      * The user identifier
      */
     @Id
@@ -78,6 +94,11 @@ public class User extends Model {
     private Type type;
 
     /**
+     * The token for the email validation
+     */
+    private String token;
+
+    /**
      *
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
@@ -108,6 +129,11 @@ public class User extends Model {
     private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
 
     /**
+     * The client identifier of the Linkedin API
+     */
+    private static final String EMAIL = Play.application().configuration().getString("email.address");
+
+    /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
     public static Model.Finder<Long, User> find =
@@ -125,6 +151,7 @@ public class User extends Model {
         this.lastName = lastName;
         this.email = email;
         this.type = type;
+        this.token = generateSecret();
     }
 
     /**
@@ -138,6 +165,15 @@ public class User extends Model {
         this.lastName = lastName;
         this.email = email;
         this.type = Type.User;
+        this.token = generateSecret();
+    }
+
+    /**
+     * Method that returns a random generated secret
+     * @return random generated secret
+     */
+    public String generateSecret() {
+        return new BigInteger(TOKEN_RANDOM_BITS, new SecureRandom()).toString(TOKEN_RANDOM_BASE);
     }
 
     /**
@@ -349,5 +385,36 @@ public class User extends Model {
         }
 
         return false;
+    }
+
+    /**
+     * Getter of the token
+     * @return token token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Setter of the token
+     * @param token to be set
+     */
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    /**
+     * Sends an email with verification link
+     */
+    public void sendVerification() {
+        MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
+        mail.setSubject("APMatch - Verify your mail");
+        mail.setRecipient(this.getFullName() + " <" + this.getEmail() + ">");
+        mail.setFrom("APMatch <"+EMAIL+">");
+        //sends text/text
+        String link = controllers.routes.Authentication.verify(this.getEmail(), this.getToken()).absoluteURL(false,
+                Http.Context.current()._requestHeader());
+        String message = "Verify your account by opening this link: " + link;
+        mail.send(message);
     }
 }

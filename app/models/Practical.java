@@ -46,14 +46,14 @@ public class Practical extends Model {
     private String secret;
 
     /**
-     * The amount of random bits that needs to be generated for the state
+     * The amount of random bits that needs to be generated for the secret
      * */
-    private static final int STATE_RANDOM_BITS = 130;
+    private static final int SECRET_RANDOM_BITS = 130;
 
     /**
-     * The base number of the random state generated number
+     * The base number of the random secret generated number
      */
-    private static final int STATE_RANDOM_BASE = 16;
+    private static final int SECRET_RANDOM_BASE = 16;
 
     /**
      * Many-to-many relationship between practical and user
@@ -96,7 +96,7 @@ public class Practical extends Model {
      * @return random generated secret
      */
     public String generateSecret() {
-        return new BigInteger(STATE_RANDOM_BITS, new SecureRandom()).toString(STATE_RANDOM_BASE);
+        return new BigInteger(SECRET_RANDOM_BITS, new SecureRandom()).toString(SECRET_RANDOM_BASE);
     }
 
     /**

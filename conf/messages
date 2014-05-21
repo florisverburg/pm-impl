@@ -9,10 +9,15 @@ authentication.loggedOut = You successfully logged out!
 authentication.loggedIn = You successfully logged in!
 authentication.unauthorized = You aren''t authorized to access this page
 authentication.authorized = You don't have the rights to access this page
+authentication.verified = Your email address is verified, you can log in now
+authentication.emailSent = An activation mail is sent to your email address
 
 error.passwordRepeat = The passwords don''t match
 error.doubleEmail = The email address is already registered
 error.wrongAuthentication = Wrong login information supplied
+error.notValidated = The email address is not yet verified
+error.unknownValidation = This link is not an valid verification link
+error.wrongToken = This verification token is not valid
 linkedin.unknownError = An unknown error with Linkedin occurred, please try again later
 
 # Practical
