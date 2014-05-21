@@ -3,7 +3,6 @@ package models;
 import javax.persistence.*;
 
 import com.avaje.ebean.annotation.EnumValue;
-import controllers.routes;
 import play.Play;
 import play.data.validation.*;
 import play.db.ebean.*;
@@ -51,14 +50,14 @@ public class User extends Model {
     }
 
     /**
-     * The amount of random bits that needs to be generated for the state
+     * The amount of random bits that needs to be generated for the token
      * */
-    private static final int STATE_RANDOM_BITS = 130;
+    private static final int TOKEN_RANDOM_BITS = 130;
 
     /**
-     * The base number of the random state generated number
+     * The base number of the random token generated number
      */
-    private static final int STATE_RANDOM_BASE = 16;
+    private static final int TOKEN_RANDOM_BASE = 16;
 
     /**
      * The user identifier
@@ -174,7 +173,7 @@ public class User extends Model {
      * @return random generated secret
      */
     public String generateSecret() {
-        return new BigInteger(STATE_RANDOM_BITS, new SecureRandom()).toString(STATE_RANDOM_BASE);
+        return new BigInteger(TOKEN_RANDOM_BITS, new SecureRandom()).toString(TOKEN_RANDOM_BASE);
     }
 
     /**
