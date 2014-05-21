@@ -223,6 +223,7 @@ public class User extends Model {
         return find.byId(id);
     }
 
+
     /**
      * Get the user id
      * @return The id
@@ -301,6 +302,22 @@ public class User extends Model {
      */
     public void addPracticalGroup(PracticalGroup practicalGroup) {
         this.practicalGroups.add(practicalGroup);
+    }
+
+    /**
+     * Method to remove practical group from the list of practical groups
+     * @param practicalGroup to remove
+     */
+    public void removePracticalGroup(PracticalGroup practicalGroup) {
+        this.practicalGroups.remove(practicalGroup);
+    }
+
+    /**
+     * Setter of the list of practicals the user is admin of
+     * @param practicalsAdmin the user is admin of
+     */
+    public void setPracticalsAdmin(List<Practical> practicalsAdmin) {
+        this.practicalsAdmin = practicalsAdmin;
     }
 
     /**

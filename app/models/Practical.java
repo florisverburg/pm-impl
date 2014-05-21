@@ -250,6 +250,14 @@ public class Practical extends Model {
     }
 
     /**
+     * Remove a practical group from the list
+     * @param practicalGroup to remove
+     */
+    public void removePracticalGroup(PracticalGroup practicalGroup) {
+        this.practicalGroups.remove(practicalGroup);
+    }
+
+    /**
      * Getter for invites
      * @return invites
      */

@@ -20,9 +20,7 @@ public class InviteController extends Controller {
     @Secure.Authenticated
     public static Result acceptInvite(long id) {
         Invite invite = Invite.findById(id);
-        invite.setAccepted(true);
-        invite.save();
+        Invite.acceptInvite(invite);
         return redirect(routes.PracticalController.viewPractical(invite.getPractical().getId()));
     }
-
 }
