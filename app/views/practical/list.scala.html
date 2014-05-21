@@ -1,0 +1,19 @@
+@(practicals: List[Practical])
+
+@main("Practicals", "practicals") {
+
+    <div class="page-header">
+        <h1><span class="glyphicon glyphicon-briefcase"></span> Practicals</h1>
+        <p>
+            This is an overview of the course practicals you are enrolled for.
+        </p>
+    </div>
+    @practicals.map { practical =>
+        <fieldset>
+            <legend><a href="@routes.PracticalController.view(practical.getId())">@practical.getName()</a></legend>
+            <label>Description</label><br />
+            @practical.getDescription()<br />
+        </fieldset>
+    }
+
+}
