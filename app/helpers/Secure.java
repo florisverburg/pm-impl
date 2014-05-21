@@ -35,7 +35,7 @@ public final class Secure {
         /**
          * The types of users that should be able to access the action
          */
-        User.Type[] types() default {User.Type.User, User.Type.Teacher, User.Type.Admin};
+        User.Type[] value() default {User.Type.User, User.Type.Teacher, User.Type.Admin};
     }
 
     /**
@@ -47,6 +47,36 @@ public final class Secure {
     public static class AuthenticatedAction extends Action<Authenticated> {
 
         /**
+         * Check the login and return the correct Resulting page
+         * @param ctx The current context
+         * @param user The current user
+         * @param types The type of users allowed
+         * @return The Resulting page
+         * @throws Throwable A possible delegate call throwable
+         */
+        private F.Promise<SimpleResult> checkLogin(Context ctx, User user, List<User.Type> types) throws Throwable {
+            // Check if the user is logged in or doesn't have access
+            if((user != null && !types.contains(user.getType()))
+                    || (user == null && !types.contains(User.Type.Guest))) {
+                if(user == null) {
+                    return F.Promise.pure((SimpleResult) Authentication.onUnauthorized());
+                }
+                else {
+                    return F.Promise.pure((SimpleResult) Authentication.onAuthorized());
+                }
+            }
+            else {
+                try {
+                    ctx.args.put("user", user);
+                    return delegate.call(ctx);
+                }
+                finally {
+                    ctx.args.clear();
+                }
+            }
+        }
+
+        /**
          * Handle the call
          * @param ctx The context of the call
          * @return A Result
@@ -54,19 +84,9 @@ public final class Secure {
         public F.Promise<SimpleResult> call(Context ctx) {
             try {
                 User user = Secure.getUser(ctx);
-                List<User.Type> types = Arrays.asList(configuration.types());
-                if(user == null || !types.contains(user.getType())) {
-                    Result unauthorized = Authentication.onUnauthorized();
-                    return F.Promise.pure((SimpleResult) unauthorized);
-                } else {
-                    try {
-                        ctx.args.put("user", user);
-                        return delegate.call(ctx);
-                    }
-                    finally {
-                        ctx.request().setUsername(null);
-                    }
-                }
+                List<User.Type> types = Arrays.asList(configuration.value());
+
+                return checkLogin(ctx, user, types);
             }
             catch(RuntimeException e) {
                 throw e;
@@ -75,7 +95,6 @@ public final class Secure {
                 throw new RuntimeException(t);
             }
         }
-
     }
 
     /**

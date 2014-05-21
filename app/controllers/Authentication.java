@@ -31,6 +31,7 @@ public class Authentication extends Controller {
      * Shows the login page
      * @return The login page
      */
+    @Secure.Authenticated(User.Type.Guest)
     public static Result login() {
         return ok(
                 login.render(generateLinkedinUri(), form(LoginForm.class), form(RegisterForm.class))
@@ -41,6 +42,7 @@ public class Authentication extends Controller {
      * Authenticates the user
      * @return Error when authentication fails or redirect if successful
      */
+    @Secure.Authenticated(User.Type.Guest)
     public static Result authenticate() {
         Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
 
@@ -67,6 +69,7 @@ public class Authentication extends Controller {
      * @param errorDescription The linkedin error description
      * @return The authenticated page
      */
+    @Secure.Authenticated(User.Type.Guest)
     public static Result auth(String code, String state, String error, String errorDescription) {
         String sessionState = session().get("linkedin_state");
 
@@ -96,6 +99,7 @@ public class Authentication extends Controller {
      * Register a new user
      * @return Error when registration isn't complete else a redirect
      */
+    @Secure.Authenticated(User.Type.Guest)
     public static Result registration() {
         Form<RegisterForm> registerForm = form(RegisterForm.class).bindFromRequest();
 
@@ -134,6 +138,17 @@ public class Authentication extends Controller {
         flash("error", "authentication.unauthorized");
         return redirect(
                 routes.Authentication.login()
+        );
+    }
+
+    /**
+     * Generates an alternative result if the user is authrized and shouldn't be.
+     * @return Redirect to the index
+     */
+    public static Result onAuthorized() {
+        flash("error", "authentication.authorized");
+        return redirect(
+                routes.Application.index()
         );
     }
 }

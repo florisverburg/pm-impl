@@ -8,6 +8,7 @@ passwordRepeat = Repeat password
 authentication.loggedOut = You successfully logged out!
 authentication.loggedIn = You successfully logged in!
 authentication.unauthorized = You aren''t authorized to access this page
+authentication.authorized = You don't have the rights to access this page
 
 error.passwordRepeat = The passwords don''t match
 error.doubleEmail = The email address is already registered
