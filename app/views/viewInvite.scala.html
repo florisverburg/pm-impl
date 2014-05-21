@@ -15,7 +15,7 @@
 <h2>Receiver</h2>
 @invite.getReceiver().getFirstName() @invite.getReceiver().getLastName()
 
-@if(invite.getReceiver().getId().equals(Secure.getUser().getId())) {
+@if(invite.getReceiver().getId().equals(Secure.getUser().getId())  && invite.getState().equals(Invite.State.PENDING)) {
     <div class = "row">
         <div class = "col-xs-3">
             <a href="@routes.InviteController.acceptInvite(invite.getId())" class = "btn btn-primary">accept invite</a>

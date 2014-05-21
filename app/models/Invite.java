@@ -197,7 +197,7 @@ public class Invite extends Model {
     private static boolean checkInvite(User sender, User receiver) {
         // Check whether the sender has not already send an invite to the receiver
         for (Invite invite : sender.getInvitesSend()) {
-            if(invite.getReceiver().getId().equals(receiver.getId())) {
+            if(invite.getReceiver().getId().equals(receiver.getId()) && invite.getState().equals(State.PENDING)) {
                 return false;
             }
         }
