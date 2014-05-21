@@ -17,6 +17,8 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class Invite extends Model {
 
+    private static final int INVITES_MAX = 5;
+
     /**
      * The different types the user can be
      */
@@ -77,9 +79,17 @@ public class Invite extends Model {
     @JoinColumn(name = "receiverId")
     private User receiver;
 
+    /**
+     * Finder of the invite
+     */
     public static Model.Finder<Long, Invite> find =
             new Finder<Long, Invite>(Long.class, Invite.class);
 
+    /**
+     * Method to find an invite by it's id
+     * @param id of the invite to find
+     * @return the appropriate invite
+     */
     public static Invite findById(long id) {
         return find.where().eq("id", id).findUnique();
     }
@@ -94,6 +104,8 @@ public class Invite extends Model {
 
     /**
      * Method to find the pending invites a specific user has
+     * @param user to find pending invites off
+     * @return List of invites that are pending for this user
      */
     public static List<Invite> findPendingUserInvites(User user) {
         // Get invites that have state pending and are sent by the user
@@ -132,9 +144,8 @@ public class Invite extends Model {
      * @param invite to accept
      */
     public static void acceptInvite(Invite invite) {
-        User receiver = User.findById (invite.getReceiver().getId());
+        User receiver = User.findById(invite.getReceiver().getId());
         User sender = User.findById(invite.getSender().getId());
-
         // Reject all pending of the sender and receiver invites
         for(Invite pendingInvite : findPendingUserInvites(receiver)) {
             pendingInvite.setState(State.REJECTED);
@@ -144,9 +155,9 @@ public class Invite extends Model {
         invite = Invite.findById(invite.getId());
         invite.setState(State.ACCEPTED);
         invite.save();
-
         // Delete practical group of receiver
-        PracticalGroup receiversPracticalGroup = PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), receiver);
+        PracticalGroup receiversPracticalGroup =
+                PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), receiver);
         // Delete practical group from user
         receiver.removePracticalGroup(receiversPracticalGroup);
         receiver.save();
@@ -154,10 +165,9 @@ public class Invite extends Model {
         invite.getPractical().removePracticalGroup(receiversPracticalGroup);
         invite.getPractical().save();
         Ebean.delete(receiversPracticalGroup);
-
-
         // Add receiver to practical group of sender
-        PracticalGroup sendersPracticalGroup = PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), sender);
+        PracticalGroup sendersPracticalGroup =
+                PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), sender);
         sendersPracticalGroup.addUser(receiver);
         sendersPracticalGroup.save();
     }
@@ -165,41 +175,21 @@ public class Invite extends Model {
     /**
      * Method to reject an invite
      * @param invite to reject
+     * @param user that wants to reject the invite
      */
     public static void rejectInvite(Invite invite, User user) {
-        PracticalGroup practicalGroupOfRejecter = PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), user);
-        Practical practical = invite.getPractical();
-        // If the sender of the invite is equal to the user that rejects the invite
-        if(invite.getSender().getId().equals(user.getId())) {
-            // Delete each user from the practicalgroup and put them in a new one
-            for(User practicalGroupUser : practicalGroupOfRejecter.getUsers()) {
-                // Delete practical group from user
-                practicalGroupUser.removePracticalGroup(practicalGroupOfRejecter);
-                practicalGroupUser.save();
+        PracticalGroup practicalGroupOfRejecter =
+                PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), user);
 
-                // Delete practical group from practical
-                practical.removePracticalGroup(practicalGroupOfRejecter);
-                PracticalGroup newPracticalGroup = new PracticalGroup(practical);
-                newPracticalGroup.addUser(practicalGroupUser);
-                newPracticalGroup.save();
-            }
-            for(Invite inviteSend : invite.getSender().getInvitesSend()) {
-                inviteSend.setState(State.REJECTED);
-                inviteSend.save();
-            }
-            Ebean.delete(practicalGroupOfRejecter);
-        }
-        else {
-            // Only remove the receiver from the group and update the group
-            practicalGroupOfRejecter.removeUser(user);
-            practicalGroupOfRejecter.save();
-            // Create a new practical group for the removed user
-            PracticalGroup newPracticalGroup = new PracticalGroup(practicalGroupOfRejecter.getPractical());
-            newPracticalGroup.addUser(user);
-            newPracticalGroup.save();
-            invite.setState(State.REJECTED);
-            invite.save();
-        }
+        // Only remove the rejecting user from the group and update the group
+        practicalGroupOfRejecter.removeUser(invite.getReceiver());
+        practicalGroupOfRejecter.save();
+        // Create a new practical group for the removed user
+        PracticalGroup newPracticalGroup = new PracticalGroup(practicalGroupOfRejecter.getPractical());
+        newPracticalGroup.addUser(user);
+        newPracticalGroup.save();
+        invite.setState(State.REJECTED);
+        invite.save();
     }
 
     /**
@@ -213,7 +203,7 @@ public class Invite extends Model {
 
     /**
      * Method to resend invite
-     * @param invite
+     * @param invite to resend
      */
     public static void resendInvite(Invite invite) {
         invite.setState(State.PENDING);
@@ -221,11 +211,12 @@ public class Invite extends Model {
     }
 
     /**
-     * Method to send an invite, the method checks whether the invite has not already been send and the amount of pending invites send has not exceeded
+     * Method to send an invite, the method checks whether the invite has not already been
+     * send and the amount of pending invites send has not exceeded
      * @param practical which the invite is for
      * @param sender of the new invite
      * @param receiver of the new invite
-     * @return
+     * @return Resembles the success/failure of the check
      */
     public static boolean sendInvite(Practical practical, User sender, User receiver) {
         // Check whether the sender has not already send an invite to the receiver
@@ -236,7 +227,7 @@ public class Invite extends Model {
         if(!checkInvite(receiver, sender)) {
             return false;
         }
-        if (findPendingInvites().size() > 5) {
+        if(findPendingInvites().size() > INVITES_MAX) {
             return false;
         }
         Invite newInvite = new Invite(practical, sender, receiver);
@@ -248,7 +239,7 @@ public class Invite extends Model {
      * Returns true if the first user has not send an invite to the second user
      * @param sender first user
      * @param receiver second user
-     * @return
+     * @return Resembles the success/failure of the check
      */
     private static boolean checkInvite(User sender, User receiver) {
         // Check whether the sender has not already send an invite to the receiver

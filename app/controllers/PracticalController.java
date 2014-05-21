@@ -69,6 +69,12 @@ public class PracticalController extends Controller {
         return ok(viewPractical.render(practicalToRender));
     }
 
+    /**
+     * Method to send an invite to a practical group (you are actually sending an invite
+     * to the first user of this group)
+     * @param id of the practical group to send to
+     * @return a redirect to the view practical
+     */
     @Secure.Authenticated
     public static Result sendInvitePracticalGroup(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
@@ -93,6 +99,11 @@ public class PracticalController extends Controller {
         return ok(list.render(user.getPracticals()));
     }
 
+    /**
+     * Method to view a practical group
+     * @param id of the practical group to view
+     * @return an ok with a practical group
+     */
     @Secure.Authenticated
     public static Result viewPracticalGroup(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);

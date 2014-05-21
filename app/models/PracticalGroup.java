@@ -56,7 +56,13 @@ public class PracticalGroup extends Model {
         return find.where().eq("id", id).findUnique();
     }
 
-    public static PracticalGroup findPracticalGroupWithPracticalAndUser (Practical practical, User user) {
+    /**
+     * A method to find a practical group using a given practical and a given user
+     * @param practical of the practical group
+     * @param user of the practical group
+     * @return practical group that was sought after
+     */
+    public static PracticalGroup findPracticalGroupWithPracticalAndUser(Practical practical, User user) {
         return find.where()
                 .eq("practicalId", practical.getId())
                 .eq("users.id", user.getId())
