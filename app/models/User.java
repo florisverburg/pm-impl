@@ -3,6 +3,7 @@ package models;
 import javax.persistence.*;
 
 import com.avaje.ebean.annotation.EnumValue;
+import helpers.MD5;
 import play.Play;
 import play.data.validation.*;
 import play.db.ebean.*;
@@ -105,7 +106,12 @@ public class User extends Model {
     private String profileText;
 
     /**
-     *
+     * The link to the profile image if provided
+     */
+    private String profileImage;
+
+    /**
+     * The identities linked to the user
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Identity> identities = new ArrayList<Identity>();
@@ -428,6 +434,35 @@ public class User extends Model {
      */
     public void setProfileText(String profileText) {
         this.profileText = profileText;
+    }
+
+    /**
+     * Gets profile image or Gravatar url.
+     * @return The profile image url
+     */
+    public String getProfileImage() {
+        // Check if the profile image is set else return gravatar default
+        if(profileImage == null || profileImage.isEmpty()) {
+            return "http://www.gravatar.com/avatar/"
+                    + MD5.crypt(this.getEmail().trim().toLowerCase())
+                    + "?d=identicon&f=y";
+        }
+        return profileImage;
+    }
+
+    /**
+     * Sets profile image.
+     * @param profileImage The profile image
+     */
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    /**
+     * Sets the profile image to gravatar using the email address
+     */
+    public void setProfileImageGravatar() {
+        this.profileImage = "http://www.gravatar.com/avatar/" + MD5.crypt(this.getEmail().trim().toLowerCase());
     }
 
     /**

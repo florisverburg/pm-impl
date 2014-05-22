@@ -11,6 +11,21 @@ import java.util.List;
  * Profile editing form
  */
 public class ProfileForm {
+
+    /**
+     * The different profile imae options
+     */
+    public enum ProfileImageType {
+        /**
+         * Use the gravatar image
+         */
+        Gravatar,
+        /**
+         * Use no image
+         */
+        None
+    }
+
     /**
      * The profile first name
      */
@@ -49,6 +64,12 @@ public class ProfileForm {
     private String profileText;
 
     /**
+     * The profile image
+     */
+    @Constraints.Required
+    private ProfileImageType profileImage;
+
+    /**
      * Generate an empty form
      */
     public ProfileForm() {
@@ -64,6 +85,14 @@ public class ProfileForm {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.profileText = user.getProfileText();
+
+        // Set the profile image
+        if(user.getProfileImage() != null && !user.getProfileImage().contains("f=y")) {
+            this.profileImage = ProfileImageType.Gravatar;
+        }
+        else {
+            this.profileImage = ProfileImageType.None;
+        }
     }
 
     /**
@@ -163,6 +192,22 @@ public class ProfileForm {
     }
 
     /**
+     * Gets profile image.
+     * @return The profile image
+     */
+    public ProfileImageType getProfileImage() {
+        return profileImage;
+    }
+
+    /**
+     * Sets profile image.
+     * @param profileImage The profile image
+     */
+    public void setProfileImage(ProfileImageType profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    /**
      * Validates the profile form
      * @return A list of errors
      */
@@ -186,6 +231,7 @@ public class ProfileForm {
         user.setLastName(this.lastName);
         user.setEmail(this.email);
         user.setProfileText(this.profileText);
+        updateUserImage(user);
 
         // Update identity if needed
         if(this.password != null && !this.password.isEmpty() && user.hasPassword()) {
@@ -198,5 +244,21 @@ public class ProfileForm {
         }
 
         user.save();
+    }
+
+    /**
+     * Update user profile image
+     * @param user The user to update
+     */
+    private void updateUserImage(User user) {
+        switch(profileImage) {
+            case Gravatar:
+                user.setProfileImageGravatar();
+                break;
+
+            default:
+                user.setProfileImage(null);
+                break;
+        }
     }
 }
