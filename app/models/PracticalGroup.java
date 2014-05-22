@@ -62,7 +62,7 @@ public class PracticalGroup extends Model {
      * @param user of the practical group
      * @return practical group that was sought after
      */
-    public static PracticalGroup findPracticalGroupWithPracticalAndUser(Practical practical, User user) {
+    public static PracticalGroup findWithPracticalAndUser(Practical practical, User user) {
         return find.where()
                 .eq("practicalId", practical.getId())
                 .eq("users.id", user.getId())

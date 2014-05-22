@@ -27,5 +27,5 @@ practical.wrongSecret = This secret does not match the practical secret
 # Profile
 profile.saved = Your profile is saved
 practical.userIsNotEnrolled = The user is not enrolled to this practical
-practical.InviteSend = The invite has been successfully send.
-practical.UnsuccessfulSend = The invite has not been send.
+practical.inviteSend = The invite has been successfully send.
+practical.unsuccessfulSend = The invite has not been send.

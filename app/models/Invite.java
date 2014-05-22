@@ -145,7 +145,7 @@ public class Invite extends Model {
         this.save();
         // Delete practical group of receiver
         PracticalGroup receiversPracticalGroup =
-                PracticalGroup.findPracticalGroupWithPracticalAndUser(practical, receiver);
+                PracticalGroup.findWithPracticalAndUser(practical, receiver);
         // Delete practical group from user
         receiver.removePracticalGroup(receiversPracticalGroup);
         receiver.save();
@@ -155,7 +155,7 @@ public class Invite extends Model {
         Ebean.delete(receiversPracticalGroup);
         // Add receiver to practical group of sender
         PracticalGroup sendersPracticalGroup =
-                PracticalGroup.findPracticalGroupWithPracticalAndUser(practical, sender);
+                PracticalGroup.findWithPracticalAndUser(practical, sender);
         sendersPracticalGroup.addUser(receiver);
         sendersPracticalGroup.save();
     }
@@ -166,7 +166,7 @@ public class Invite extends Model {
      */
     public void reject(User user) {
         PracticalGroup practicalGroupOfRejecter =
-                PracticalGroup.findPracticalGroupWithPracticalAndUser(practical, user);
+                PracticalGroup.findWithPracticalAndUser(practical, user);
 
         // Only remove the rejecting user from the group and update the group
         practicalGroupOfRejecter.removeUser(receiver);

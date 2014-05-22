@@ -1,4 +1,4 @@
-@(practical : Practical)
+@(practical: Practical)
 @import helpers._
 
 @main("Practical", "practicals") {
@@ -16,7 +16,7 @@
     }
 </ul>
 <h2>Your practical group</h2>
-@PracticalGroup.findPracticalGroupWithPracticalAndUser(practical, Secure.getUser()).getUsers().map { user =>
+@PracticalGroup.findWithPracticalAndUser(practical, Secure.getUser()).getUsers().map { user =>
     <div class = "row">
         <div class = "col-xs-4">
             <p>@user.getFirstName() @user.getLastName()</p>

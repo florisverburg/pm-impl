@@ -122,7 +122,7 @@ public class User extends Model {
      * One-to-many relationship between practical and user
      */
     @OneToMany(mappedBy = "admin", cascade = CascadeType.PERSIST)
-    private List<Practical> practicalsAdmin = new ArrayList<>();
+    private List<Practical> practicalsAdmin = new ArrayList<Practical>();
 
     /**
      * Many-to-many relationship defined for the users and practicalGroups
@@ -139,13 +139,13 @@ public class User extends Model {
      * One-to-many relationship between user and invite (sender)
      */
     @OneToMany(mappedBy = "sender", cascade = CascadeType.PERSIST)
-    private List<Invite> invitesSend = new ArrayList<>();
+    private List<Invite> invitesSend = new ArrayList<Invite>();
 
     /**
      * One-to-many relationship between user and invite (receiver)
      */
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.PERSIST)
-    private List<Invite> invitesReceived = new ArrayList<>();
+    private List<Invite> invitesReceived = new ArrayList<Invite>();
 
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill

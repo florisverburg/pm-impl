@@ -76,11 +76,11 @@ public class PracticalController extends Controller {
         User sender = Secure.getUser();
         if(Invite.sendInvite(practicalGroup.getPractical(), sender, receiver).equals(null)) {
             Logger.debug("To many invitations send");
-            flash("error", "practical.UnsuccessfulSend");
+            flash("error", "practical.unsuccessfulSend");
             return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
         }
         Logger.debug("Successful invitation created");
-        flash("success", "practical.InviteSend");
+        flash("success", "practical.inviteSend");
         return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
     }
 
