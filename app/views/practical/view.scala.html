@@ -12,14 +12,14 @@
 <h2>Currently enrolled participants:</h2>
 <ul>
     @practical.getUsers().map { user =>
-        <li>@user.getFirstName() @user.getLastName()</li>
+        <li>@user.getFullName()</li>
     }
 </ul>
 <h2>Your practical group</h2>
 @PracticalGroup.findWithPracticalAndUser(practical, Secure.getUser()).getUsers().map { user =>
     <div class = "row">
         <div class = "col-xs-4">
-            <p>@user.getFirstName() @user.getLastName()</p>
+            <p>@user.getFullName())</p>
         </div>
         <div class = "col-xs-8">
         </div>
