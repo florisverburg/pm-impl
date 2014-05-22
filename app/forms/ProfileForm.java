@@ -44,6 +44,11 @@ public class ProfileForm {
     private String passwordRepeat;
 
     /**
+     * The profile text
+     */
+    private String profileText;
+
+    /**
      * Generate an empty form
      */
     public ProfileForm() {
@@ -58,6 +63,7 @@ public class ProfileForm {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
+        this.profileText = user.getProfileText();
     }
 
     /**
@@ -141,6 +147,22 @@ public class ProfileForm {
     }
 
     /**
+     * Gets profile text.
+     * @return The profile text
+     */
+    public String getProfileText() {
+        return profileText;
+    }
+
+    /**
+     * Sets profile text.
+     * @param profileText The profile text
+     */
+    public void setProfileText(String profileText) {
+        this.profileText = profileText;
+    }
+
+    /**
      * Validates the profile form
      * @return A list of errors
      */
@@ -163,6 +185,7 @@ public class ProfileForm {
         user.setFirstName(this.firstName);
         user.setLastName(this.lastName);
         user.setEmail(this.email);
+        user.setProfileText(this.profileText);
 
         // Update identity if needed
         if(this.password != null && !this.password.isEmpty() && user.hasPassword()) {

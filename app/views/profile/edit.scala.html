@@ -17,9 +17,19 @@
                 </p>
             }
 
-            @form.inputText(profileForm("firstName"))
-            @form.inputText(profileForm("lastName"))
-            @form.inputText(profileForm("email"))
+            @form.section {
+                <h2>Basic user information</h2>
+            } {
+                @form.inputText(profileForm("firstName"))
+                @form.inputText(profileForm("lastName"))
+                @form.inputText(profileForm("email"))
+            }
+
+            @form.section {
+                <h2>Basic profile information</h2>
+            } {
+                @form.textarea(profileForm("profileText"))
+            }
 
             @if(hasPassword) {
                 @form.inputPassword(profileForm("password"))

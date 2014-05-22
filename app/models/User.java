@@ -100,6 +100,11 @@ public class User extends Model {
     private String token;
 
     /**
+     * Some simple profile text which is viewable to everyone in the practical
+     */
+    private String profileText;
+
+    /**
      *
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -407,6 +412,22 @@ public class User extends Model {
      */
     public String getFullName() {
         return getFirstName() + " " + getLastName();
+    }
+
+    /**
+     * Gets profile text.
+     * @return The profile text
+     */
+    public String getProfileText() {
+        return profileText;
+    }
+
+    /**
+     * Sets profile text.
+     * @param profileText The profile text
+     */
+    public void setProfileText(String profileText) {
+        this.profileText = profileText;
     }
 
     /**

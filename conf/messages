@@ -25,6 +25,7 @@ practical.doesNotExist = Practical does not exist
 practical.wrongSecret = This secret does not match the practical secret
 
 # Profile
+profileText = A basic profile description
 profile.saved = Your profile is saved
 practical.userIsNotEnrolled = The user is not enrolled to this practical
 practical.inviteSend = The invite has been successfully send.

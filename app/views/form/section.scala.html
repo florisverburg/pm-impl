@@ -1,0 +1,11 @@
+@(heading: Html = Html(""))(form: Html)
+
+<fieldset>
+    @if(heading.body != ""){
+        <div class="fieldset-heading clearfix">
+        @heading
+        </div>
+    }
+
+    @form
+</fieldset>
