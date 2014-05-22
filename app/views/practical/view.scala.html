@@ -45,10 +45,10 @@
         @if(invite.getSender().getId().equals(Secure.getUser().getId()) && invite.getState().equals(Invite.State.Pending)) {
             <div class = "row">
                 <div class = "col-xs-3">
-                    <p>@invite.getSender().getFirstName() @invite.getSender().getLastName()</p>
+                    <p>@invite.getSender().getFullName()</p>
                 </div>
                 <div class = "col-xs-3">
-                    <p>@invite.getReceiver().getFirstName() @invite.getReceiver().getLastName()</p>
+                    <p>@invite.getReceiver().getFullName()</p>
                 </div>
                 <div class = "col-xs-3">
                     <p>@invite.getState()</p>
@@ -78,10 +78,10 @@
     @if(invite.getReceiver().getId().equals(Secure.getUser().getId()) && invite.getState().equals(Invite.State.Pending)) {
         <div class = "row">
             <div class = "col-xs-3">
-                <p>@invite.getSender().getFirstName() @invite.getSender().getLastName()</p>
+                <p>@invite.getSender().getFullName()</p>
             </div>
             <div class = "col-xs-3">
-                <p>@invite.getReceiver().getFirstName() @invite.getReceiver().getLastName()</p>
+                <p>@invite.getReceiver().getFullName()</p>
             </div>
             <div class = "col-xs-3">
                 <p>@invite.getState()</p>
@@ -111,10 +111,10 @@
 @if(!invite.getState().equals(Invite.State.Pending)) {
     <div class = "row">
         <div class = "col-xs-3">
-            <p>@invite.getSender().getFirstName() @invite.getSender().getLastName()</p>
+            <p>@invite.getSender().getFullName()</p>
         </div>
         <div class = "col-xs-3">
-            <p>@invite.getReceiver().getFirstName() @invite.getReceiver().getLastName()</p>
+            <p>@invite.getReceiver().getFullName()</p>
         </div>
         <div class = "col-xs-3">
             <p>@invite.getState()</p>
@@ -129,10 +129,10 @@
 @if(!invite.getState().equals(Invite.State.Pending)) {
 <div class = "row">
     <div class = "col-xs-3">
-        <p>@invite.getSender().getFirstName() @invite.getSender().getLastName()</p>
+        <p>@invite.getSender().getFullName()</p>
     </div>
     <div class = "col-xs-3">
-        <p>@invite.getReceiver().getFirstName() @invite.getReceiver().getLastName()</p>
+        <p>@invite.getReceiver().getFullName()</p>
     </div>
     <div class = "col-xs-3">
         <p>@invite.getState()</p>
