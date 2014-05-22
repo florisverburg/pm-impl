@@ -42,7 +42,7 @@
     </div>
 </div>
 @practical.getInvites().map { invite =>
-        @if(invite.getSender().getId().equals(Secure.getUser().getId()) && invite.getState().equals(Invite.State.PENDING)) {
+        @if(invite.getSender().getId().equals(Secure.getUser().getId()) && invite.getState().equals(Invite.State.Pending)) {
             <div class = "row">
                 <div class = "col-xs-3">
                     <p>@invite.getSender().getFirstName() @invite.getSender().getLastName()</p>
@@ -54,7 +54,7 @@
                     <p>@invite.getState()</p>
                 </div>
                 <div class = "col-xs-3">
-                    <a href="@routes.InviteController.viewInvite(invite.getId())" class = "btn btn-primary">view invite</a>
+                    <a href="@routes.InviteController.view(invite.getId())" class = "btn btn-primary">view invite</a>
                 </div>
             </div>
         }
@@ -75,7 +75,7 @@
     </div>
 </div>
 @practical.getInvites().map { invite =>
-    @if(invite.getReceiver().getId().equals(Secure.getUser().getId()) && invite.getState().equals(Invite.State.PENDING)) {
+    @if(invite.getReceiver().getId().equals(Secure.getUser().getId()) && invite.getState().equals(Invite.State.Pending)) {
         <div class = "row">
             <div class = "col-xs-3">
                 <p>@invite.getSender().getFirstName() @invite.getSender().getLastName()</p>
@@ -87,7 +87,7 @@
                 <p>@invite.getState()</p>
             </div>
             <div class = "col-xs-3">
-                <a href="@routes.InviteController.viewInvite(invite.getId())" class = "btn btn-primary">view invite</a>
+                <a href="@routes.InviteController.view(invite.getId())" class = "btn btn-primary">view invite</a>
             </div>
         </div>
     }
@@ -108,7 +108,7 @@
     }
 <h2>Accepted and Rejected invites</h2>
 @Secure.getUser().getInvitesReceived().map { invite =>
-@if(!invite.getState().equals(Invite.State.PENDING)) {
+@if(!invite.getState().equals(Invite.State.Pending)) {
     <div class = "row">
         <div class = "col-xs-3">
             <p>@invite.getSender().getFirstName() @invite.getSender().getLastName()</p>
@@ -120,13 +120,13 @@
             <p>@invite.getState()</p>
         </div>
         <div class = "col-xs-3">
-            <a href="@routes.InviteController.viewInvite(invite.getId())" class = "btn btn-primary">view invite</a>
+            <a href="@routes.InviteController.view(invite.getId())" class = "btn btn-primary">view invite</a>
         </div>
     </div>
 }
 }
 @Secure.getUser().getInvitesSend().map { invite =>
-@if(!invite.getState().equals(Invite.State.PENDING)) {
+@if(!invite.getState().equals(Invite.State.Pending)) {
 <div class = "row">
     <div class = "col-xs-3">
         <p>@invite.getSender().getFirstName() @invite.getSender().getLastName()</p>
@@ -138,7 +138,7 @@
         <p>@invite.getState()</p>
     </div>
     <div class = "col-xs-3">
-        <a href="@routes.InviteController.viewInvite(invite.getId())" class = "btn btn-primary">view invite</a>
+        <a href="@routes.InviteController.view(invite.getId())" class = "btn btn-primary">view invite</a>
     </div>
 </div>
 }

@@ -22,7 +22,7 @@ GET         /sendInvite/:id               controllers.PracticalController.sendIn
 GET         /practicalgroup/:id           controllers.PracticalController.viewPracticalGroup(id: Long)
 
 # Invite
-GET         /invite/:id                   controllers.InviteController.viewInvite(id: Long)
+GET         /invite/:id                   controllers.InviteController.view(id: Long)
 GET         /acceptInvite/:id             controllers.InviteController.acceptInvite(id: Long)
 GET         /withdrawInvite/:id           controllers.InviteController.withdrawInvite(id: Long)
 GET         /resendInvite/:id             controllers.InviteController.resendInvite(id: Long)

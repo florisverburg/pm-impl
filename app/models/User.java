@@ -15,6 +15,8 @@ import java.util.List;
 import com.typesafe.plugin.*;
 import play.mvc.*;
 
+import static com.avaje.ebean.Expr.eq;
+
 /**
  * Created by Freek on 09/05/14.
  * This is the user representation of the database
@@ -222,6 +224,15 @@ public class User extends Model {
     public static User findById(Long id) {
         return find.byId(id);
     }
+
+    /**
+     * Method to find the pending invites an user has
+     * @return list of pending invites
+     */
+    public List<Invite> findPendingInvitesUser() {
+        return Invite.findPendingInvitesWhereUser(this);
+    }
+
 
 
     /**

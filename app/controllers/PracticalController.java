@@ -24,7 +24,6 @@ public class PracticalController extends Controller {
     public static Result register(long id, String secret) {
         Practical practicalToRender = Practical.findById(id);
         User user = Secure.getUser();
-        // Checks if practical exist
         if(practicalToRender == null) {
             // When practical does not exist, show correct error
             flash("error", "practical.doesNotExist");

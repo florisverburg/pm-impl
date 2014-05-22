@@ -115,37 +115,37 @@ practicalGroups:
 # Invites
 invites:
   - &invite1 !!models.Invite
-    state: PENDING
+    state: Pending
     practical: *practical1
     sender: *user2
     receiver: *user3
   - &invite2 !!models.Invite
-    state: PENDING
+    state: Pending
     practical: *practical1
     sender: *user4
     receiver: *user2
   - &invite3 !!models.Invite
-    state: PENDING
+    state: Pending
     practical: *practical1
     sender: *user2
     receiver: *user5
   - &invite4 !!models.Invite
-    state: PENDING
+    state: Pending
     practical: *practical1
     sender: *user3
     receiver: *user4
   - &invite5 !!models.Invite
-    state: PENDING
+    state: Pending
     practical: *practical1
     sender: *user3
     receiver: *user5
   - &invite6 !!models.Invite
-    state: PENDING
+    state: Pending
     practical: *practical1
     sender: *user5
     receiver: *user4
   - &invite7 !!models.Invite
-    state: PENDING
+    state: Pending
     practical: *practical2
     sender: *user4
     receiver: *user3

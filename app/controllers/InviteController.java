@@ -3,7 +3,7 @@ package controllers;
 import helpers.Secure;
 import models.*;
 import play.mvc.*;
-import views.html.*;
+import views.html.invite.view;
 
 /**
  * Created by Marijn Goedegebure on 20-5-2014.
@@ -17,9 +17,9 @@ public class InviteController extends Controller {
      * @return an ok to the viewInvite view
      */
     @Secure.Authenticated
-    public static Result viewInvite(long id) {
+    public static Result view(long id) {
         Invite invite = Invite.findById(id);
-        return ok(viewInvite.render(invite));
+        return ok(view.render(invite));
     }
 
     /**

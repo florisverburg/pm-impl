@@ -9,6 +9,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.avaje.ebean.Expr.eq;
+import static com.avaje.ebean.Expr.or;
+
 /**
  * Created by Marijn Goedegebure on 19-5-2014.
  * Class representation of the database table invite
@@ -17,6 +20,9 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class Invite extends Model {
 
+    /**
+     * Maximal amount of invites a user can send
+     */
     private static final int INVITES_MAX = 5;
 
     /**
@@ -26,23 +32,23 @@ public class Invite extends Model {
         /**
          * The state accepted
          */
-        @EnumValue("ACCEPTED")
-        ACCEPTED,
+        @EnumValue("Accepted")
+        Accepted,
         /**
          * The state pending
          */
-        @EnumValue("PENDING")
-        PENDING,
+        @EnumValue("Pending")
+        Pending,
         /**
          * The state rejected.
          */
-        @EnumValue("REJECTED")
-        REJECTED,
+        @EnumValue("Rejected")
+        Rejected,
         /**
          * The state withdrawn
          */
-        @EnumValue("WITHDRAWN")
-        WITHDRAWN
+        @EnumValue("Withdrawn")
+        Withdrawn
     }
 
     /**
@@ -95,35 +101,20 @@ public class Invite extends Model {
     }
 
     /**
-     * Method to find the pending invites an user has
-     * @return list of pending invites
-     */
-    public static List<Invite> findPendingInvites() {
-        return find.where().eq("state", State.PENDING).findList();
-    }
-
-    /**
      * Method to find the pending invites a specific user has
      * @param user to find pending invites off
      * @return List of invites that are pending for this user
      */
-    public static List<Invite> findPendingUserInvites(User user) {
+    public static List<Invite> findPendingInvitesWhereUser(User user) {
         // Get invites that have state pending and are sent by the user
-        List<Invite> pendingSentInvites =
-                find.where()
-                    .eq("senderId", user.getId())
-                    .eq("state", State.PENDING)
-                    .findList();
-        //Get invites that have state pending and are received by the user
-        List<Invite> pendingReceivedInvites =
-                find.where()
-                    .eq("receiverId", user.getId())
-                    .eq("state", State.PENDING)
-                    .findList();
-        List<Invite> combinedList = new ArrayList<Invite>();
-        combinedList.addAll(pendingSentInvites);
-        combinedList.addAll(pendingReceivedInvites);
-        return combinedList;
+        List<Invite> pendingInvites =
+                find.where().or(
+                        or(eq("senderId", user.getId()),
+                                eq("state", State.Pending)),
+                        or(eq("receiverId", user.getId())
+                                , eq("state", State.Pending)))
+                        .findList();
+        return pendingInvites;
     }
 
     /**
@@ -133,7 +124,7 @@ public class Invite extends Model {
      * @param receiver of the new invite
      */
     public Invite(Practical practical, User sender, User receiver) {
-        this.state = State.PENDING;
+        this.state = State.Pending;
         this.practical = practical;
         this.sender = sender;
         this.receiver = receiver;
@@ -147,13 +138,13 @@ public class Invite extends Model {
         User receiver = User.findById(invite.getReceiver().getId());
         User sender = User.findById(invite.getSender().getId());
         // Reject all pending of the sender and receiver invites
-        for(Invite pendingInvite : findPendingUserInvites(receiver)) {
-            pendingInvite.setState(State.REJECTED);
+        for(Invite pendingInvite : receiver.findPendingInvitesUser()) {
+            pendingInvite.setState(State.Rejected);
             pendingInvite.save();
         }
         // Accept the invite
         invite = Invite.findById(invite.getId());
-        invite.setState(State.ACCEPTED);
+        invite.setState(State.Accepted);
         invite.save();
         // Delete practical group of receiver
         PracticalGroup receiversPracticalGroup =
@@ -188,7 +179,7 @@ public class Invite extends Model {
         PracticalGroup newPracticalGroup = new PracticalGroup(practicalGroupOfRejecter.getPractical());
         newPracticalGroup.addUser(user);
         newPracticalGroup.save();
-        invite.setState(State.REJECTED);
+        invite.setState(State.Rejected);
         invite.save();
     }
 
@@ -197,7 +188,7 @@ public class Invite extends Model {
      * @param invite to withdraw
      */
     public static void withdrawInvite(Invite invite) {
-        invite.setState(State.WITHDRAWN);
+        invite.setState(State.Withdrawn);
         invite.save();
     }
 
@@ -206,7 +197,7 @@ public class Invite extends Model {
      * @param invite to resend
      */
     public static void resendInvite(Invite invite) {
-        invite.setState(State.PENDING);
+        invite.setState(State.Pending);
         invite.save();
     }
 
@@ -227,7 +218,7 @@ public class Invite extends Model {
         if(!checkInvite(receiver, sender)) {
             return false;
         }
-        if(findPendingInvites().size() > INVITES_MAX) {
+        if(sender.findPendingInvitesUser().size() > INVITES_MAX) {
             return false;
         }
         Invite newInvite = new Invite(practical, sender, receiver);
@@ -244,7 +235,7 @@ public class Invite extends Model {
     private static boolean checkInvite(User sender, User receiver) {
         // Check whether the sender has not already send an invite to the receiver
         for (Invite invite : sender.getInvitesSend()) {
-            if(invite.getReceiver().getId().equals(receiver.getId()) && invite.getState().equals(State.PENDING)) {
+            if(invite.getReceiver().getId().equals(receiver.getId()) && invite.getState().equals(State.Pending)) {
                 return false;
             }
         }
