@@ -132,73 +132,66 @@ public class Invite extends Model {
 
     /**
      * Accept the invite and rejects all other received invites
-     * @param invite to accept
      */
-    public static void acceptInvite(Invite invite) {
-        User receiver = User.findById(invite.getReceiver().getId());
-        User sender = User.findById(invite.getSender().getId());
+    public void acceptInvite() {
         // Reject all pending of the sender and receiver invites
         for(Invite pendingInvite : receiver.findPendingInvitesUser()) {
             pendingInvite.setState(State.Rejected);
             pendingInvite.save();
         }
         // Accept the invite
-        invite = Invite.findById(invite.getId());
-        invite.setState(State.Accepted);
-        invite.save();
+        state = State.Accepted;
+        this.save();
         // Delete practical group of receiver
         PracticalGroup receiversPracticalGroup =
-                PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), receiver);
+                PracticalGroup.findPracticalGroupWithPracticalAndUser(practical, receiver);
         // Delete practical group from user
         receiver.removePracticalGroup(receiversPracticalGroup);
         receiver.save();
         // Delete practical group from practical
-        invite.getPractical().removePracticalGroup(receiversPracticalGroup);
-        invite.getPractical().save();
+        practical.removePracticalGroup(receiversPracticalGroup);
+        practical.save();
         Ebean.delete(receiversPracticalGroup);
         // Add receiver to practical group of sender
         PracticalGroup sendersPracticalGroup =
-                PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), sender);
+                PracticalGroup.findPracticalGroupWithPracticalAndUser(practical, sender);
         sendersPracticalGroup.addUser(receiver);
         sendersPracticalGroup.save();
     }
 
     /**
      * Method to reject an invite
-     * @param invite to reject
      * @param user that wants to reject the invite
      */
-    public static void rejectInvite(Invite invite, User user) {
+    public void rejectInvite(User user) {
         PracticalGroup practicalGroupOfRejecter =
-                PracticalGroup.findPracticalGroupWithPracticalAndUser(invite.getPractical(), user);
+                PracticalGroup.findPracticalGroupWithPracticalAndUser(practical, user);
 
         // Only remove the rejecting user from the group and update the group
-        practicalGroupOfRejecter.removeUser(invite.getReceiver());
+        practicalGroupOfRejecter.removeUser(receiver);
         practicalGroupOfRejecter.save();
         // Create a new practical group for the removed user
-        PracticalGroup newPracticalGroup = new PracticalGroup(practicalGroupOfRejecter.getPractical());
+        PracticalGroup newPracticalGroup = new PracticalGroup(practical);
         newPracticalGroup.addUser(user);
         newPracticalGroup.save();
-        invite.setState(State.Rejected);
-        invite.save();
+        state = State.Rejected;
+        this.save();
     }
 
     /**
      * Method to withdraw invite
-     * @param invite to withdraw
      */
-    public static void withdrawInvite(Invite invite) {
-        invite.setState(State.Withdrawn);
-        invite.save();
+    public void withdrawInvite() {
+        state = State.Withdrawn;
+        this.save();
     }
 
     /**
      * Method to resend invite
-     * @param invite to resend
      */
-    public static void resendInvite(Invite invite) {
-        invite.setState(State.Pending);
-        invite.save();
+    public void resendInvite() {
+        state = State.Pending;
+        this.save();
     }
 
     /**

@@ -30,7 +30,7 @@ public class InviteController extends Controller {
     @Secure.Authenticated
     public static Result acceptInvite(long id) {
         Invite invite = Invite.findById(id);
-        Invite.acceptInvite(invite);
+        invite.acceptInvite();
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 
@@ -42,7 +42,7 @@ public class InviteController extends Controller {
     @Secure.Authenticated
     public static Result withdrawInvite(long id) {
         Invite invite = Invite.findById(id);
-        Invite.withdrawInvite(invite);
+        invite.withdrawInvite();
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 
@@ -54,7 +54,7 @@ public class InviteController extends Controller {
     @Secure.Authenticated
     public static Result resendInvite(long id) {
         Invite invite = Invite.findById(id);
-        Invite.resendInvite(invite);
+        invite.resendInvite();
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 
@@ -68,7 +68,7 @@ public class InviteController extends Controller {
     public static Result rejectInvite(long inviteId, long userId) {
         Invite invite = Invite.findById(inviteId);
         User user = User.findById(userId);
-        Invite.rejectInvite(invite, user);
+        invite.rejectInvite(user);
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 }
