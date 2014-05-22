@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Update;
 import com.avaje.ebean.annotation.EnumValue;
 import play.data.validation.*;
 import play.db.ebean.*;
@@ -134,10 +135,12 @@ public class Invite extends Model {
      */
     public void accept() {
         // Reject all pending of the sender and receiver invites
-        for(Invite pendingInvite : receiver.findPendingInvitesUser()) {
-            pendingInvite.setState(State.Rejected);
-            pendingInvite.save();
-        }
+        String updStatement = "update invite set state = :st where receiverId = :rcvId or senderId = :sndrId";
+        Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
+        update.set("st", State.Rejected);
+        update.set("rcvId", receiver.getId());
+        update.set("sndrId", sender.getId());
+        update.execute();
         // Accept the invite
         state = State.Accepted;
         this.save();

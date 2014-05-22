@@ -9,6 +9,7 @@ import views.html.invite.view;
  * Created by Marijn Goedegebure on 20-5-2014.
  * The class that handles all the actions used with the invites
  */
+@Secure.Authenticated
 public class InviteController extends Controller {
 
     /**
@@ -16,7 +17,6 @@ public class InviteController extends Controller {
      * @param id of the invite to view
      * @return an ok to the viewInvite view
      */
-    @Secure.Authenticated
     public static Result view(long id) {
         Invite invite = Invite.findById(id);
         return ok(view.render(invite));
@@ -27,7 +27,6 @@ public class InviteController extends Controller {
      * @param id of the invite to accept
      * @return redirect to the view practical
      */
-    @Secure.Authenticated
     public static Result acceptInvite(long id) {
         Invite invite = Invite.findById(id);
         invite.accept();
@@ -39,7 +38,6 @@ public class InviteController extends Controller {
      * @param id of the invite to withdraw
      * @return redirect to the view practical
      */
-    @Secure.Authenticated
     public static Result withdrawInvite(long id) {
         Invite invite = Invite.findById(id);
         invite.withdraw();
@@ -51,7 +49,6 @@ public class InviteController extends Controller {
      * @param id of the invite to resend
      * @return redirect to the view practical
      */
-    @Secure.Authenticated
     public static Result resendInvite(long id) {
         Invite invite = Invite.findById(id);
         invite.resend();
@@ -64,7 +61,6 @@ public class InviteController extends Controller {
      * @param userId that wants to reject the invite
      * @return redirect to the view practical
      */
-    @Secure.Authenticated
     public static Result rejectInvite(long inviteId, long userId) {
         Invite invite = Invite.findById(inviteId);
         User user = User.findById(userId);
