@@ -6,6 +6,7 @@ import play.Logger;
 import play.mvc.*;
 import views.html.practical.list;
 import views.html.practical.view;
+import views.html.viewPracticalGroup;
 
 /**
  * Created by Marijn Goedegebure on 15-5-2014.
@@ -60,13 +61,7 @@ public class PracticalController extends Controller {
             flash("error", "practical.userIsNotEnrolled");
             return redirect(routes.Application.index());
         }
-        else {
-            Logger.debug("Practical does exist");
-            return ok(view.render(practicalToRender));
-            Logger.debug("Practical does exist");
-            return ok(viewPractical.render(practicalToRender));
-        }
-        return ok(viewPractical.render(practicalToRender));
+        return ok(view.render(practicalToRender));
     }
 
     /**
@@ -83,11 +78,11 @@ public class PracticalController extends Controller {
         if(!Invite.sendInvite(practicalGroup.getPractical(), sender, receiver)) {
             Logger.debug("Sending invitation unsuccessful");
             flash("error", "practical.UnsuccessfulSend");
-            return redirect(routes.PracticalController.viewPractical(practicalGroup.getPractical().getId()));
+            return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
         }
         Logger.debug("Successful invitation created");
         flash("success", "practical.InviteSend");
-        return redirect(routes.PracticalController.viewPractical(practicalGroup.getPractical().getId()));
+        return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
     }
 
     /**

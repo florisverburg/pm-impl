@@ -83,12 +83,14 @@ public class UserTest extends WithApplication {
 
     @Test
     public void typeTest() {
-        assertEquals(hans.getType(), User.Type.Teacher);
-        assertNotEquals(hans.getType(), User.Type.User);
+
+        assertNotEquals(bob.getType(), User.Type.Teacher);
+        assertEquals(bob.getType(), User.Type.User);
     }
 
     @Test
     public void testEquals() {
+        User hendrik = User.findByName("Hendrik");
         assertEquals(bob, bob);
         assertNotEquals(bob, hendrik);
     }

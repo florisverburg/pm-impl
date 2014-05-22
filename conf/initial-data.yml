@@ -15,31 +15,31 @@ users:
     token: 123456
 
   - &user3 !!models.User
-    type: USER
+    type: User
     firstName: Bob
     lastName: Verburg
     email: bob@example.com
 
   - &user4 !!models.User
-    type: USER
+    type: User
     firstName: Hendrik
     lastName: Tienen
     email: hendrik@example.com
 
   - &user5 !!models.User
-    type: USER
+    type: User
     firstName: Peter
     lastName: Goedegebure
     email: peter@example.com
 
   - &user6 !!models.User
-    type: USER
+    type: User
     firstName: Leon
     lastName: Janssen
     email: leon@example.com
 
   - &user7 !!models.User
-    type: ADMIN
+    type: Admin
     firstName: admin
     lastName: TestAdmin
     email: admin@test.com
