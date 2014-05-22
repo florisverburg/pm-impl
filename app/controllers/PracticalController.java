@@ -69,7 +69,6 @@ public class PracticalController extends Controller {
      * @param id of the practical group to send to
      * @return a redirect to the view practical
      */
-    @Secure.Authenticated
     public static Result sendInvitePracticalGroup(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
         User receiver =  practicalGroup.getUsers().get(0);
@@ -98,7 +97,6 @@ public class PracticalController extends Controller {
      * @param id of the practical group to view
      * @return an ok with a practical group
      */
-    @Secure.Authenticated
     public static Result viewPracticalGroup(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
         if(!Secure.getUser().getPracticals().contains(practicalGroup.getPractical())){

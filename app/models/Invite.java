@@ -3,7 +3,6 @@ package models;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Update;
 import com.avaje.ebean.annotation.EnumValue;
-import play.Logger;
 import play.data.validation.*;
 import play.db.ebean.*;
 
@@ -148,12 +147,6 @@ public class Invite extends Model {
         // Delete practical group of receiver
         PracticalGroup receiversPracticalGroup =
                 PracticalGroup.findWithPracticalAndUser(practical, receiver);
-        // Delete practical group from user
-        receiver.removePracticalGroup(receiversPracticalGroup);
-        receiver.save();
-        // Delete practical group from practical
-        practical.removePracticalGroup(receiversPracticalGroup);
-        practical.save();
         Ebean.delete(receiversPracticalGroup);
         // Add receiver to practical group of sender
         PracticalGroup sendersPracticalGroup =
@@ -209,9 +202,9 @@ public class Invite extends Model {
         // Check whether the sender has not already send an invite to the receiver and
         // Check whether the receiver has not already send an invite to the receiver and
         // Check whether the amount of send invitations does not exceed the set maximum
-        if(!checkInvite(sender, receiver) ||
-                !checkInvite(receiver, sender) ||
-                sender.findPendingInvitesUser().size() > INVITES_MAX) {
+        if(!checkInvite(sender, receiver)
+                || !checkInvite(receiver, sender)
+                || sender.findPendingInvitesUser().size() > INVITES_MAX) {
             return null;
         }
         Invite newInvite = new Invite(practical, sender, receiver);

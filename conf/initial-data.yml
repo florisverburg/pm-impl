@@ -82,6 +82,9 @@ practicals:
     admin: *user1
     users:
       - *user3
+      - *user4
+      - *user5
+      - *user6
 
 # PracticalGroup
 practicalGroups:
@@ -110,6 +113,11 @@ practicalGroups:
     users:
       - *user3
       - *user4
+  - &practicalGroup7 !!models.PracticalGroup
+    practical: *practical2
+    users:
+      - *user5
+      - *user6
 
 
 # Invites
@@ -161,3 +169,8 @@ identities:
     user: *user2
     email: test@test.com
     password: floor
+
+  - &identity3 !!models.PasswordIdentity
+    user: *user5
+    email: peter@example.com
+    password: 55bvo
