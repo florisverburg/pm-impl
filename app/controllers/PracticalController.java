@@ -74,7 +74,7 @@ public class PracticalController extends Controller {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
         User receiver =  practicalGroup.getUsers().get(0);
         User sender = Secure.getUser();
-        if(Invite.sendInvite(practicalGroup.getPractical(), sender, receiver).equals(null)) {
+        if(Invite.sendInvite(practicalGroup.getPractical(), sender, receiver) == null) {
             Logger.debug("To many invitations send");
             flash("error", "practical.unsuccessfulSend");
             return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));

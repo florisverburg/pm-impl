@@ -226,12 +226,11 @@ public class Invite extends Model {
      */
     private static boolean checkInvite(User sender, User receiver) {
         // Check whether the sender has not already send an invite to the receiver
-        return find.where()
+        return null == find.where()
              .and(
                 eq("senderId", sender.getId()),
                 eq("receiverId", receiver.getId()))
-             .findUnique()
-             .equals(null);
+             .findUnique();
     }
 
     /**
