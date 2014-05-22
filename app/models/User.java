@@ -15,7 +15,6 @@ import java.util.List;
 import com.typesafe.plugin.*;
 import play.mvc.*;
 
-import static com.avaje.ebean.Expr.eq;
 
 /**
  * Created by Freek on 09/05/14.

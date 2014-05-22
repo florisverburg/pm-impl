@@ -5,6 +5,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.*;
 
+import play.Logger;
 import play.mvc.*;
 import static play.test.Helpers.*;
 import com.google.common.collect.ImmutableMap;
@@ -33,12 +34,11 @@ public class AuthenticationTest extends WithApplication {
         Result result = callAction(
                 controllers.routes.ref.Authentication.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
-                        "email", "test@test.com",
-                        "password", "floor"))
+                        "email", "mistertest@test.com",
+                        "password", "freak"))
         );
-
         assertEquals(SEE_OTHER, status(result));
-        assertEquals(User.findByEmail("test@test.com").getId().toString(), session(result).get("user_id"));
+        assertEquals(User.findByEmail("mistertest@test.com").getId().toString(), session(result).get("user_id"));
     }
 
     @Test

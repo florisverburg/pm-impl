@@ -6,12 +6,10 @@ import play.data.validation.*;
 import play.db.ebean.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.avaje.ebean.Expr.and;
 import static com.avaje.ebean.Expr.eq;
-import static com.avaje.ebean.Expr.or;
 
 /**
  * Created by Marijn Goedegebure on 19-5-2014.
