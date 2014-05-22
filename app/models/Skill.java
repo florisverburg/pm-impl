@@ -61,7 +61,7 @@ public class Skill extends Model {
     /**
      * The many-to-many relationship defined for the skills and users
      */
-    @ManyToMany(mappedBy = "skills", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<User>();
 
     /**

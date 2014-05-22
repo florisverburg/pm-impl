@@ -102,25 +102,25 @@ public class User extends Model {
     /**
      *
      */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Identity> identities = new ArrayList<Identity>();
 
     /**
      * The many-to-many relationship defined by the skills and users
      */
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Skill> skills = new ArrayList<Skill>();
 
     /**
      * The many-to-many relationship defined for the users and practicals
      */
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Practical> practicals = new ArrayList<Practical>();
 
     /**
      * One-to-many relationship between practical and user
      */
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
     private List<Practical> practicalsAdmin = new ArrayList<Practical>();
 
     /**
@@ -137,13 +137,13 @@ public class User extends Model {
     /**
      * One-to-many relationship between user and invite (sender)
      */
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Invite> invitesSend = new ArrayList<Invite>();
 
     /**
      * One-to-many relationship between user and invite (receiver)
      */
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
     private List<Invite> invitesReceived = new ArrayList<Invite>();
 
     /**

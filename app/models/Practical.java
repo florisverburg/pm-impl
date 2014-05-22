@@ -58,7 +58,7 @@ public class Practical extends Model {
     /**
      * Many-to-many relationship between practical and user
      */
-    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.ALL)
     List<User> users = new ArrayList<User>();
 
     /**
@@ -71,13 +71,13 @@ public class Practical extends Model {
     /**
      * One-to-many relationship between practical and practical group
      */
-    @OneToMany(mappedBy = "practical", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
     List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
 
     /**
      * One-to-many relationship between practical and invite
      */
-    @OneToMany(mappedBy = "practical", cascade =  CascadeType.PERSIST)
+    @OneToMany(mappedBy = "practical", cascade =  CascadeType.ALL)
     List<Invite> invites = new ArrayList<>();
 
     /**

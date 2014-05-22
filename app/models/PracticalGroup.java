@@ -30,7 +30,7 @@ public class PracticalGroup extends Model {
     /**
      * Many-to-many relationship of the practicalgroups and users
      */
-    @ManyToMany(mappedBy = "practicalGroups", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "practicalGroups", cascade = CascadeType.ALL)
     List<User> users = new ArrayList<User>();
 
     /**

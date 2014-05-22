@@ -205,15 +205,12 @@ public class Invite extends Model {
      * @return Resembles the success/failure of the check
      */
     public static Invite sendInvite(Practical practical, User sender, User receiver) {
-        // Check whether the sender has not already send an invite to the receiver
-        if(checkInvite(sender, receiver)) {
-            return null;
-        }
-        // Check whether the receiver has not already send an invite to the receiver
-        if(checkInvite(receiver, sender)) {
-            return null;
-        }
-        if(sender.findPendingInvitesUser().size() > INVITES_MAX) {
+        // Check whether the sender has not already send an invite to the receiver and
+        // Check whether the receiver has not already send an invite to the receiver and
+        // Check whether the amount of send invitations does not exceed the set maximum
+        if(checkInvite(sender, receiver) ||
+                checkInvite(receiver, sender) ||
+                sender.findPendingInvitesUser().size() > INVITES_MAX) {
             return null;
         }
         Invite newInvite = new Invite(practical, sender, receiver);
@@ -229,11 +226,12 @@ public class Invite extends Model {
      */
     private static boolean checkInvite(User sender, User receiver) {
         // Check whether the sender has not already send an invite to the receiver
-        return null == find.where()
-             .and(
-                eq("senderId", sender.getId()),
-                eq("receiverId", receiver.getId()))
-             .findUnique();
+        Invite alreadySentInvite = find.where()
+                .and(
+                    eq("senderId", sender.getId()),
+                    eq("receiverId", receiver.getId()))
+                .findUnique();
+        return (null == alreadySentInvite);
     }
 
     /**
