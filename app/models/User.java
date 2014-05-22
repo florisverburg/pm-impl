@@ -232,8 +232,6 @@ public class User extends Model {
         return Invite.findPendingInvitesWhereUser(this);
     }
 
-
-
     /**
      * Get the user id
      * @return The id
