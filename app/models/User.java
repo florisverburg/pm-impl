@@ -262,9 +262,10 @@ public class User extends Model {
     /**
      * Method to find the pending invites an user has
      * @return list of pending invites
+     * @param practical of the user
      */
-    public List<Invite> findPendingInvitesUser() {
-        return Invite.findPendingInvitesWhereUser(this);
+    public List<Invite> findPendingInvitesUser(Practical practical) {
+        return Invite.findPendingInvitesWhereUser(this, practical);
     }
 
     /**

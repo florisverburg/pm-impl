@@ -103,17 +103,30 @@ public class Invite extends Model {
     /**
      * Method to find the pending invites a specific user has
      * @param user to find pending invites off
+     * @param practical that the invite are attached to
      * @return List of invites that are pending for this user
      */
-    public static List<Invite> findPendingInvitesWhereUser(User user) {
+    public static List<Invite> findPendingInvitesWhereUser(User user, Practical practical) {
         // Get invites that have state pending and are sent by the user
         List<Invite> pendingInvites =
-                find.where().or(
-                        and(eq("senderId", user.getId()),
-                                eq("state", State.Pending)),
-                        and(eq("receiverId", user.getId())
-                                , eq("state", State.Pending)))
-                        .findList();
+                find.where()
+                    .or(
+                        and(
+                            and(
+                                eq("senderId", user.getId()),
+                                eq("practicalId", practical.getId())
+                            ),
+                            eq("state", State.Pending)
+                        ),
+                        and(
+                            and(
+                                eq("receiverId", user.getId()),
+                                eq("practicalId", practical.getId())
+                            ),
+                            eq("state", State.Pending)
+                        )
+                    )
+                    .findList();
         return pendingInvites;
     }
 
@@ -204,7 +217,7 @@ public class Invite extends Model {
         // Check whether the amount of send invitations does not exceed the set maximum
         if(!checkInvite(sender, receiver)
                 || !checkInvite(receiver, sender)
-                || sender.findPendingInvitesUser().size() > INVITES_MAX) {
+                || sender.findPendingInvitesUser(practical).size() > INVITES_MAX) {
             return null;
         }
         Invite newInvite = new Invite(practical, sender, receiver);
