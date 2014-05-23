@@ -452,7 +452,11 @@ public class User extends Model {
         String link = controllers.routes.Authentication.verify(this.getEmail(), this.getToken()).absoluteURL(false,
                 Http.Context.current()._requestHeader());
         String message = "Verify your account by opening this link: " + link;
-        mail.send(message);
+
+        // Avoid testing accounts
+        if(!this.getEmail().contains("@example.com") && !this.getEmail().contains("@test.com")) {
+            mail.send(message);
+        }
     }
 
     /**
