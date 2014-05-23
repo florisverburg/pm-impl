@@ -4,11 +4,8 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import play.test.WithApplication;
 
-import java.util.List;
-
 import static junit.framework.TestCase.assertEquals;
 import static play.test.Helpers.*;
-import static org.fest.assertions.Assertions.*;
 
 
 /**
@@ -32,10 +29,19 @@ public class UserTest extends WithApplication {
      */
     @Test
     public void testCreationUser() {
+        // Create a new user
+        User createdUser = new User ("Laura", "Dragos", "laura@example.com", User.Type.User);
+        createdUser.save();
+
+        // Retrieve user from database
+        User retrievedUser = User.findById(createdUser.getId());
+
         // Check the values of the setUp() method
-        assertThat(bob.getFirstName()).isEqualTo("Bob");
-        assertThat(bob.getLastName()).isEqualTo("Verburg");
-        assertThat(bob.getEmail()).isEqualTo("bob@example.com");
+        assertEquals(retrievedUser.getFirstName(), "Laura");
+        assertEquals(retrievedUser.getLastName(), "Dragos");
+        assertEquals(retrievedUser.getEmail(), "laura@example.com");
+        assertEquals(retrievedUser.getType(), "User");
+        assertEquals(retrievedUser.getToken().getClass(), String.class);
     }
 
     /**
@@ -47,22 +53,45 @@ public class UserTest extends WithApplication {
         bob.setFirstName("Erica");
         bob.setLastName("Tienen");
         bob.setEmail("erica@example.com");
+        bob.setType(User.Type.Admin);
+        bob.setToken("abc");
         bob.save();
 
+        // Retrieve bob from the database
+        User retrievedUser = User.findById(bob.getId());
+
         // Check the new values
-        assertThat(bob.getFirstName()).isEqualTo("Erica");
-        assertThat(bob.getLastName()).isEqualTo("Tienen");
-        assertThat(bob.getEmail()).isEqualTo("erica@example.com");
+        assertEquals(retrievedUser.getFirstName(), "Erica");
+        assertEquals(retrievedUser.getLastName(), "Tienen");
+        assertEquals(retrievedUser.getEmail(), "erica@example.com");
+        assertEquals(retrievedUser.getType(), "Admin");
+        assertEquals(retrievedUser.getToken(), "abc");
     }
 
+    /**
+     * Test getByEmailMethod
+     */
     @Test
     public void getByEmail() {
-        User createRob = new User("rob", "lastName", "rob@none.com");
+        // Test whether the findByEmail returns the correct values
+        User createRob = new User("rob", "lastName", "rob@example.com", User.Type.Admin);
         createRob.save();
         User rob = User.findByEmail("rob@none.com");
+        // Check the new values
+        assertEquals(rob.getFirstName(), "rob");
+        assertEquals(rob.getLastName(), "Tienen");
+        assertEquals(rob.getEmail(), "rob@example.com");
+        assertEquals(rob.getType(), "Admin");
 
-        assertNotNull(rob);
-        assertEquals(createRob, rob);
+
+        // retrieve the user rob by his email and by his id
+        User retrievedUserById = User.findById(rob.getId());
+        User retrievedUserByEmail = User.findByEmail(rob.getEmail());
+
+        // Test whether the two functions return the same data
+        assertEquals(retrievedUserById, retrievedUserByEmail);
+        assertEquals(retrievedUserById.getId(), retrievedUserByEmail.getId());
+        assertEquals(retrievedUserById.getEmail(), retrievedUserByEmail.getEmail());
     }
 
     @Test
@@ -82,16 +111,14 @@ public class UserTest extends WithApplication {
     }
 
     @Test
-    public void typeTest() {
-
+     public void typeTest() {
         assertNotEquals(bob.getType(), User.Type.Teacher);
         assertEquals(bob.getType(), User.Type.User);
     }
 
     @Test
-    public void testEquals() {
-        User hendrik = User.findByName("Hendrik");
-        assertEquals(bob, bob);
-        assertNotEquals(bob, hendrik);
+    public void findPendingInvitesTest() {
+        //bob.getInvitesReceived()
+        //findPendingInvitesUser
     }
 }
