@@ -294,18 +294,10 @@ public class User extends Model {
 
     /**
      * Method to add a skill to the list, used for the many-to-many relationship
-     * @param skill skill to add to the list
+     * @param skill to add to the list
      */
     public void addSkill(Skill skill) {
         skills.add(skill);
-    }
-
-    /**
-     * Method to add a practical to the list
-     * @param practical to be added to the list
-     */
-    public void addPractical(Practical practical) {
-        practicals.add(practical);
     }
 
     /**
@@ -314,6 +306,14 @@ public class User extends Model {
      */
     public List<Skill> getSkills() {
         return skills;
+    }
+
+    /**
+     * Method to add a practical to the list
+     * @param practical to be added to the list
+     */
+    public void addPractical(Practical practical) {
+        practicals.add(practical);
     }
 
     /**
@@ -354,22 +354,6 @@ public class User extends Model {
      */
     public void removePracticalGroup(PracticalGroup practicalGroup) {
         this.practicalGroups.remove(practicalGroup);
-    }
-
-    /**
-     * Setter of the list of practicals the user is admin of
-     * @param practicalsAdmin the user is admin of
-     */
-    public void setPracticalsAdmin(List<Practical> practicalsAdmin) {
-        this.practicalsAdmin = practicalsAdmin;
-    }
-
-    /**
-     * Add a practical to the list of practicals the user is admin of
-     * @param practical to be added to the list
-     */
-    public void addPracticalAdmin(Practical practical) {
-        practicalsAdmin.add(practical);
     }
 
     /**
@@ -551,42 +535,10 @@ public class User extends Model {
     }
 
     /**
-     * Setter invites send
-     * @param invitesSend to set
-     */
-    public void setInvitesSend(List<Invite> invitesSend) {
-        this.invitesSend = invitesSend;
-    }
-
-    /**
-     * add invite to the invites send
-     * @param invite to add
-     */
-    public void addInvitesSend(Invite invite) {
-        this.invitesSend.add(invite);
-    }
-
-    /**
      * Getter invites received
      * @return invites received
      */
     public List<Invite> getInvitesReceived() {
         return invitesReceived;
-    }
-
-    /**
-     * Setter invites received
-     * @param invitesReceived to set
-     */
-    public void setInvitesReceived(List<Invite> invitesReceived) {
-        this.invitesReceived = invitesReceived;
-    }
-
-    /**
-     * Add invite to the invites received
-     * @param invite to add
-     */
-    public void addInvitesReceived(Invite invite) {
-        this.invitesReceived.add(invite);
     }
 }
