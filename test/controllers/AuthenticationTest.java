@@ -16,8 +16,7 @@ import play.test.WithApplication;
 public class AuthenticationTest extends WithApplication {
     @Before
     public void setUp() {
-        start(fakeApplication(inMemoryDatabase(), fakeGlobal()));
-        TestHelper.loadYamlFile("test-data.yml");
+        start(fakeApplication(inMemoryDatabase()));
     }
 
     @Test
@@ -34,12 +33,11 @@ public class AuthenticationTest extends WithApplication {
         Result result = callAction(
                 controllers.routes.ref.Authentication.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
-                        "email", "test@test.com",
-                        "password", "floor"))
+                        "email", "mistertest@test.com",
+                        "password", "freak"))
         );
-
         assertEquals(SEE_OTHER, status(result));
-        assertEquals(User.findByEmail("test@test.com").getId().toString(), session(result).get("user_id"));
+        assertEquals(User.findByEmail("mistertest@test.com").getId().toString(), session(result).get("user_id"));
     }
 
     @Test

@@ -15,11 +15,7 @@ import static play.test.Helpers.*;
  */
 public class SkillTest extends WithApplication {
 
-    private User bob;
-    private User hendrik;
-
-    private Skill programming;
-    private Skill documenting;
+    Skill programming;
 
     /**
      * Setup method for the SkillTest
@@ -27,30 +23,7 @@ public class SkillTest extends WithApplication {
     @Before
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
-        // Create a new skill
-        programming = new Skill("Programming", Skill.Type.PROGRAMMING,10);
-        programming.save();
-
-        // Create a new skill
-        documenting = new Skill("Documenting", Skill.Type.DOCUMENTING,10);
-        documenting.save();
-
-        // Create a new user
-        bob = new User("Bob","Verburg","bob@example.com");
-        bob.save();
-
-        // Create a new user
-        hendrik = new User("Hendrik","Tienen","hendrik@example.com");
-        hendrik.save();
-
-        // Add bob to skills
-        programming.addUser(bob);
-        documenting.addUser(bob);
-
-        // Add hendrik to skill
-        programming.addUser(hendrik);
-        programming.save();
-        documenting.save();
+        programming = Skill.findByName("Programming");
     }
 
     /**
@@ -79,28 +52,5 @@ public class SkillTest extends WithApplication {
         assertThat(programming.getName()).isEqualTo("Documenting");
         assertThat(programming.getType()).isEqualTo(Skill.Type.DOCUMENTING);
         assertThat(programming.getMaxValue()).isEqualTo(5);
-    }
-
-    /**
-     * Method to test the many-to-many relations of Team with User and Right
-     */
-    @Test
-    public void testManyToMany() {
-        // Get right
-        Skill returnedValue = Skill.findByName("Programming");
-        List<User> returnedUsers = returnedValue.getUsers();
-
-        // check whether associated teams are correct
-        assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
-        assertEquals(returnedUsers.get(1).getFirstName(),"Hendrik");
-        assertThat(returnedUsers.size()).isEqualTo(2);
-
-        // Get the other right
-        returnedValue = Skill.findByName("Documenting");
-        returnedUsers = returnedValue.getUsers();
-
-        // check whether associated teams are correct
-        assertEquals(returnedUsers.get(0).getFirstName(),"Bob");
-        assertThat(returnedUsers.size()).isEqualTo(1);
     }
 }

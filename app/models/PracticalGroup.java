@@ -30,7 +30,7 @@ public class PracticalGroup extends Model {
     /**
      * Many-to-many relationship of the practicalgroups and users
      */
-    @ManyToMany(mappedBy = "practicalGroups", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "practicalGroups", cascade = CascadeType.ALL)
     List<User> users = new ArrayList<User>();
 
     /**
@@ -57,6 +57,19 @@ public class PracticalGroup extends Model {
     }
 
     /**
+     * A method to find a practical group using a given practical and a given user
+     * @param practical of the practical group
+     * @param user of the practical group
+     * @return practical group that was sought after
+     */
+    public static PracticalGroup findWithPracticalAndUser(Practical practical, User user) {
+        return find.where()
+                .eq("practicalId", practical.getId())
+                .eq("users.id", user.getId())
+                .findUnique();
+    }
+
+    /**
      * Getter for users
      * @return users
      */
@@ -77,6 +90,14 @@ public class PracticalGroup extends Model {
      */
     public void addUser(User user) {
         users.add(user);
+    }
+
+    /**
+     * Remove user from list
+     * @param user to remove
+     */
+    public void removeUser(User user) {
+        users.remove(user);
     }
 
     /**

@@ -58,7 +58,7 @@ public class Practical extends Model {
     /**
      * Many-to-many relationship between practical and user
      */
-    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.ALL)
     List<User> users = new ArrayList<User>();
 
     /**
@@ -71,8 +71,14 @@ public class Practical extends Model {
     /**
      * One-to-many relationship between practical and practical group
      */
-    @OneToMany(mappedBy = "practical", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
     List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
+
+    /**
+     * One-to-many relationship between practical and invite
+     */
+    @OneToMany(mappedBy = "practical", cascade =  CascadeType.ALL)
+    List<Invite> invites = new ArrayList<>();
 
     /**
      * Finder defined for the practical
@@ -241,5 +247,37 @@ public class Practical extends Model {
      */
     public void addPracticalGroup(PracticalGroup practicalGroup) {
         this.practicalGroups.add(practicalGroup);
+    }
+
+    /**
+     * Remove a practical group from the list
+     * @param practicalGroup to remove
+     */
+    public void removePracticalGroup(PracticalGroup practicalGroup) {
+        this.practicalGroups.remove(practicalGroup);
+    }
+
+    /**
+     * Getter for invites
+     * @return invites
+     */
+    public List<Invite> getInvites() {
+        return invites;
+    }
+
+    /**
+     * Setter for invites
+     * @param invites to set
+     */
+    public void setInvites(List<Invite> invites) {
+        this.invites = invites;
+    }
+
+    /**
+     * Add invite to the list of invites
+     * @param invite to add
+     */
+    public void addInvites(Invite invite) {
+        this.invites.add(invite);
     }
 }

@@ -6,6 +6,7 @@ import play.Logger;
 import play.mvc.*;
 import views.html.practical.list;
 import views.html.practical.view;
+import views.html.viewPracticalGroup;
 
 /**
  * Created by Marijn Goedegebure on 15-5-2014.
@@ -23,7 +24,6 @@ public class PracticalController extends Controller {
     public static Result register(long id, String secret) {
         Practical practicalToRender = Practical.findById(id);
         User user = Secure.getUser();
-        // Checks of practical exist
         if(practicalToRender == null) {
             // When practical does not exist, show correct error
             flash("error", "practical.doesNotExist");
@@ -52,14 +52,35 @@ public class PracticalController extends Controller {
         Practical practicalToRender = Practical.findById(id);
         // If practical does not exist
         if (practicalToRender == null) {
-            Logger.debug("Practical does not exist");
             flash("error", "practical.doesNotExist");
             return redirect(routes.Application.index());
         }
-        else {
-            Logger.debug("Practical does exist");
-            return ok(view.render(practicalToRender));
+        // If user is not enrolled to practical, it can't view it
+        if (!practicalToRender.getUsers().contains(Secure.getUser())) {
+            flash("error", "practical.userIsNotEnrolled");
+            return redirect(routes.Application.index());
         }
+        return ok(view.render(practicalToRender));
+    }
+
+    /**
+     * Method to send an invite to a practical group (you are actually sending an invite
+     * to the first user of this group)
+     * @param id of the practical group to send to
+     * @return a redirect to the view practical
+     */
+    public static Result sendInvitePracticalGroup(long id) {
+        PracticalGroup practicalGroup = PracticalGroup.findById(id);
+        User receiver =  practicalGroup.getUsers().get(0);
+        User sender = Secure.getUser();
+        if(Invite.sendInvite(practicalGroup.getPractical(), sender, receiver) == null) {
+            Logger.debug("The invite has not been send");
+            flash("error", "practical.unsuccessfulSend");
+            return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
+        }
+        Logger.debug("Successful invitation created");
+        flash("success", "practical.inviteSend");
+        return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
     }
 
     /**
@@ -69,5 +90,19 @@ public class PracticalController extends Controller {
     public static Result list() {
         User user = Secure.getUser();
         return ok(list.render(user.getPracticals()));
+    }
+
+    /**
+     * Method to view a practical group
+     * @param id of the practical group to view
+     * @return an ok with a practical group
+     */
+    public static Result viewPracticalGroup(long id) {
+        PracticalGroup practicalGroup = PracticalGroup.findById(id);
+        if(!Secure.getUser().getPracticals().contains(practicalGroup.getPractical())){
+            flash("error", "practical.userIsNotEnrolled");
+            return redirect(routes.Application.index());
+        }
+        return ok(viewPracticalGroup.render(practicalGroup));
     }
 }

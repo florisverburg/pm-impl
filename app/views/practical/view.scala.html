@@ -1,4 +1,4 @@
-@(practical : Practical)
+@(practical: Practical)
 
 @main("Practical", "practicals") {
 
@@ -8,16 +8,138 @@
         @practical.getDescription()
     </p>
 </div>
-<h2>Users of practical:</h2>
+<h2>Currently enrolled participants:</h2>
 <ul>
     @practical.getUsers().map { user =>
-        <li>@user.getFirstName()</li>
+        <li>@user.getFullName()</li>
     }
 </ul>
-<h2>Group practicals:</h2>
-<ul>
-    @practical.getPracticalGroups().map { practicalGroup =>
-        <li>@practicalGroup.getId()</li>
+<h2>Your practical group</h2>
+@PracticalGroup.findWithPracticalAndUser(practical, Secure.getUser()).getUsers().map { user =>
+    <div class="row">
+        <div class="col-xs-4">
+            <p>@user.getFullName()</p>
+        </div>
+        <div class="col-xs-8">
+        </div>
+    </div>
     }
-</ul>
+
+<h2> Your sent invites</h2>
+<div class="row">
+    <div class="col-xs-3">
+        Sender:
+    </div>
+    <div class="col-xs-3">
+        Receiver:
+    </div>
+    <div class="col-xs-3">
+        State:
+    </div>
+    <div class="col-xs-3">
+
+    </div>
+</div>
+@practical.getInvites().map { invite =>
+    @if(invite.getSender().getId().equals(Secure.getUser().getId()) && invite.getState().equals(Invite.State.Pending)) {
+        <div class="row">
+            <div class="col-xs-3">
+                <p>@invite.getSender().getFullName()</p>
+            </div>
+            <div class="col-xs-3">
+                <p>@invite.getReceiver().getFullName()</p>
+            </div>
+            <div class="col-xs-3">
+                <p>@invite.getState()</p>
+            </div>
+            <div class="col-xs-3">
+                <a href="@routes.InviteController.view(invite.getId())" class="btn btn-primary">view invite</a>
+            </div>
+        </div>
+    }
+}
+<h2> Your received invites</h2>
+<div class="row">
+    <div class="col-xs-3">
+        Sender:
+    </div>
+    <div class="col-xs-3">
+        Receiver:
+    </div>
+    <div class="col-xs-3">
+        State:
+    </div>
+    <div class="col-xs-3">
+
+    </div>
+</div>
+@practical.getInvites().map { invite =>
+    @if(invite.getReceiver().getId().equals(Secure.getUser().getId()) && invite.getState().equals(Invite.State.Pending)) {
+        <div class="row">
+            <div class="col-xs-3">
+                <p>@invite.getSender().getFullName()</p>
+            </div>
+            <div class="col-xs-3">
+                <p>@invite.getReceiver().getFullName()</p>
+            </div>
+            <div class="col-xs-3">
+                <p>@invite.getState()</p>
+            </div>
+            <div class="col-xs-3">
+                <a href="@routes.InviteController.view(invite.getId())" class="btn btn-primary">view invite</a>
+            </div>
+        </div>
+    }
+}
+<h2>Practical Groups:</h2>
+@practical.getPracticalGroups().map { practicalGroup =>
+    @if(practicalGroup.getUsers.get(0).getId().equals(Secure.getUser().getId())) {
+    } else {
+    <div class="row">
+        <div class="col-xs-4">
+            <a href="@routes.PracticalController.viewPracticalGroup(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
+        </div>
+        <div class="col-xs-8">
+            <a href="@routes.PracticalController.sendInvitePracticalGroup(practicalGroup.getId())" class="btn btn-primary">Invite</a>
+        </div>
+    </div>
+    }
+}
+<h2>Accepted and Rejected invites</h2>
+@Secure.getUser().getInvitesReceived().map { invite =>
+    @if(!invite.getState().equals(Invite.State.Pending)) {
+        <div class="row">
+            <div class="col-xs-3">
+                <p>@invite.getSender().getFullName()</p>
+            </div>
+            <div class="col-xs-3">
+                <p>@invite.getReceiver().getFullName()</p>
+            </div>
+            <div class="col-xs-3">
+                <p>@invite.getState()</p>
+            </div>
+            <div class="col-xs-3">
+                <a href="@routes.InviteController.view(invite.getId())" class="btn btn-primary">view invite</a>
+            </div>
+        </div>
+    }
+}
+@Secure.getUser().getInvitesSend().map { invite =>
+    @if(!invite.getState().equals(Invite.State.Pending)) {
+    <div class="row">
+        <div class="col-xs-3">
+            <p>@invite.getSender().getFullName()</p>
+        </div>
+        <div class="col-xs-3">
+            <p>@invite.getReceiver().getFullName()</p>
+        </div>
+        <div class="col-xs-3">
+            <p>@invite.getState()</p>
+        </div>
+        <div class="col-xs-3">
+            <a href="@routes.InviteController.view(invite.getId())" class="btn btn-primary">view invite</a>
+        </div>
+    </div>
+    }
+}
 }

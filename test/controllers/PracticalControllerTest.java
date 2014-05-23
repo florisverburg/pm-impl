@@ -16,22 +16,21 @@ public class PracticalControllerTest extends WithApplication {
 
     @Before
     public void setUp() {
-        start(fakeApplication(inMemoryDatabase(), fakeGlobal()));
-        TestHelper.loadYamlFile("test-data.yml");
+        start(fakeApplication(inMemoryDatabase()));
     }
 
     @Test
     public void testRegisterSuccessfulAddition() {
         Practical practical = Practical.findById(1);
-        assertEquals(practical.getUsers().size(), 2);
+        assertEquals(practical.getUsers().size(), 5);
 
         callAction(controllers.routes.ref.PracticalController.register(practical.getId(), practical.getSecret()),
                 fakeRequest().withSession("user_id",
                         User.findByEmail("admin@test.com").getId().toString()));
         Practical resultPractical = Practical.findById(1);
 
-        assertEquals(resultPractical.getUsers().size(), 3);
-        assertEquals(resultPractical.getUsers().get(2).getFirstName(), "admin");
+        assertEquals(resultPractical.getUsers().size(), 6);
+        assertEquals(resultPractical.getUsers().get(2).getFirstName(), "Hendrik");
     }
 
     @Test
@@ -47,37 +46,37 @@ public class PracticalControllerTest extends WithApplication {
     @Test
     public void registerAlreadyCoupled() {
         Practical practical = Practical.findById(1);
-        assertEquals(practical.getUsers().size(), 2);
+        assertEquals(practical.getUsers().size(), 5);
         assert(practical.getUsers().contains(practical.getUsers().get(0)));
 
         callAction(controllers.routes.ref.PracticalController.register(practical.getId(), practical.getSecret()),
                 fakeRequest().withSession("user_id", practical.getUsers().get(0).getId().toString()));
         Practical resultPractical = Practical.findById(1);
 
-        assertEquals(resultPractical.getUsers().size(), 2);
+        assertEquals(resultPractical.getUsers().size(), 5);
     }
 
     @Test
     public void registerNotAuthenticated() {
         Practical practical = Practical.findById(1);
-        assertEquals(practical.getUsers().size(), 2);
+        assertEquals(practical.getUsers().size(), 5);
 
         callAction(controllers.routes.ref.PracticalController.register(practical.getId(), practical.getSecret()));
         Practical resultPractical = Practical.findById(1);
 
-        assertEquals(resultPractical.getUsers().size(), 2);
+        assertEquals(resultPractical.getUsers().size(), 5);
     }
 
     @Test
     public void registerWrongSecret() {
         Practical practical = Practical.findById(1);
-        assertEquals(practical.getUsers().size(), 2);
+        assertEquals(practical.getUsers().size(), 5);
 
         callAction(controllers.routes.ref.PracticalController.register(practical.getId(),"NotTheSecret"),
                 fakeRequest().withSession("user_id", "3"));
         Practical resultPractical = Practical.findById(1);
 
-        assertEquals(resultPractical.getUsers().size(), 2);
+        assertEquals(resultPractical.getUsers().size(), 5);
     }
 
 }

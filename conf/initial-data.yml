@@ -15,11 +15,51 @@ users:
     token: 123456
 
   - &user3 !!models.User
+    type: User
+    firstName: Bob
+    lastName: Verburg
+    email: bob@example.com
+
+  - &user4 !!models.User
+    type: User
+    firstName: Hendrik
+    lastName: Tienen
+    email: hendrik@example.com
+
+  - &user5 !!models.User
+    type: User
+    firstName: Peter
+    lastName: Goedegebure
+    email: peter@example.com
+
+  - &user6 !!models.User
+    type: User
+    firstName: Leon
+    lastName: Janssen
+    email: leon@example.com
+
+  - &user7 !!models.User
     type: Admin
     firstName: admin
     lastName: TestAdmin
     email: admin@test.com
     token: 12345
+
+# Skills
+skills:
+  - &skill1 !!models.Skill
+    name: Programming
+    type: PROGRAMMING
+    maxValue: 10
+    users:
+      - *user3
+      - *user4
+  - &skill2 !!models.Skill
+    name: Documenting
+    type: DOCUMENTING
+    maxValue: 10
+    users:
+      - *user3
 
 # Practical
 practicals:
@@ -27,17 +67,96 @@ practicals:
     name: Programming
     description: A programming assignment about programming
     secret: abc
-    admin: *user3
+    admin: *user1
     users:
-      - *user1
+      - *user2
+      - *user3
+      - *user4
+      - *user5
+      - *user6
+
+  - &practical2 !!models.Practical
+    name: Documenting
+    description: Assignment about documenting
+    secret: abc
+    admin: *user1
+    users:
+      - *user3
+      - *user4
+      - *user5
+      - *user6
 
 # PracticalGroup
 practicalGroups:
   - &practicalGroup1 !!models.PracticalGroup
     practical: *practical1
     users:
-      - *user1
+      - *user2
+  - &practicalGroup2 !!models.PracticalGroup
+    practical: *practical1
+    users:
+      - *user3
+  - &practicalGroup3 !!models.PracticalGroup
+    practical: *practical1
+    users:
+      - *user4
+  - &practicalGroup4 !!models.PracticalGroup
+    practical: *practical1
+    users:
+      - *user5
+  - &practicalGroup5 !!models.PracticalGroup
+    practical: *practical1
+    users:
+      - *user6
+  - &practicalGroup6 !!models.PracticalGroup
+    practical: *practical2
+    users:
+      - *user3
+      - *user4
+  - &practicalGroup7 !!models.PracticalGroup
+    practical: *practical2
+    users:
+      - *user5
+      - *user6
 
+
+# Invites
+invites:
+  - &invite1 !!models.Invite
+    state: Pending
+    practical: *practical1
+    sender: *user2
+    receiver: *user3
+  - &invite2 !!models.Invite
+    state: Pending
+    practical: *practical1
+    sender: *user4
+    receiver: *user2
+  - &invite3 !!models.Invite
+    state: Pending
+    practical: *practical1
+    sender: *user2
+    receiver: *user5
+  - &invite4 !!models.Invite
+    state: Pending
+    practical: *practical1
+    sender: *user3
+    receiver: *user4
+  - &invite5 !!models.Invite
+    state: Pending
+    practical: *practical1
+    sender: *user3
+    receiver: *user5
+  - &invite6 !!models.Invite
+    state: Pending
+    practical: *practical1
+    sender: *user5
+    receiver: *user4
+  - &invite7 !!models.Invite
+    state: Pending
+    practical: *practical2
+    sender: *user4
+    receiver: *user3
 
 #Identities
 identities:
@@ -50,3 +169,8 @@ identities:
     user: *user2
     email: test@test.com
     password: floor
+
+  - &identity3 !!models.PasswordIdentity
+    user: *user5
+    email: peter@example.com
+    password: 55bvo

@@ -103,6 +103,14 @@ public class Skill extends Model {
     }
 
     /**
+     * Setter for the users list
+     * @param users to set
+     */
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    /**
      * Constructor of the Skill model class
      * @param nm name of the skill
      * @param tp type of the skill

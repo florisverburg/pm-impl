@@ -17,6 +17,18 @@ GET         /profile                      controllers.Profile.view()
 GET         /profile/edit                 controllers.Profile.edit()
 POST        /profile/edit                 controllers.Profile.save()
 
+# Practical group
+GET         /sendInvite/:id               controllers.PracticalController.sendInvitePracticalGroup(id: Long)
+GET         /practicalgroup/:id           controllers.PracticalController.viewPracticalGroup(id: Long)
+
+# Invite
+GET         /invite/:id                   controllers.InviteController.view(id: Long)
+GET         /acceptInvite/:id             controllers.InviteController.acceptInvite(id: Long)
+GET         /withdrawInvite/:id           controllers.InviteController.withdrawInvite(id: Long)
+GET         /resendInvite/:id             controllers.InviteController.resendInvite(id: Long)
+GET         /rejectInvite/:inviteId/:userId    controllers.InviteController.rejectInvite(inviteId: Long, userId: Long)
+
+
 # Authentication
 GET         /login                        controllers.Authentication.login()
 POST        /login                        controllers.Authentication.authenticate()

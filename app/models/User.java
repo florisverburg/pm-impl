@@ -15,6 +15,7 @@ import java.util.List;
 import com.typesafe.plugin.*;
 import play.mvc.*;
 
+
 /**
  * Created by Freek on 09/05/14.
  * This is the user representation of the database
@@ -101,7 +102,7 @@ public class User extends Model {
     /**
      *
      */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Identity> identities = new ArrayList<Identity>();
 
     /**
@@ -113,7 +114,7 @@ public class User extends Model {
     /**
      * The many-to-many relationship defined for the users and practicals
      */
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Practical> practicals = new ArrayList<Practical>();
 
     /**
@@ -132,6 +133,18 @@ public class User extends Model {
      * The client identifier of the Linkedin API
      */
     private static final String EMAIL = Play.application().configuration().getString("email.address");
+
+    /**
+     * One-to-many relationship between user and invite (sender)
+     */
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private List<Invite> invitesSend = new ArrayList<Invite>();
+
+    /**
+     * One-to-many relationship between user and invite (receiver)
+     */
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private List<Invite> invitesReceived = new ArrayList<Invite>();
 
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill
@@ -212,6 +225,14 @@ public class User extends Model {
     }
 
     /**
+     * Method to find the pending invites an user has
+     * @return list of pending invites
+     */
+    public List<Invite> findPendingInvitesUser() {
+        return Invite.findPendingInvitesWhereUser(this);
+    }
+
+    /**
      * Get the user id
      * @return The id
      */
@@ -289,6 +310,22 @@ public class User extends Model {
      */
     public void addPracticalGroup(PracticalGroup practicalGroup) {
         this.practicalGroups.add(practicalGroup);
+    }
+
+    /**
+     * Method to remove practical group from the list of practical groups
+     * @param practicalGroup to remove
+     */
+    public void removePracticalGroup(PracticalGroup practicalGroup) {
+        this.practicalGroups.remove(practicalGroup);
+    }
+
+    /**
+     * Setter of the list of practicals the user is admin of
+     * @param practicalsAdmin the user is admin of
+     */
+    public void setPracticalsAdmin(List<Practical> practicalsAdmin) {
+        this.practicalsAdmin = practicalsAdmin;
     }
 
     /**
@@ -410,11 +447,59 @@ public class User extends Model {
         MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
         mail.setSubject("APMatch - Verify your mail");
         mail.setRecipient(this.getFullName() + " <" + this.getEmail() + ">");
-        mail.setFrom("APMatch <"+EMAIL+">");
+        mail.setFrom("APMatch <" + EMAIL + ">");
         //sends text/text
         String link = controllers.routes.Authentication.verify(this.getEmail(), this.getToken()).absoluteURL(false,
                 Http.Context.current()._requestHeader());
         String message = "Verify your account by opening this link: " + link;
         mail.send(message);
+    }
+
+    /**
+     * Getter invites send
+     * @return invites send
+     */
+    public List<Invite> getInvitesSend() {
+        return invitesSend;
+    }
+
+    /**
+     * Setter invites send
+     * @param invitesSend to set
+     */
+    public void setInvitesSend(List<Invite> invitesSend) {
+        this.invitesSend = invitesSend;
+    }
+
+    /**
+     * add invite to the invites send
+     * @param invite to add
+     */
+    public void addInvitesSend(Invite invite) {
+        this.invitesSend.add(invite);
+    }
+
+    /**
+     * Getter invites received
+     * @return invites received
+     */
+    public List<Invite> getInvitesReceived() {
+        return invitesReceived;
+    }
+
+    /**
+     * Setter invites received
+     * @param invitesReceived to set
+     */
+    public void setInvitesReceived(List<Invite> invitesReceived) {
+        this.invitesReceived = invitesReceived;
+    }
+
+    /**
+     * Add invite to the invites received
+     * @param invite to add
+     */
+    public void addInvitesReceived(Invite invite) {
+        this.invitesReceived.add(invite);
     }
 }

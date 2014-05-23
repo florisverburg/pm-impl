@@ -17,8 +17,7 @@ import static play.test.Helpers.*;
 public class ProfileTest extends WithApplication {
     @Before
     public void setUp() {
-        start(fakeApplication(inMemoryDatabase(), fakeGlobal()));
-        TestHelper.loadYamlFile("test-data.yml");
+        start(fakeApplication(inMemoryDatabase()));
     }
 
     @Test
