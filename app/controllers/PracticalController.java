@@ -2,7 +2,6 @@ package controllers;
 
 import helpers.Secure;
 import models.*;
-import play.Logger;
 import play.mvc.*;
 import views.html.practical.list;
 import views.html.practical.view;
@@ -73,12 +72,13 @@ public class PracticalController extends Controller {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
         User receiver =  practicalGroup.getUsers().get(0);
         User sender = Secure.getUser();
+
+        // Check if the invite was successfully send
         if(Invite.sendInvite(practicalGroup.getPractical(), sender, receiver) == null) {
-            Logger.debug("The invite has not been send");
             flash("error", "practical.unsuccessfulSend");
             return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
         }
-        Logger.debug("Successful invitation created");
+
         flash("success", "practical.inviteSend");
         return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
     }
@@ -99,10 +99,13 @@ public class PracticalController extends Controller {
      */
     public static Result viewPracticalGroup(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
+
+        // Check if the user is enrolled for the practical
         if(!Secure.getUser().getPracticals().contains(practicalGroup.getPractical())){
             flash("error", "practical.userIsNotEnrolled");
             return redirect(routes.Application.index());
         }
+
         return ok(viewPracticalGroup.render(practicalGroup));
     }
 }
