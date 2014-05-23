@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import play.data.validation.*;
 import play.db.ebean.*;
 
@@ -135,6 +136,15 @@ public class Practical extends Model {
         newPracticalGroup.save();
         practical.addPracticalGroup(newPracticalGroup);
         practical.save();
+    }
+
+    /**
+     * Check if a user is enrolled for a practical
+     * @param user The user to check
+     * @return Whether the user is enrolled or not
+     */
+    public boolean isEnrolled(User user) {
+        return users.contains(user);
     }
 
     /**

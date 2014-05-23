@@ -55,7 +55,7 @@ public class PracticalController extends Controller {
             return redirect(routes.Application.index());
         }
         // If user is not enrolled to practical, it can't view it
-        if (!practicalToRender.getUsers().contains(Secure.getUser())) {
+        if (!practicalToRender.isEnrolled(Secure.getUser())) {
             flash("error", "practical.userIsNotEnrolled");
             return redirect(routes.Application.index());
         }
