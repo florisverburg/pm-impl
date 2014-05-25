@@ -128,6 +128,7 @@ public class Practical extends Model {
      * @param practical to add a user to
      * @param user to add
      */
+    /*
     public void addUserToPractical(User user) {
         this.addUser(user);
         PracticalGroup newPracticalGroup = new PracticalGroup(this);
@@ -135,7 +136,7 @@ public class Practical extends Model {
         newPracticalGroup.save();
         this.addPracticalGroup(newPracticalGroup);
         this.save();
-    }
+    }*/
 
     /**
      * Check if a user is enrolled for a practical

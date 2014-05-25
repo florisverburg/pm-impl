@@ -180,8 +180,7 @@ public class Invite extends Model {
         practicalGroupOfRejecter.removeUser(receiver);
         practicalGroupOfRejecter.save();
         // Create a new practical group for the removed user
-        PracticalGroup newPracticalGroup = new PracticalGroup(practical);
-        newPracticalGroup.addUser(user);
+        PracticalGroup newPracticalGroup = new PracticalGroup(practical, user);
         newPracticalGroup.save();
         state = State.Rejected;
         this.save();

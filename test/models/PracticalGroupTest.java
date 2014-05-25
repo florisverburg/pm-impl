@@ -1,6 +1,8 @@
 package models;
 
+import junit.framework.*;
 import org.junit.*;
+import org.junit.Test;
 import play.test.WithApplication;
 
 import java.util.ArrayList;
@@ -34,15 +36,16 @@ public class PracticalGroupTest extends WithApplication {
     @Test
     public void testCreationSkill() {
         // Create Practical Group
-        PracticalGroup createdPracticalGroup = new PracticalGroup(testPractical);
+        PracticalGroup createdPracticalGroup = new PracticalGroup(testPractical, testUser);
         createdPracticalGroup.save();
 
         createdPracticalGroup = PracticalGroup.findById(createdPracticalGroup.getId());
 
         // Check the values of the constructor and findbyid method
         assertEquals(createdPracticalGroup.getPractical(), testPractical);
-        assertNotNull(createdPracticalGroup.getUsers());
-        assertEquals(createdPracticalGroup.getUsers().size(), 0);
+        assertNotNull(createdPracticalGroup.getGroupMembers());
+        assertEquals(createdPracticalGroup.getGroupMembers().size(), 0);
+        assertEquals(createdPracticalGroup.getOwner().getId(), testUser.getId());
     }
 
     /**
@@ -51,12 +54,15 @@ public class PracticalGroupTest extends WithApplication {
     @Test
     public void testSetters() {
         Practical otherPractical = Practical.findByName("Documenting");
+        User otherUser = User.findByName("DefaultUser2");
 
         // Set different values
         testPracticalGroup.setPractical(otherPractical);
+        testPracticalGroup.setOwner(otherUser);
         testPractical.save();
 
         // Check the new values
         assertEquals(testPracticalGroup.getPractical().getId(), otherPractical.getId());
+        assertEquals(testPracticalGroup.getOwner().getId(), otherUser.getId());
     }
 }

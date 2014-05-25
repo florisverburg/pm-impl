@@ -15,7 +15,7 @@
     }
 </ul>
 <h2>Your practical group</h2>
-@PracticalGroup.findWithPracticalAndUser(practical, Secure.getUser()).getUsers().map { user =>
+@PracticalGroup.findWithPracticalAndUser(practical, Secure.getUser()).getGroupMembers().map { user =>
     <div class="row">
         <div class="col-xs-4">
             <p>@user.getFullName()</p>
@@ -93,7 +93,7 @@
 }
 <h2>Practical Groups:</h2>
 @practical.getPracticalGroups().map { practicalGroup =>
-    @if(practicalGroup.getUsers.get(0).getId().equals(Secure.getUser().getId())) {
+    @if(practicalGroup.getGroupMembers.get(0).getId().equals(Secure.getUser().getId())) {
     } else {
     <div class="row">
         <div class="col-xs-4">

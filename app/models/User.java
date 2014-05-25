@@ -180,6 +180,12 @@ public class User extends Model {
     private List<Invite> invitesReceived = new ArrayList<Invite>();
 
     /**
+     * One-to-many relationship between user and practicalgroup, the practicalgroups where the user is owner of
+     */
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<PracticalGroup> practicalGroupsOwner = new ArrayList<PracticalGroup>();
+
+    /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
     public static Model.Finder<Long, User> find =

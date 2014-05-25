@@ -96,31 +96,28 @@ practicals:
 practicalGroups:
   - &practicalGroup1 !!models.PracticalGroup
     practical: *practical1
-    users:
-      - *user2
+    owner: *user2
   - &practicalGroup2 !!models.PracticalGroup
     practical: *practical1
-    users:
-      - *user3
+    owner: *user3
   - &practicalGroup3 !!models.PracticalGroup
     practical: *practical1
-    users:
-      - *user4
+    owner: *user4
   - &practicalGroup4 !!models.PracticalGroup
     practical: *practical1
-    users:
-      - *user5
+    owner: *user5
+    groupMembers:
       - *user6
   - &practicalGroup6 !!models.PracticalGroup
     practical: *practical2
-    users:
+    owner: *user3
+    groupMembers:
       - *user3
-      - *user4
   - &practicalGroup7 !!models.PracticalGroup
     practical: *practical2
-    users:
+    owner: *user5
+    groupMembers:
       - *user5
-      - *user6
 
 
 # Invites

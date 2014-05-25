@@ -38,7 +38,10 @@ public class PracticalController extends Controller {
             return redirect(routes.PracticalController.view(practicalToRender.getId()));
         }
         // if everything is correct, add user to practical
-        practicalToRender.addUserToPractical(Secure.getUser());
+        practicalToRender.addUser(Secure.getUser());
+        practicalToRender.save();
+        PracticalGroup newPracticalGroup = new PracticalGroup(practicalToRender, Secure.getUser());
+        newPracticalGroup.save();
         return redirect(routes.PracticalController.view(practicalToRender.getId()));
     }
 
@@ -70,7 +73,7 @@ public class PracticalController extends Controller {
      */
     public static Result sendInvitePracticalGroup(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
-        User receiver =  practicalGroup.getUsers().get(0);
+        User receiver =  practicalGroup.getOwner();
         User sender = Secure.getUser();
 
         // Check if the invite was successfully send
