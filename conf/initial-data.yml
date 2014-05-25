@@ -1,55 +1,54 @@
 # Users
 users:
   - &user1 !!models.User
-    type: User
-    firstName: MisterTest
-    lastName: Test
-    email: mistertest@test.com
+    type: Teacher
+    firstName: Teacher
+    lastName: Computer Science
+    email: teacher@example.com
     token: null
     profileImage: None
 
   - &user2 !!models.User
-    type: Teacher
-    firstName: Test
-    lastName: Test
-    email: test@test.com
+    type: User
+    firstName: Unverified
+    lastName: Email
+    email: unverifiedemail@example.com
     token: 123456
     profileImage: None
 
   - &user3 !!models.User
     type: User
-    firstName: Bob
+    firstName: DefaultUser1
     lastName: Verburg
-    email: bob@example.com
     profileImage: None
+    email: defaultuser1@example.com
 
   - &user4 !!models.User
     type: User
-    firstName: Hendrik
+    firstName: DefaultUser2
     lastName: Tienen
-    email: hendrik@example.com
     profileImage: None
+    email: defaultuser2@example.com
 
   - &user5 !!models.User
     type: User
-    firstName: Peter
+    firstName: DefaultUser3
     lastName: Goedegebure
-    email: peter@example.com
     profileImage: None
+    email: defaultuser3@example.com
 
   - &user6 !!models.User
     type: User
-    firstName: Leon
+    firstName: DefaultUser4
     lastName: Janssen
-    email: leon@example.com
+    email: defaultuser4@example.com
     profileImage: None
 
   - &user7 !!models.User
     type: Admin
-    firstName: admin
-    lastName: TestAdmin
-    email: admin@test.com
-    token: 12345
+    firstName: Admin
+    lastName: Istrator
+    email: admin@example.com
     profileImage: None
 
 # Skills
