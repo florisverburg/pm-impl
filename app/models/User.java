@@ -325,35 +325,11 @@ public class User extends Model {
     }
 
     /**
-     * Used to return the list of practicals the user is admin of
-     * @return list of practical the user is admin of
-     */
-    public List<Practical> getPracticalsAdmin() {
-        return practicalsAdmin;
-    }
-
-    /**
      * Getter for practicalgroups
      * @return practicalgroups practical groups
      */
     public List<PracticalGroup> getPracticalGroups() {
         return practicalGroups;
-    }
-
-    /**
-     * Add a practicalgroup to the list
-     * @param practicalGroup to add
-     */
-    public void addPracticalGroup(PracticalGroup practicalGroup) {
-        this.practicalGroups.add(practicalGroup);
-    }
-
-    /**
-     * Method to remove practical group from the list of practical groups
-     * @param practicalGroup to remove
-     */
-    public void removePracticalGroup(PracticalGroup practicalGroup) {
-        this.practicalGroups.remove(practicalGroup);
     }
 
     /**
