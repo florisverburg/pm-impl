@@ -76,7 +76,7 @@ public class UserTest extends WithApplication {
      * Test getByEmailMethod
      */
     @Test
-    public void getByEmail() {
+    public void findByEmail() {
         // Test whether the findByEmail returns the correct values
         User createdUser = new User("CreatedUser", "LastName", "createduser@example.com", User.Type.Admin);
         createdUser.save();

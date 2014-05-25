@@ -41,7 +41,7 @@ public class SkillTest extends WithApplication {
         // Check the values of the setUp() method
         assertEquals(createdSkill.getName(), "CreatedSkill");
         assertEquals(createdSkill.getType(), Skill.Type.DOCUMENTING);
-        assertEquals(createdSkill.getMaxValue(), 15);
+        assertEquals((int)createdSkill.getMaxValue(), 15);
     }
 
     /**

@@ -211,14 +211,6 @@ public class Practical extends Model {
     }
 
     /**
-     * Setter for the secret
-     * @param secret to set
-     */
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    /**
      * Getter for users
      * @return users
      */
@@ -251,7 +243,7 @@ public class Practical extends Model {
     }
 
     /**
-     * Add a practicalgroup to the list
+     * Add a practicalgroup to the list3
      * @param practicalGroup to add
      */
     public void addPracticalGroup(PracticalGroup practicalGroup) {
@@ -259,11 +251,11 @@ public class Practical extends Model {
     }
 
     /**
-     * Remove a practical group from the list
-     * @param practicalGroup to remove
+     * Setter secret
+     * @param secret to set
      */
-    public void removePracticalGroup(PracticalGroup practicalGroup) {
-        this.practicalGroups.remove(practicalGroup);
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     /**
@@ -272,21 +264,5 @@ public class Practical extends Model {
      */
     public List<Invite> getInvites() {
         return invites;
-    }
-
-    /**
-     * Setter for invites
-     * @param invites to set
-     */
-    public void setInvites(List<Invite> invites) {
-        this.invites = invites;
-    }
-
-    /**
-     * Add invite to the list of invites
-     * @param invite to add
-     */
-    public void addInvites(Invite invite) {
-        this.invites.add(invite);
     }
 }
