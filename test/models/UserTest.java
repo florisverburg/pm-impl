@@ -80,7 +80,7 @@ public class UserTest extends WithApplication {
         // Test whether the findByEmail returns the correct values
         User createdUser = new User("CreatedUser", "LastName", "createduser@example.com", User.Type.Admin);
         createdUser.save();
-        createdUser = User.findByEmail("createduser@example.com");
+        createdUser = User.findByEmail(createdUser.getEmail());
         // Check the new values
         assertEquals(createdUser.getFirstName(), "CreatedUser");
         assertEquals(createdUser.getLastName(), "LastName");

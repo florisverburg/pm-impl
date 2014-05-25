@@ -109,14 +109,6 @@ public class PracticalGroup extends Model {
     }
 
     /**
-     * Setter for Id
-     * @param id to set
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Getter for practical
      * @return practical
      */

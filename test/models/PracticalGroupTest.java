@@ -6,6 +6,7 @@ import play.test.WithApplication;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
@@ -15,52 +16,16 @@ import static play.test.Helpers.inMemoryDatabase;
  */
 public class PracticalGroupTest extends WithApplication {
 
-    private User bob;
-    private User hendrik;
-
-    private PracticalGroup bobsGroup;
-    private PracticalGroup bobAndHendriksGroup;
-
-    private Practical programmingAssignment;
-    private Practical documentingAssingment;
+    private PracticalGroup testPracticalGroup;
+    private Practical testPractical;
+    private User testUser;
 
     @Before
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
-        // Create a new user
-        bob = new User("Bob", "Verburg", "bob@example.com");
-        bob.save();
-
-        // Create a new user
-        hendrik = new User("Hendrik", "Tienen", "hendrik@example.com");
-        hendrik.save();
-
-        // Create a new practicalGroup
-        bobsGroup = new PracticalGroup();
-        bobsGroup.save();
-
-        // Create a new practicalGroup
-        bobAndHendriksGroup = new PracticalGroup();
-        bobAndHendriksGroup.save();
-
-        // Create a new practical
-        programmingAssignment = new Practical("ProgrammingAssignment", "Assignment about programming");
-        programmingAssignment.save();
-
-        // Create a new practical
-        documentingAssingment = new Practical("DocumentingAssignment", "Assignment about documenting");
-        documentingAssingment.save();
-
-        // Add users to the practicalGroup
-        bobsGroup.addUser(bob);
-        bobsGroup.setPractical(programmingAssignment);
-        bobsGroup.save();
-
-        // Add users to the practicalGroup
-        bobAndHendriksGroup.addUser(bob);
-        bobAndHendriksGroup.addUser(hendrik);
-        bobAndHendriksGroup.setPractical(programmingAssignment);
-        bobAndHendriksGroup.save();
+        testPractical = Practical.findByName("Programming");
+        testUser = User.findByName("DefaultUser3");
+        testPracticalGroup = PracticalGroup.findWithPracticalAndUser(testPractical, testUser);
     }
 
     /**
@@ -68,9 +33,16 @@ public class PracticalGroupTest extends WithApplication {
      */
     @Test
     public void testCreationSkill() {
-        // Check the values of the setUp() method
-        assertEquals(bobsGroup.getId(), PracticalGroup.findById(bobsGroup.getId()).getId());
-        assertEquals(bobsGroup.getPractical(), programmingAssignment);
+        // Create Practical Group
+        PracticalGroup createdPracticalGroup = new PracticalGroup(testPractical);
+        createdPracticalGroup.save();
+
+        createdPracticalGroup = PracticalGroup.findById(createdPracticalGroup.getId());
+
+        // Check the values of the constructor and findbyid method
+        assertEquals(createdPracticalGroup.getPractical(), testPractical);
+        assertNotNull(createdPracticalGroup.getUsers());
+        assertEquals(createdPracticalGroup.getUsers().size(), 0);
     }
 
     /**
@@ -78,17 +50,13 @@ public class PracticalGroupTest extends WithApplication {
      */
     @Test
     public void testSetters() {
+        Practical otherPractical = Practical.findByName("Documenting");
+
         // Set different values
-        bobsGroup.setId(200);
-        bobsGroup.setPractical(documentingAssingment);
-        List<User> hendriksGroupList = new ArrayList<User>();
-        hendriksGroupList.add(hendrik);
-        bobsGroup.setUsers(hendriksGroupList);
-        programmingAssignment.save();
+        testPracticalGroup.setPractical(otherPractical);
+        testPractical.save();
 
         // Check the new values
-        assertEquals(bobsGroup.getId(), 200);
-        assertEquals(bobsGroup.getPractical(), documentingAssingment);
-        assertEquals(bobsGroup.getUsers().size(), 1);
+        assertEquals(testPracticalGroup.getPractical().getId(), otherPractical.getId());
     }
 }

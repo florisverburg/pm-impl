@@ -128,13 +128,13 @@ public class Practical extends Model {
      * @param practical to add a user to
      * @param user to add
      */
-    public static void addUserToPractical(Practical practical, User user) {
-        practical.addUsers(user);
-        PracticalGroup newPracticalGroup = new PracticalGroup(practical);
+    public void addUserToPractical(User user) {
+        this.addUser(user);
+        PracticalGroup newPracticalGroup = new PracticalGroup(this);
         newPracticalGroup.addUser(user);
         newPracticalGroup.save();
-        practical.addPracticalGroup(newPracticalGroup);
-        practical.save();
+        this.addPracticalGroup(newPracticalGroup);
+        this.save();
     }
 
     /**
@@ -230,7 +230,7 @@ public class Practical extends Model {
      * Method to add a user to the list
      * @param user to add
      */
-    public void addUsers(User user) {
+    public void addUser(User user) {
         users.add(user);
     }
 

@@ -101,12 +101,4 @@ public class PracticalTest extends WithApplication {
         // Check whether a not enrolled user returns false
         assertFalse(testAssignment.isEnrolled(notEnrolledUser));
     }
-
-    /**
-     * Test addUserToPractical method
-     */
-    @Test
-    public void testAddUserToPractical() {
-
-    }
 }

@@ -110,9 +110,6 @@ practicalGroups:
     practical: *practical1
     users:
       - *user5
-  - &practicalGroup5 !!models.PracticalGroup
-    practical: *practical1
-    users:
       - *user6
   - &practicalGroup6 !!models.PracticalGroup
     practical: *practical2
