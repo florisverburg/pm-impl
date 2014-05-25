@@ -16,7 +16,7 @@ import static play.test.Helpers.*;
  */
 public class UserTest extends WithApplication {
 
-    private User bob;
+    private User testUser1;
 
     /**
      * Setup method for the UserTest
@@ -24,7 +24,7 @@ public class UserTest extends WithApplication {
     @Before
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
-        bob = User.findByName("Bob");
+        testUser1 = User.findByName("DefaultUser1");
     }
 
     /**
@@ -33,17 +33,18 @@ public class UserTest extends WithApplication {
     @Test
     public void testCreationUser() {
         // Create a new user
-        User createdUser = new User ("Laura", "Dragos", "laura@example.com", User.Type.User);
+        User createdUser = new User("CreatedUser", "LastName", "createduser@example.com", User.Type.Admin);
         createdUser.save();
 
         // Retrieve user from database
         User retrievedUser = User.findById(createdUser.getId());
 
         // Check the values of the setUp() method
-        assertEquals(retrievedUser.getFirstName(), "Laura");
-        assertEquals(retrievedUser.getLastName(), "Dragos");
-        assertEquals(retrievedUser.getEmail(), "laura@example.com");
-        assertEquals(retrievedUser.getType(), User.Type.User);
+        // Check the new values
+        assertEquals(createdUser.getFirstName(), "CreatedUser");
+        assertEquals(createdUser.getLastName(), "LastName");
+        assertEquals(createdUser.getEmail(), "createduser@example.com");
+        assertEquals(createdUser.getType(), User.Type.Admin);
         assertEquals(retrievedUser.getToken().getClass(), String.class);
     }
 
@@ -53,22 +54,22 @@ public class UserTest extends WithApplication {
     @Test
     public void testSetters() {
         // Set different values
-        bob.setFirstName("Erica");
-        bob.setLastName("Tienen");
-        bob.setEmail("erica@example.com");
-        bob.setType(User.Type.Admin);
-        bob.setToken("abc");
-        bob.save();
+        testUser1.setFirstName("SetUser");
+        testUser1.setLastName("SetUser");
+        testUser1.setEmail("setuser@example.com");
+        testUser1.setType(User.Type.Admin);
+        testUser1.setToken("newToken");
+        testUser1.save();
 
-        // Retrieve bob from the database
-        User retrievedUser = User.findById(bob.getId());
+        // Retrieve testUser1 from the database
+        User retrievedUser = User.findById(testUser1.getId());
 
         // Check the new values
-        assertEquals(retrievedUser.getFirstName(), "Erica");
-        assertEquals(retrievedUser.getLastName(), "Tienen");
-        assertEquals(retrievedUser.getEmail(), "erica@example.com");
+        assertEquals(retrievedUser.getFirstName(), "SetUser");
+        assertEquals(retrievedUser.getLastName(), "SetUser");
+        assertEquals(retrievedUser.getEmail(), "setuser@example.com");
         assertEquals(retrievedUser.getType(), User.Type.Admin);
-        assertEquals(retrievedUser.getToken(), "abc");
+        assertEquals(retrievedUser.getToken(), "newToken");
     }
 
     /**
@@ -77,19 +78,19 @@ public class UserTest extends WithApplication {
     @Test
     public void getByEmail() {
         // Test whether the findByEmail returns the correct values
-        User createRob = new User("rob", "lastName", "rob@example.com", User.Type.Admin);
-        createRob.save();
-        User rob = User.findByEmail("rob@none.com");
+        User createdUser = new User("CreatedUser", "LastName", "createduser@example.com", User.Type.Admin);
+        createdUser.save();
+        createdUser = User.findByEmail("createduser@example.com");
         // Check the new values
-        assertEquals(rob.getFirstName(), "rob");
-        assertEquals(rob.getLastName(), "Tienen");
-        assertEquals(rob.getEmail(), "rob@example.com");
-        assertEquals(rob.getType(), User.Type.Admin);
+        assertEquals(createdUser.getFirstName(), "CreatedUser");
+        assertEquals(createdUser.getLastName(), "LastName");
+        assertEquals(createdUser.getEmail(), "createduser@example.com");
+        assertEquals(createdUser.getType(), User.Type.Admin);
 
 
-        // retrieve the user rob by his email and by his id
-        User retrievedUserById = User.findById(rob.getId());
-        User retrievedUserByEmail = User.findByEmail(rob.getEmail());
+        // retrieve the user createdUser by his email and by his id
+        User retrievedUserById = User.findById(createdUser.getId());
+        User retrievedUserByEmail = User.findByEmail(createdUser.getEmail());
 
         // Test whether the two functions return the same data
         assertEquals(retrievedUserById, retrievedUserByEmail);
@@ -102,13 +103,13 @@ public class UserTest extends WithApplication {
      */
     @Test
     public void testSkillManyToManyRelationship() {
-        User rob = new User("rob", "lastName", "rob@example.com", User.Type.User);
-        rob.save();
+        User createdUser = new User("CreatedUser", "LastName", "createduser@example.com", User.Type.User);
+        createdUser.save();
         // Get skills
         Skill programming = Skill.findByName("Programming");
         Skill documenting = Skill.findByName("Documenting");
 
-        User retrievedUser = User.findById(rob.getId());
+        User retrievedUser = User.findById(createdUser.getId());
         // Check values
         assertEquals(retrievedUser.getSkills().size(), 0);
 
@@ -116,7 +117,7 @@ public class UserTest extends WithApplication {
         retrievedUser.addSkill(programming);
         retrievedUser.save();
 
-        retrievedUser = User.findById(rob.getId());
+        retrievedUser = User.findById(createdUser.getId());
         // Check values
         assertEquals(retrievedUser.getSkills().size(), 1);
         assertEquals(retrievedUser.getSkills().get(0).getName(), programming.getName());
@@ -128,24 +129,24 @@ public class UserTest extends WithApplication {
 
     @Test
     public void authenticateSuccess() {
-        new PasswordIdentity(bob, bob.getEmail(), "florina").save();
+        new PasswordIdentity(testUser1, testUser1.getEmail(), "florina").save();
 
-        assertNotNull(User.authenticate(bob.getEmail(), "florina"));
-        assertEquals(User.authenticate(bob.getEmail(), "florina"), bob);
+        assertNotNull(User.authenticate(testUser1.getEmail(), "florina"));
+        assertEquals(User.authenticate(testUser1.getEmail(), "florina"), testUser1);
     }
 
     @Test
     public void authenticateFail() {
-        new PasswordIdentity(bob, bob.getEmail(), "florina").save();
+        new PasswordIdentity(testUser1, testUser1.getEmail(), "florina").save();
 
         assertNull(User.authenticate("floor@wrongemail.com", "florina"));
-        assertNull(User.authenticate(bob.getEmail(), "wrongpass"));
+        assertNull(User.authenticate(testUser1.getEmail(), "wrongpass"));
     }
 
     @Test
      public void typeTest() {
-        assertNotEquals(bob.getType(), User.Type.Teacher);
-        assertEquals(bob.getType(), User.Type.User);
+        assertNotEquals(testUser1.getType(), User.Type.Teacher);
+        assertEquals(testUser1.getType(), User.Type.User);
     }
 
 
@@ -154,19 +155,19 @@ public class UserTest extends WithApplication {
      */
     @Test
     public void findPendingInvitesTest() {
-        // Create a new user rob
-        User rob = new User("rob", "lastName", "rob@example.com", User.Type.Admin);
+        // Create a new user createdUser
+        User createdUser = new User("CreatedUser", "lastName", "createduser@example.com", User.Type.Admin);
         Practical practical = Practical.findByName("Programming");
-        rob.addPractical(practical);
-        rob.save();
-        User hendrik = User.findByName("Hendrik");
-        User peter = User.findByName("Peter");
+        createdUser.addPractical(practical);
+        createdUser.save();
+        User defaultUser3 = User.findByName("DefaultUser3");
+        User defaultUser2 = User.findByName("DefaultUser2");
         // Send invites
-        Invite inviteRobToBob = Invite.sendInvite(practical, rob, bob);
-        Invite inviteHendrikToRob = Invite.sendInvite(practical, hendrik, rob);
-        Invite invitePeterToRob = Invite.sendInvite(practical, peter, rob);
+        Invite inviteCreatedUserToTestUser1 = Invite.sendInvite(practical, createdUser, testUser1);
+        Invite inviteDefaultUser3ToCreatedUser = Invite.sendInvite(practical, defaultUser3, createdUser);
+        Invite inviteDefaultUser2ToCreatedUser = Invite.sendInvite(practical, defaultUser2, createdUser);
 
-        List<Invite> foundInvites = rob.findPendingInvitesUser(practical);
+        List<Invite> foundInvites = createdUser.findPendingInvitesUser(practical);
 
         // Check whether the values returned are correct
         assertEquals(foundInvites.size(), 3);
@@ -175,9 +176,9 @@ public class UserTest extends WithApplication {
         }
 
         // Reverse the invitation
-        rob.getInvitesSend().remove(inviteRobToBob);
-        rob.save();
-        Invite.sendInvite(practical, bob, rob);
+        createdUser.getInvitesSend().remove(inviteCreatedUserToTestUser1);
+        createdUser.save();
+        Invite.sendInvite(practical, testUser1, createdUser);
 
         // Check whether the values returned did not change
         // Check whether the values returned are correct
@@ -187,16 +188,16 @@ public class UserTest extends WithApplication {
         }
 
         // Change the state of the invites
-        inviteRobToBob.setState(Invite.State.Accepted);
-        inviteRobToBob.save();
+        inviteCreatedUserToTestUser1.setState(Invite.State.Accepted);
+        inviteCreatedUserToTestUser1.save();
 
-        inviteHendrikToRob.setState(Invite.State.Rejected);
-        inviteHendrikToRob.save();
+        inviteDefaultUser3ToCreatedUser.setState(Invite.State.Rejected);
+        inviteDefaultUser3ToCreatedUser.save();
 
-        invitePeterToRob.setState(Invite.State.Withdrawn);
-        invitePeterToRob.save();
+        inviteDefaultUser2ToCreatedUser.setState(Invite.State.Withdrawn);
+        inviteDefaultUser2ToCreatedUser.save();
 
-        foundInvites = rob.findPendingInvitesUser(practical);
+        foundInvites = createdUser.findPendingInvitesUser(practical);
 
         // Check whether the values returned are change appropriately
         assertEquals(foundInvites.size(), 0);
