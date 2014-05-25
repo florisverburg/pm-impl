@@ -15,7 +15,7 @@ import static play.test.Helpers.*;
  */
 public class SkillTest extends WithApplication {
 
-    Skill programming;
+    Skill testSkill;
 
     /**
      * Setup method for the SkillTest
@@ -23,7 +23,7 @@ public class SkillTest extends WithApplication {
     @Before
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
-        programming = Skill.findByName("Programming");
+        testSkill = Skill.findByName("Programming");
     }
 
     /**
@@ -31,10 +31,17 @@ public class SkillTest extends WithApplication {
      */
     @Test
     public void testCreationSkill() {
+        // Create a new skill
+        Skill createdSkill = new Skill("CreatedSkill", Skill.Type.DOCUMENTING, 15);
+        createdSkill.save();
+
+        // Retrieve skill from database
+        createdSkill = Skill.findById(createdSkill.getId());
+
         // Check the values of the setUp() method
-        assertThat(programming.getName()).isEqualTo("Programming");
-        assertThat(programming.getType()).isEqualTo(Skill.Type.PROGRAMMING);
-        assertThat(programming.getMaxValue()).isEqualTo(10);
+        assertEquals(createdSkill.getName(), "CreatedSkill");
+        assertEquals(createdSkill.getType(), Skill.Type.DOCUMENTING);
+        assertEquals(createdSkill.getMaxValue(), 15);
     }
 
     /**
@@ -43,14 +50,14 @@ public class SkillTest extends WithApplication {
     @Test
     public void testSetters() {
         // Set different values
-        programming.setName("Documenting");
-        programming.setType(Skill.Type.DOCUMENTING);
-        programming.setMaxValue(5);
-        programming.save();
+        testSkill.setName("Documenting");
+        testSkill.setType(Skill.Type.DOCUMENTING);
+        testSkill.setMaxValue(5);
+        testSkill.save();
 
         // Check the new values
-        assertThat(programming.getName()).isEqualTo("Documenting");
-        assertThat(programming.getType()).isEqualTo(Skill.Type.DOCUMENTING);
-        assertThat(programming.getMaxValue()).isEqualTo(5);
+        assertThat(testSkill.getName()).isEqualTo("Documenting");
+        assertThat(testSkill.getType()).isEqualTo(Skill.Type.DOCUMENTING);
+        assertThat(testSkill.getMaxValue()).isEqualTo(5);
     }
 }

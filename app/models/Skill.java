@@ -87,14 +87,6 @@ public class Skill extends Model {
     }
 
     /**
-     * Add a user to the list for the many-to-many relationship
-     * @param user to add to the list
-     */
-    public void addUser(User user) {
-        users.add(user);
-    }
-
-    /**
      * Getter for the users
      * @return users
      */
@@ -120,6 +112,14 @@ public class Skill extends Model {
         name = nm;
         maxValue = maxV;
         type = tp;
+    }
+
+    /**
+     * Getter for the ID
+     * @return the id
+     */
+    public long getId() {
+        return this.id;
     }
 
     /**
@@ -161,5 +161,14 @@ public class Skill extends Model {
      */
     public static Skill findByName(String name) {
         return find.where().eq("name", name).findUnique();
+    }
+
+    /**
+     * Method to find a skill by its id
+     * @param id of the skill to be found
+     * @return skill with the id
+     */
+    public static Skill findById(long id) {
+        return find.where().eq("id", id).findUnique();
     }
 }
