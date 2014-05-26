@@ -111,4 +111,28 @@ public class InviteTest extends WithApplication {
         // Check whether the return value of the method changes appropriately
         assertEquals(Invite.findPendingInvitesWhereUser(createdUser, testPractical).size(), 0);
     }
+
+    /**
+     * Test the method accept()
+     */
+    @Test
+    public void testAccept() {
+        // Check if the invite that we are going to test is pending
+        assertEquals(testInvite1.getState(), Invite.State.Pending);
+        List<Invite> oldPendingInvitesSender = testInvite1.getSender().findPendingInvitesUser(testInvite1.getPractical());
+        List<Invite> oldPendingInvitesReceiver = testInvite1.getReceiver().findPendingInvitesUser(testInvite1.getPractical());
+        // Check whether there are more than 0 pending invites for both the sender and the receiver
+        assert(oldPendingInvitesSender.size() > 0);
+        assert(oldPendingInvitesReceiver.size() > 0);
+
+        // Accept the invite
+        testInvite1.accept();
+        testInvite1 = Invite.findById(testInvite1.getId());
+        List<Invite> newPendingInvitesSender = testInvite1.getSender().findPendingInvitesUser(testInvite1.getPractical());
+        List<Invite> newPendingInvitesReceiver = testInvite1.getReceiver().findPendingInvitesUser(testInvite1.getPractical());
+
+        // Check whether the right values have been decreased
+        assertEquals(newPendingInvitesSender.size(), oldPendingInvitesSender.size()-1);
+        assertEquals(newPendingInvitesReceiver.size(), 0);
+    }
 }

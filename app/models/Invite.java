@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Update;
 import com.avaje.ebean.annotation.EnumValue;
+import play.Logger;
 import play.data.validation.*;
 import play.db.ebean.*;
 
@@ -111,20 +112,20 @@ public class Invite extends Model {
         List<Invite> pendingInvites =
                 find.where()
                     .or(
-                        and(
                             and(
-                                eq("senderId", user.getId()),
-                                eq("practicalId", practical.getId())
+                                    and(
+                                            eq("senderId", user.getId()),
+                                            eq("practicalId", practical.getId())
+                                    ),
+                                    eq("state", State.Pending)
                             ),
-                            eq("state", State.Pending)
-                        ),
-                        and(
                             and(
-                                eq("receiverId", user.getId()),
-                                eq("practicalId", practical.getId())
-                            ),
-                            eq("state", State.Pending)
-                        )
+                                    and(
+                                            eq("receiverId", user.getId()),
+                                            eq("practicalId", practical.getId())
+                                    ),
+                                    eq("state", State.Pending)
+                            )
                     )
                     .findList();
         return pendingInvites;
@@ -148,18 +149,22 @@ public class Invite extends Model {
      */
     public void accept() {
         // Reject all pending of the sender and receiver invites
-        String updStatement = "update invite set state = :st where receiverId = :rcvId or senderId = :sndrId";
+        String updStatement = "update invite set state = :st where receiverId = :rcvId and practicalId = :prctId";
         Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
         update.set("st", State.Rejected);
         update.set("rcvId", receiver.getId());
-        update.set("sndrId", sender.getId());
+        update.set("prctId", practical.getId());
         update.execute();
+
+        this.refresh();
         // Accept the invite
-        state = State.Accepted;
+        this.state = State.Accepted;
         this.save();
+
         // Delete practical group of receiver
         PracticalGroup receiversPracticalGroup =
                 PracticalGroup.findWithPracticalAndUser(practical, receiver);
+        Logger.debug("receiversPracticalGroup: " + receiversPracticalGroup);
         Ebean.delete(receiversPracticalGroup);
         // Add receiver to practical group of sender
         PracticalGroup sendersPracticalGroup =

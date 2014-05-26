@@ -159,7 +159,7 @@ public class User extends Model {
     /**
      * Many-to-many relationship defined for the users and practicalGroups
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = PracticalGroup.class, cascade = CascadeType.ALL)
     private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
 
     /**

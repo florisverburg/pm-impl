@@ -1,13 +1,17 @@
 package models;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.RawSqlBuilder;
+import com.avaje.ebean.SqlQuery;
+import com.avaje.ebean.SqlRow;
+import play.Logger;
 import play.db.ebean.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.avaje.ebean.Expr.eq;
-import static com.avaje.ebean.Expr.or;
+import static com.avaje.ebean.Expr.*;
 
 /**
  * Created by Marijn Goedegebure on 15-5-2014.
@@ -40,7 +44,7 @@ public class PracticalGroup extends Model {
     /**
      * Many-to-many relationship of the practicalgroups and users
      */
-    @ManyToMany(mappedBy = "practicalGroups", cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity= User.class, mappedBy = "practicalGroups", cascade = CascadeType.ALL)
     List<User> groupMembers = new ArrayList<User>();
 
     /**
@@ -75,14 +79,24 @@ public class PracticalGroup extends Model {
      * @return practical group that was sought after
      */
     public static PracticalGroup findWithPracticalAndUser(Practical practical, User groupMember) {
-        return find.where().and(
-            eq("practicalId", practical.getId()),
-            or(
-                eq("groupMembers.id", groupMember.getId()),
-                eq("ownerId", groupMember.getId())
-            )
-        )
-        .findUnique();
+        String sql = "select distinct t0.id c0, t0.practicalId c1, t0.ownerId c2 " +
+                "from practical_group t0 " +
+                "left join user_practical_group u1z_ on u1z_.practical_group_id = t0.id  " +
+                "left join user u1 on u1.id = u1z_.user_id  " +
+                "where (practicalId = :prctlId  " +
+                    "and ((u1.id is not null  " +
+                    "and u1.id = :groupMemberId1 )  " +
+                        "or ownerId = :groupMemberId2 ) )";
+        SqlQuery sqlQuery = Ebean.createSqlQuery(sql);
+        sqlQuery.setParameter("prctlId", practical.getId());
+        sqlQuery.setParameter("groupMemberId1", groupMember.getId());
+        sqlQuery.setParameter("groupMemberId2", groupMember.getId());
+        SqlRow sqlRow = sqlQuery.findUnique();
+        if(sqlRow == null) {
+            Logger.debug("Entered the if");
+            return null;
+        }
+        return PracticalGroup.findById(sqlRow.getLong("c0"));
     }
 
     /**
