@@ -5,6 +5,7 @@ import models.*;
 import play.mvc.*;
 import views.html.practical.list;
 import views.html.practical.view;
+import views.html.practical.admin;
 import views.html.viewPracticalGroup;
 
 /**
@@ -62,6 +63,11 @@ public class PracticalController extends Controller {
             flash("error", "practical.userIsNotEnrolled");
             return redirect(routes.Application.index());
         }
+        // Check if I'm the admin of the course
+        if (practicalToRender.getAdmin().equals(Secure.getUser())) {
+            return ok(admin.render(practicalToRender));
+        }
+
         return ok(view.render(practicalToRender));
     }
 

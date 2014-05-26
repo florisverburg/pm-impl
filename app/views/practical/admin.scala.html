@@ -1,0 +1,17 @@
+@(practical: Practical)
+
+@main("Practicals", "practicals") {
+    <div class="page-header">
+        <h2>
+            @practical.getName()
+            <a class="btn btn-danger pull-right" href="#">Delete</a>
+        </h2>
+        <p>
+        @practical.getDescription()
+        </p>
+    </div>
+
+    <div>
+
+    </div>
+}

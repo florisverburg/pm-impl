@@ -73,7 +73,7 @@ practicals:
     name: Programming
     description: A programming assignment about programming
     secret: abc
-    admin: *user1
+    admin: *user2
     users:
       - *user2
       - *user3
@@ -85,7 +85,7 @@ practicals:
     name: Documenting
     description: Assignment about documenting
     secret: abc
-    admin: *user1
+    admin: *user2
     users:
       - *user3
       - *user4

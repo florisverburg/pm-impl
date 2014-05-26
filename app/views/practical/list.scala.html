@@ -10,7 +10,9 @@
     </div>
     @practicals.map { practical =>
         <fieldset>
-            <legend><a href="@routes.PracticalController.view(practical.getId())">@practical.getName()</a></legend>
+            <legend>
+                <a href="@routes.PracticalController.view(practical.getId())">@practical.getName()</a>
+            </legend>
             <label>Description</label><br />
             @practical.getDescription()<br />
         </fieldset>
