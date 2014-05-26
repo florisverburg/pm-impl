@@ -213,6 +213,7 @@ public class User extends Model {
         this.email = email;
         this.type = Type.User;
         this.token = generateSecret();
+        this.profileImage = ProfileImage.None;
     }
 
     /**
