@@ -13,7 +13,7 @@ import java.util.List;
 public class ProfileForm {
 
     /**
-     * The different profile imae options
+     * The different profile image options
      */
     public enum ProfileImageType {
         /**

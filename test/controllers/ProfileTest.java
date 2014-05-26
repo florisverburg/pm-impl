@@ -7,6 +7,8 @@ import org.junit.Test;
 import play.mvc.*;
 import play.test.WithApplication;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static play.test.Helpers.*;
@@ -117,7 +119,8 @@ public class ProfileTest extends WithApplication {
                         .withFormUrlEncodedBody(ImmutableMap.of(
                                 "firstName", user.getFirstName(),
                                 "lastName", user.getLastName(),
-                                "email", "mistertest@test.com"))
+                                "email", "mistertest@test.com",
+                                "profileImage", "Gravatar"))
         );
 
         assertEquals(BAD_REQUEST, status(result));
@@ -137,7 +140,8 @@ public class ProfileTest extends WithApplication {
                         .withFormUrlEncodedBody(ImmutableMap.of(
                                 "firstName", "NewFirst Name",
                                 "lastName", "New last Name",
-                                "email", "newemail@test.com"))
+                                "email", "newemail@test.com",
+                                "profileImage", "Gravatar"))
         );
         User newUser = User.findByEmail("newemail@test.com");
 
@@ -151,16 +155,19 @@ public class ProfileTest extends WithApplication {
     @Test
     public void saveProfileWrongPass() {
         User user = User.findByEmail("test@test.com");
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", user.getFirstName());
+        body.put("lastName", user.getLastName());
+        body.put("email", user.getEmail());
+        body.put("password", "veryGoodPassword");
+        body.put("passwordRepeat", "notTheSamePassword");
+        body.put("profileImage", "Gravatar");
+
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
-                        .withFormUrlEncodedBody(ImmutableMap.of(
-                                "firstName", user.getFirstName(),
-                                "lastName", user.getLastName(),
-                                "email", user.getEmail(),
-                                "password", "veryGoodPassword",
-                                "passwordRepeat", "notTheSamePassword"))
+                        .withFormUrlEncodedBody(body)
         );
 
         assertEquals(BAD_REQUEST, status(result));
@@ -195,16 +202,19 @@ public class ProfileTest extends WithApplication {
     @Test
     public void saveProfileFailNone() {
         User user = User.findByEmail("admin@test.com");
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", user.getFirstName());
+        body.put("lastName", user.getLastName());
+        body.put("email", user.getEmail());
+        body.put("password", "myNewPassword");
+        body.put("passwordRepeat", "myNewPassword");
+        body.put("profileImage", "Gravatar");
+
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
-                        .withFormUrlEncodedBody(ImmutableMap.of(
-                                "firstName", user.getFirstName(),
-                                "lastName", user.getLastName(),
-                                "email", user.getEmail(),
-                                "password", "myNewPassword",
-                                "passwordRepeat", "myNewPassword"))
+                        .withFormUrlEncodedBody(body)
         );
 
         assertEquals(SEE_OTHER, status(result));
@@ -215,16 +225,19 @@ public class ProfileTest extends WithApplication {
     @Test
     public void saveProfileSuccessPass() {
         User user = User.findByEmail("test@test.com");
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", user.getFirstName());
+        body.put("lastName", user.getLastName());
+        body.put("email", user.getEmail());
+        body.put("password", "myNewPassword");
+        body.put("passwordRepeat", "myNewPassword");
+        body.put("profileImage", "None");
+
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
-                        .withFormUrlEncodedBody(ImmutableMap.of(
-                                "firstName", user.getFirstName(),
-                                "lastName", user.getLastName(),
-                                "email", user.getEmail(),
-                                "password", "myNewPassword",
-                                "passwordRepeat", "myNewPassword"))
+                        .withFormUrlEncodedBody(body)
         );
 
         assertEquals(SEE_OTHER, status(result));
