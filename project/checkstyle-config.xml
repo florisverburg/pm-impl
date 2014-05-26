@@ -58,6 +58,12 @@
     <!-- Checks for new lines at the end of a file          -->
     <module name="NewlineAtEndOfFile"/>
 
+    <!-- Finds trailing whitespace                         -->
+    <module name="RegexpSingleline">
+        <!-- \s matches whitespace character, $ matches end of line. -->
+        <property name="format" value="\s+$"/>
+    </module>
+
     <module name="TreeWalker">
 
         <!-- Checks for Javadoc comments.                     -->
