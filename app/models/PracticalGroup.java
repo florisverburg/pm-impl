@@ -52,6 +52,7 @@ public class PracticalGroup extends Model {
     /**
      * Constructor of practical group
      * @param practical to which this group belongs to
+     * @param owner of the new group
      */
     public PracticalGroup(Practical practical, User owner) {
         this.practical = practical;
@@ -70,7 +71,7 @@ public class PracticalGroup extends Model {
     /**
      * A method to find a practical group using a given practical and a given user
      * @param practical of the practical group
-     * @param user of the practical group
+     * @param groupMember of the practical group
      * @return practical group that was sought after
      */
     public static PracticalGroup findWithPracticalAndUser(Practical practical, User groupMember) {
@@ -101,9 +102,9 @@ public class PracticalGroup extends Model {
 
     /**
      * Add user to list
-     * @param user to add
+     * @param groupMember to add
      */
-    public void addUser(User groupMember) {
+    public void addGroupMember(User groupMember) {
         groupMembers.add(groupMember);
     }
 

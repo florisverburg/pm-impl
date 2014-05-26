@@ -164,7 +164,7 @@ public class Invite extends Model {
         // Add receiver to practical group of sender
         PracticalGroup sendersPracticalGroup =
                 PracticalGroup.findWithPracticalAndUser(practical, sender);
-        sendersPracticalGroup.addUser(receiver);
+        sendersPracticalGroup.addGroupMember(receiver);
         sendersPracticalGroup.save();
     }
 

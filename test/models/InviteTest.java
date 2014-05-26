@@ -73,4 +73,42 @@ public class InviteTest extends WithApplication {
         assertEquals(setTestInvite.getReceiver().getId(), testUser2.getId());
         assertEquals(setTestInvite.getState(), Invite.State.Accepted);
     }
+
+    /**
+     * Test for the method findPendingInvitesWhereUser
+     */
+    @Test
+    public void testFindPendingInvitesWhereUser() {
+        // Create Users that will be used in the creation of the invites
+        // Also create a user that has 0 pending invites as a start (a new user)
+        User createdUser = new User("CreatedUser", "LastName", "createduser@example.com", User.Type.User);
+        User senderInvite1 = createdUser;
+        User receiverInvite1 = testUser2;
+        User senderInvite2 = User.findByName("DefaultUser4");
+        User receiverInvite2 = createdUser;
+
+        // Check if the created user has not received or send any invites yet
+        assertEquals(createdUser.getInvitesReceived().size(), 0);
+        assertEquals(createdUser.getInvitesSend().size(), 0);
+        // Check if the method we are testing also returns the appropriate amount of invites
+        assertEquals(Invite.findPendingInvitesWhereUser(createdUser, testPractical).size(), 0);
+
+        // Create invites
+        Invite newCreatedInvite1 = new Invite(testPractical, senderInvite1, receiverInvite1);
+        newCreatedInvite1.save();
+        Invite newCreatedInvite2 = new Invite(testPractical, senderInvite2, receiverInvite2);
+        newCreatedInvite2.save();
+
+        // Test whether the method finds the correct amount of pending invites
+        assertEquals(Invite.findPendingInvitesWhereUser(createdUser, testPractical).size(), 2);
+
+        // Change the states of the invites
+        newCreatedInvite1.setState(Invite.State.Accepted);
+        newCreatedInvite1.save();
+        newCreatedInvite2.setState(Invite.State.Rejected);
+        newCreatedInvite2.save();
+
+        // Check whether the return value of the method changes appropriately
+        assertEquals(Invite.findPendingInvitesWhereUser(createdUser, testPractical).size(), 0);
+    }
 }
