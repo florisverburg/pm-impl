@@ -52,6 +52,22 @@ public class User extends Model {
     }
 
     /**
+     * The enum Profile image.
+     */
+    public enum ProfileImage {
+        /**
+         * Use Gravatar as profile image
+         */
+        @EnumValue("Gravatar")
+        Gravatar,
+        /**
+         * Use no profile image
+         */
+        @EnumValue("None")
+        None
+    }
+
+    /**
      * The amount of random bits that needs to be generated for the token
      * */
     private static final int TOKEN_RANDOM_BITS = 130;
@@ -60,6 +76,11 @@ public class User extends Model {
      * The base number of the random token generated number
      */
     private static final int TOKEN_RANDOM_BASE = 16;
+
+    /**
+     * The Gravatar avatar URL
+     */
+    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 
     /**
      * The user identifier
@@ -108,7 +129,8 @@ public class User extends Model {
     /**
      * The link to the profile image if provided
      */
-    private String profileImage;
+    @Constraints.Required
+    private ProfileImage profileImage;
 
     /**
      * The identities linked to the user
@@ -176,6 +198,7 @@ public class User extends Model {
         this.email = email;
         this.type = type;
         this.token = generateSecret();
+        this.profileImage = ProfileImage.None;
     }
 
     /**
@@ -437,16 +460,10 @@ public class User extends Model {
     }
 
     /**
-     * Gets profile image or Gravatar url.
-     * @return The profile image url
+     * Gets profile image.
+     * @return The profile image
      */
-    public String getProfileImage() {
-        // Check if the profile image is set else return gravatar default
-        if(profileImage == null || profileImage.isEmpty()) {
-            return "http://www.gravatar.com/avatar/"
-                    + MD5.crypt(this.getEmail().trim().toLowerCase())
-                    + "?d=identicon&f=y";
-        }
+    public ProfileImage getProfileImage() {
         return profileImage;
     }
 
@@ -454,15 +471,23 @@ public class User extends Model {
      * Sets profile image.
      * @param profileImage The profile image
      */
-    public void setProfileImage(String profileImage) {
+    public void setProfileImage(ProfileImage profileImage) {
         this.profileImage = profileImage;
     }
 
     /**
-     * Sets the profile image to gravatar using the email address
+     * Gets profile image or Gravatar url.
+     * @return The profile image url
      */
-    public void setProfileImageGravatar() {
-        this.profileImage = "http://www.gravatar.com/avatar/" + MD5.crypt(this.getEmail().trim().toLowerCase());
+    public String getProfileImageUrl() {
+        switch(this.profileImage) {
+            case Gravatar:
+                return GRAVATAR_URL + MD5.crypt(this.getEmail().trim().toLowerCase());
+            default:
+                // use gravatar with forcing the default image (f=y)
+                return GRAVATAR_URL + MD5.crypt(this.getEmail().trim().toLowerCase())
+                        + "?d=identicon&f=y";
+        }
     }
 
     /**

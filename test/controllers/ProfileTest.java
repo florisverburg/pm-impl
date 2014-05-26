@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import models.*;
 import org.junit.Before;
 import org.junit.Test;
+import play.Logger;
 import play.mvc.*;
 import play.test.WithApplication;
 
@@ -44,6 +45,7 @@ public class ProfileTest extends WithApplication {
         assertTrue(contentAsString(result).contains(user.getFullName()));
         assertTrue(contentAsString(result).contains(user.getType().toString()));
         assertTrue(contentAsString(result).contains(user.getEmail()));
+        assertTrue(contentAsString(result).contains(user.getProfileImageUrl()));
     }
 
     @Test

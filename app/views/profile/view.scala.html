@@ -10,7 +10,7 @@
         </div>
 
         <div>
-            <img src="@user.getProfileImage" alt="Profile image"/>
+            <img src="@Html(user.getProfileImageUrl())" alt="Profile image"/>
             <p>Name: @user.getFullName()</p>
             <p>Type: @user.getType()</p>
             <p>Email: @user.getEmail()</p>
