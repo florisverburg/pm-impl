@@ -3,6 +3,9 @@ package models;
 import org.junit.Before;
 import org.junit.Test;
 import play.test.WithApplication;
+
+import java.util.List;
+
 import static junit.framework.TestCase.assertEquals;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
@@ -13,62 +16,61 @@ import static play.test.Helpers.inMemoryDatabase;
  */
 public class InviteTest extends WithApplication {
 
-    private User bob;
-    private User hendrik;
+    private User testUser1;
+    private User testUser2;
 
-    private Practical programmingAssignment;
-    private Practical documentingAssingment;
+    private Practical testPractical;
 
-    private Invite programmingBobToHendrik;
-    private Invite documentingHendrikToBoB;
+    private Invite testInvite1;
+    private Invite testInvite2;
 
     @Before
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
-        // Create a new user
-        bob = new User("Bob", "Verburg", "bob@example.com");
-        bob.save();
-
-        // Create a new user
-        hendrik = new User("Hendrik","Tienen","hendrik@example.com");
-        hendrik.save();
-
-        // Create a new practical
-        programmingAssignment = new Practical("ProgrammingAssignment", "Assignment about programming");
-        programmingAssignment.save();
-
-        // Create a new practical
-        documentingAssingment = new Practical("DocumentingAssignment", "Assignment about documenting");
-        documentingAssingment.save();
-
-        // Create a new invite
-        programmingBobToHendrik = new Invite(programmingAssignment, bob, hendrik);
-        programmingBobToHendrik.save();
-
-        // Create a new invite
-        documentingHendrikToBoB = new Invite(documentingAssingment, hendrik, bob);
-        documentingHendrikToBoB.save();
+        testUser1 = User.findByName("DefaultUser1");
+        testUser2 = User.findByName("DefaultUser2");
+        testPractical = Practical.findByName("Programming");
+        List<Invite> listOfPendingInvites = Invite.findPendingInvitesWhereUser(testUser1, testPractical);
+        testInvite1 = listOfPendingInvites.get(0);
+        testInvite2 = listOfPendingInvites.get(1);
     }
 
     @Test
     public void testCreationInvite() {
+        User sender = testUser1;
+        User receiver = testUser2;
+
+        Invite newInvite = new Invite(testPractical, sender, receiver);
+        newInvite.save();
+
+        Invite createdInvite = Invite.findById(newInvite.getId());
+
         // Test the values set in the before method
-        assertEquals(documentingHendrikToBoB.getPractical().getId(), documentingAssingment.getId());
-        assertEquals(documentingHendrikToBoB.getSender().getId(), hendrik.getId());
-        assertEquals(documentingHendrikToBoB.getReceiver().getId(), bob.getId());
+        assertEquals(createdInvite.getPractical().getId(), testPractical.getId());
+        assertEquals(createdInvite.getSender().getId(), sender.getId());
+        assertEquals(createdInvite.getReceiver().getId(), receiver.getId());
+        assertEquals(createdInvite.getState(), newInvite.getState());
     }
 
     @Test
     public void testSetters() {
+        // new values to set
+        Practical newSetPractical = Practical.findByName("Documenting");
+
         // Set new values
-        documentingHendrikToBoB.setPractical(programmingAssignment);
-        documentingHendrikToBoB.setReceiver(hendrik);
-        documentingHendrikToBoB.setSender(bob);
-        documentingHendrikToBoB.save();
+        testInvite1.setPractical(newSetPractical);
+        testInvite1.setSender(testUser1);
+        testInvite1.setReceiver(testUser2);
+        testInvite1.setState(Invite.State.Accepted);
+        testInvite1.save();
+
+        // Get new instance
+        Invite setTestInvite = Invite.findById(testInvite1.getId());
 
         // Test new values
-        assertEquals(documentingHendrikToBoB.getPractical().getId(), programmingAssignment.getId());
-        assertEquals(documentingHendrikToBoB.getSender().getId(), bob.getId());
-        assertEquals(documentingHendrikToBoB.getReceiver().getId(), hendrik.getId());
+        assertEquals(setTestInvite.getPractical().getId(), newSetPractical.getId());
+        assertEquals(setTestInvite.getSender().getId(), testUser1.getId());
+        assertEquals(setTestInvite.getReceiver().getId(), testUser2.getId());
+        assertEquals(setTestInvite.getState(), Invite.State.Accepted);
     }
 }
