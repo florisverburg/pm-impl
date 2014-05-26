@@ -11,6 +11,7 @@ import java.util.List;
  * Profile editing form
  */
 public class ProfileForm {
+
     /**
      * The profile first name
      */
@@ -44,6 +45,17 @@ public class ProfileForm {
     private String passwordRepeat;
 
     /**
+     * The profile text
+     */
+    private String profileText;
+
+    /**
+     * The profile image
+     */
+    @Constraints.Required
+    private User.ProfileImage profileImage;
+
+    /**
      * Generate an empty form
      */
     public ProfileForm() {
@@ -58,6 +70,8 @@ public class ProfileForm {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
+        this.profileText = user.getProfileText();
+        this.profileImage = user.getProfileImage();
     }
 
     /**
@@ -141,6 +155,38 @@ public class ProfileForm {
     }
 
     /**
+     * Gets profile text.
+     * @return The profile text
+     */
+    public String getProfileText() {
+        return profileText;
+    }
+
+    /**
+     * Sets profile text.
+     * @param profileText The profile text
+     */
+    public void setProfileText(String profileText) {
+        this.profileText = profileText;
+    }
+
+    /**
+     * Gets profile image.
+     * @return The profile image
+     */
+    public User.ProfileImage getProfileImage() {
+        return profileImage;
+    }
+
+    /**
+     * Sets profile image.
+     * @param profileImage The profile image
+     */
+    public void setProfileImage(User.ProfileImage profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    /**
      * Validates the profile form
      * @return A list of errors
      */
@@ -163,6 +209,8 @@ public class ProfileForm {
         user.setFirstName(this.firstName);
         user.setLastName(this.lastName);
         user.setEmail(this.email);
+        user.setProfileText(this.profileText);
+        user.setProfileImage(this.profileImage);
 
         // Update identity if needed
         if(this.password != null && !this.password.isEmpty() && user.hasPassword()) {

@@ -6,6 +6,7 @@ users:
     lastName: Test
     email: mistertest@test.com
     token: null
+    profileImage: None
 
   - &user2 !!models.User
     type: Teacher
@@ -13,30 +14,35 @@ users:
     lastName: Test
     email: test@test.com
     token: 123456
+    profileImage: None
 
   - &user3 !!models.User
     type: User
     firstName: Bob
     lastName: Verburg
     email: bob@example.com
+    profileImage: None
 
   - &user4 !!models.User
     type: User
     firstName: Hendrik
     lastName: Tienen
     email: hendrik@example.com
+    profileImage: None
 
   - &user5 !!models.User
     type: User
     firstName: Peter
     lastName: Goedegebure
     email: peter@example.com
+    profileImage: None
 
   - &user6 !!models.User
     type: User
     firstName: Leon
     lastName: Janssen
     email: leon@example.com
+    profileImage: None
 
   - &user7 !!models.User
     type: Admin
@@ -44,6 +50,7 @@ users:
     lastName: TestAdmin
     email: admin@test.com
     token: 12345
+    profileImage: None
 
 # Skills
 skills:

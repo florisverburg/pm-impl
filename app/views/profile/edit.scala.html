@@ -17,13 +17,24 @@
                 </p>
             }
 
-            @form.inputText(profileForm("firstName"))
-            @form.inputText(profileForm("lastName"))
-            @form.inputText(profileForm("email"))
+            @form.section {
+                <h2>Basic user information</h2>
+            } {
+                @form.inputText(profileForm("firstName"))
+                @form.inputText(profileForm("lastName"))
+                @form.inputText(profileForm("email"))
 
-            @if(hasPassword) {
-                @form.inputPassword(profileForm("password"))
-                @form.inputPassword(profileForm("passwordRepeat"))
+                @if(hasPassword) {
+                    @form.inputPassword(profileForm("password"))
+                    @form.inputPassword(profileForm("passwordRepeat"))
+                }
+            }
+
+            @form.section {
+                <h2>Basic profile information</h2>
+            } {
+                @form.inputRadioGroup(profileForm("profileImage"), options = Seq("Gravatar"->"Gravatar", "None"->"None"))
+                @form.textarea(profileForm("profileText"), 'rows->10)
             }
 
             @form.submit("Save")
