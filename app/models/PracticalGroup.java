@@ -125,7 +125,7 @@ public class PracticalGroup extends Model {
      * Remove user from list
      * @param groupMember to remove
      */
-    public void removeUser(User groupMember) {
+    public void removeGroupMember(User groupMember) {
         groupMembers.remove(groupMember);
     }
 

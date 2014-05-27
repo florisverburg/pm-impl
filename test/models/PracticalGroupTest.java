@@ -102,7 +102,5 @@ public class PracticalGroupTest extends WithApplication {
         assertEquals(PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser1).getId(), createdPracticalGroup.getId());
         // Check if you can find the group by one of its groupmembers
         assertEquals(PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2).getId(), createdPracticalGroup.getId());
-
-
     }
 }

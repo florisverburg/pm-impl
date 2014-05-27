@@ -3,7 +3,6 @@ package models;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Update;
 import com.avaje.ebean.annotation.EnumValue;
-import play.Logger;
 import play.data.validation.*;
 import play.db.ebean.*;
 
@@ -148,30 +147,19 @@ public class Invite extends Model {
      * Accept the invite and rejects all other received invites
      */
     public void accept() {
-        // Reject all pending of the receiver invites
-        String updStatement = "update invite set state = :st where (receiverId = :rcvId or senderId = :rcvId) and practicalId = :prctId";
-        Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
-        update.set("st", State.Rejected);
-        update.set("rcvId", receiver.getId());
-        update.set("prctId", practical.getId());
-        update.execute();
-
-        updStatement = "update invite set state = :st where receiverId = :rcvId and practicalId = :prctId";
-        update = Ebean.createUpdate(Invite.class, updStatement);
-        update.set("st", State.Rejected);
-        update.set("rcvId", sender.getId());
-        update.set("prctId", practical.getId());
-        update.execute();
-
-        this.refresh();
+        if(state.equals(State.Accepted)) {
+            return;
+        }
         // Accept the invite
         this.state = State.Accepted;
         this.save();
+        // Reject all pending of the receiver invites
+        rejectOtherInvitesUser();
+
+        this.refresh();
 
         // Delete practical group of receiver
-        PracticalGroup receiversPracticalGroup =
-                PracticalGroup.findWithPracticalAndUser(practical, receiver);
-        Logger.debug("receiversPracticalGroup: " + receiversPracticalGroup.getOwner().getFirstName());
+        PracticalGroup receiversPracticalGroup = PracticalGroup.findWithPracticalAndUser(practical, receiver);
         Ebean.delete(receiversPracticalGroup);
         // Add receiver to practical group of sender
         PracticalGroup sendersPracticalGroup =
@@ -180,19 +168,48 @@ public class Invite extends Model {
         sendersPracticalGroup.save();
     }
 
+    private void rejectOtherInvitesUser() {
+        String updStatement = "update invite set state = :st1 " +
+                "where ( practicalId = :prctId " +
+                "and (receiverId = :rcvId1 " +
+                "or senderId = :rcvId2) " +
+                "and state = :st2 )";
+        Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
+        update.set("st1", State.Rejected);
+        update.set("st2", State.Pending);
+        update.set("rcvId1", this.receiver.getId());
+        update.set("rcvId2", this.receiver.getId());
+        update.set("prctId", this.practical.getId());
+        update.execute();
+    }
+
+    private void abc() {
+        String updStatement = "update invite set state = :st" +
+                "where receiverId = :sndrId " +
+                "and practicalId = :prctId";
+        Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
+        update.set("st", State.Rejected);
+        update.set("sndrId", sender.getId());
+        update.set("prctId", practical.getId());
+        update.execute();
+    }
+
     /**
      * Method to reject an invite
      * @param user that wants to reject the invite
      */
     public void reject(User user) {
+        if(!(this.state == State.Accepted)) {
+            return;
+        }
         PracticalGroup practicalGroupOfRejecter =
                 PracticalGroup.findWithPracticalAndUser(practical, user);
 
-        // Only remove the rejecting user from the group and update the group
-        practicalGroupOfRejecter.removeUser(receiver);
+        // Only remove the receiver of the invite from the group and update the group
+        practicalGroupOfRejecter.removeGroupMember(receiver);
         practicalGroupOfRejecter.save();
         // Create a new practical group for the removed user
-        PracticalGroup newPracticalGroup = new PracticalGroup(practical, user);
+        PracticalGroup newPracticalGroup = new PracticalGroup(practical, receiver);
         newPracticalGroup.save();
         state = State.Rejected;
         this.save();
