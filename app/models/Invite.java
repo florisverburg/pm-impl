@@ -154,8 +154,8 @@ public class Invite extends Model {
         this.state = State.Accepted;
         this.save();
         // Reject all pending of the receiver invites
-        rejectOtherInvitesUser();
-
+        rejectOtherInvitesUser(this.getReceiver(), true);
+        rejectOtherInvitesUser(this.getSender(), false);
         this.refresh();
 
         // Delete practical group of receiver
@@ -168,29 +168,26 @@ public class Invite extends Model {
         sendersPracticalGroup.save();
     }
 
-    private void rejectOtherInvitesUser() {
-        String updStatement = "update invite set state = :st1 " +
-                "where ( practicalId = :prctId " +
-                "and (receiverId = :rcvId1 " +
-                "or senderId = :rcvId2) " +
-                "and state = :st2 )";
+    /**
+     * @param user that wants to reject the invite
+     * @param include whether or not to include that also the send invites should be rejected
+     */
+    private void rejectOtherInvitesUser(User user, boolean include) {
+        String updStatement = "update invite set state = :st1 "
+                + "where "
+                + "( practicalId = :prctId "
+                + "and "
+                + "(receiverId = :rcvId1 ";
+        if(include) {
+            updStatement = updStatement + "or senderId = :rcvId2 ";
+        }
+        updStatement = updStatement + ") and state = :st2 )";
         Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
         update.set("st1", State.Rejected);
         update.set("st2", State.Pending);
-        update.set("rcvId1", this.receiver.getId());
-        update.set("rcvId2", this.receiver.getId());
+        update.set("rcvId1", user.getId());
+        update.set("rcvId2", user.getId());
         update.set("prctId", this.practical.getId());
-        update.execute();
-    }
-
-    private void abc() {
-        String updStatement = "update invite set state = :st" +
-                "where receiverId = :sndrId " +
-                "and practicalId = :prctId";
-        Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
-        update.set("st", State.Rejected);
-        update.set("sndrId", sender.getId());
-        update.set("prctId", practical.getId());
         update.execute();
     }
 
