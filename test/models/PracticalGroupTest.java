@@ -92,12 +92,8 @@ public class PracticalGroupTest extends WithApplication {
         createdUser1.save();
         createdPractical.save();
 
-        PracticalGroup foundPracticalGroup1 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser1);
-        Logger.debug("createdPracticalGroup.getId() " + foundPracticalGroup1);
-        assertEquals(PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser1).getId(), createdPracticalGroup.getId());
-
         // Check the returned values of the method
-
+        assertEquals(PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser1).getId(), createdPracticalGroup.getId());
         assertNull(PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2));
 
         // Add a groupmember to the group

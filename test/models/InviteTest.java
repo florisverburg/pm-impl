@@ -2,6 +2,7 @@ package models;
 
 import org.junit.Before;
 import org.junit.Test;
+import play.Logger;
 import play.test.WithApplication;
 
 import java.util.List;
@@ -113,26 +114,132 @@ public class InviteTest extends WithApplication {
     }
 
     /**
-     * Test the method accept()
+     * Test the method accept
+     * Before
+     * Invite1: CreatedUser1 -> CreatedUser2 : Pending
+     * Invite2: CreatedUser2 -> CreatedUser3 : Pending
+     * Invite3: CreatedUser1 -> CreatedUser3 : Pending
+     * Accept invite2
+     * After
+     * Invite1: CreatedUser1 -> CreatedUser2 : Rejected
+     * Invite2: CreatedUser2 -> CreatedUser3 : Accepted
+     * Invite3: CreatedUser1 -> CreatedUser3 : Rejected
      */
     @Test
-    public void testAccept() {
+    public void testAcceptCase1() {
+        // Create the users to put into the practicalgroup
+        Practical createdPractical = new Practical("Created Practical", "Practical that has been created");
+        createdPractical.save();
+        User createdUser1 = new User("CreatedUser1", "LastName", "createduser1@example.com", User.Type.User);
+        createdUser1.save();
+        PracticalGroup practicalGroupUser1 = new PracticalGroup(createdPractical, createdUser1);
+        practicalGroupUser1.save();
+        User createdUser2 = new User("CreatedUser2", "LastName", "createduser2@example.com", User.Type.User);
+        createdUser2.save();
+        PracticalGroup practicalGroupUser2 = new PracticalGroup(createdPractical, createdUser2);
+        practicalGroupUser2.save();
+        User createdUser3 = new User("CreatedUser3", "LastName", "createduser3@example.com", User.Type.User);
+        createdUser3.save();
+        PracticalGroup practicalGroupUser3 = new PracticalGroup(createdPractical, createdUser3);
+        practicalGroupUser3.save();
+
+        Invite invite1 = new Invite(createdPractical, createdUser1, createdUser2);
+        invite1.save();
+        Invite invite2 = new Invite(createdPractical, createdUser2, createdUser3);
+        invite2.save();
+        Invite invite3 = new Invite(createdPractical, createdUser1, createdUser3);
+        invite3.save();
+
         // Check if the invite that we are going to test is pending
-        assertEquals(testInvite1.getState(), Invite.State.Pending);
-        List<Invite> oldPendingInvitesSender = testInvite1.getSender().findPendingInvitesUser(testInvite1.getPractical());
-        List<Invite> oldPendingInvitesReceiver = testInvite1.getReceiver().findPendingInvitesUser(testInvite1.getPractical());
+        assertEquals(invite2.getState(), Invite.State.Pending);
+        List<Invite> currentPendingInvitesSender = invite2.getSender().findPendingInvitesUser(invite2.getPractical());
+        List<Invite> currentPendingInvitesReceiver = invite2.getReceiver().findPendingInvitesUser(invite2.getPractical());
         // Check whether there are more than 0 pending invites for both the sender and the receiver
-        assert(oldPendingInvitesSender.size() > 0);
-        assert(oldPendingInvitesReceiver.size() > 0);
+        Logger.debug("currentPendingInvitesSender " + currentPendingInvitesSender.size());
+        Logger.debug("currentPendingInvitesReceiver " + currentPendingInvitesReceiver.size());
+
+        assert(currentPendingInvitesSender.size() > 0);
+        assert(currentPendingInvitesReceiver.size() > 0);
 
         // Accept the invite
-        testInvite1.accept();
-        testInvite1 = Invite.findById(testInvite1.getId());
-        List<Invite> newPendingInvitesSender = testInvite1.getSender().findPendingInvitesUser(testInvite1.getPractical());
-        List<Invite> newPendingInvitesReceiver = testInvite1.getReceiver().findPendingInvitesUser(testInvite1.getPractical());
+        invite2.accept();
+        invite1 = Invite.findById(invite1.getId());
+        invite2 = Invite.findById(invite2.getId());
+        invite3 = Invite.findById(invite3.getId());
+        List<Invite> newPendingInvitesSender = invite2.getSender().findPendingInvitesUser(invite1.getPractical());
+        List<Invite> newPendingInvitesReceiver = invite2.getReceiver().findPendingInvitesUser(invite1.getPractical());
 
         // Check whether the right values have been decreased
-        assertEquals(newPendingInvitesSender.size(), oldPendingInvitesSender.size()-1);
+        assertEquals(newPendingInvitesSender.size(), 0);
         assertEquals(newPendingInvitesReceiver.size(), 0);
+        assertEquals(invite1.getState(), Invite.State.Rejected);
+        assertEquals(invite2.getState(), Invite.State.Accepted);
+        assertEquals(invite3.getState(), Invite.State.Rejected);
     }
+
+    /**
+     * Test the method accept
+     * Before
+     * Invite1: CreatedUser1 -> CreatedUser2 : Pending
+     * Invite2: CreatedUser2 -> CreatedUser3 : Pending
+     * Invite3: CreatedUser1 -> CreatedUser3 : Pending
+     * Accept invite1
+     * After
+     * Invite1: CreatedUser1 -> CreatedUser2 : Accepted
+     * Invite2: CreatedUser2 -> CreatedUser3 : Rejected
+     * Invite3: CreatedUser1 -> CreatedUser3 : Pending
+     */
+    @Test
+    public void testAcceptCase2() {
+        // Create the users to put into the practicalgroup
+        Practical createdPractical = new Practical("Created Practical", "Practical that has been created");
+        createdPractical.save();
+        User createdUser1 = new User("CreatedUser1", "LastName", "createduser1@example.com", User.Type.User);
+        createdUser1.save();
+        PracticalGroup practicalGroupUser1 = new PracticalGroup(createdPractical, createdUser1);
+        practicalGroupUser1.save();
+        User createdUser2 = new User("CreatedUser2", "LastName", "createduser2@example.com", User.Type.User);
+        createdUser2.save();
+        PracticalGroup practicalGroupUser2 = new PracticalGroup(createdPractical, createdUser2);
+        practicalGroupUser2.save();
+        User createdUser3 = new User("CreatedUser3", "LastName", "createduser3@example.com", User.Type.User);
+        createdUser3.save();
+        PracticalGroup practicalGroupUser3 = new PracticalGroup(createdPractical, createdUser3);
+        practicalGroupUser3.save();
+
+        Invite invite1 = new Invite(createdPractical, createdUser1, createdUser2);
+        invite1.save();
+        Invite invite2 = new Invite(createdPractical, createdUser2, createdUser3);
+        invite2.save();
+        Invite invite3 = new Invite(createdPractical, createdUser1, createdUser3);
+        invite3.save();
+
+        // Check if the invite that we are going to test is pending
+        assertEquals(invite1.getState(), Invite.State.Pending);
+        List<Invite> currentPendingInvitesSender = invite1.getSender().findPendingInvitesUser(invite2.getPractical());
+        List<Invite> currentPendingInvitesReceiver = invite1.getReceiver().findPendingInvitesUser(invite2.getPractical());
+        // Check whether there are more than 0 pending invites for both the sender and the receiver
+        Logger.debug("currentPendingInvitesSender " + currentPendingInvitesSender.size());
+        Logger.debug("currentPendingInvitesReceiver " + currentPendingInvitesReceiver.size());
+
+        assert(currentPendingInvitesSender.size() > 0);
+        assert(currentPendingInvitesReceiver.size() > 0);
+
+        // Accept the invite
+        invite1.accept();
+        invite1 = Invite.findById(invite1.getId());
+        invite2 = Invite.findById(invite2.getId());
+        invite3 = Invite.findById(invite3.getId());
+        List<Invite> newPendingInvitesSender = invite1.getSender().findPendingInvitesUser(invite1.getPractical());
+        List<Invite> newPendingInvitesReceiver = invite1.getReceiver().findPendingInvitesUser(invite1.getPractical());
+
+        // Check whether the right values have been decreased
+        assertEquals(newPendingInvitesSender.size(), 1);
+        assertEquals(newPendingInvitesReceiver.size(), 0);
+        assertEquals(invite1.getState(), Invite.State.Accepted);
+        assertEquals(invite2.getState(), Invite.State.Rejected);
+        assertEquals(invite3.getState(), Invite.State.Pending);
+    }
+
+
 }

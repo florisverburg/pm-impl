@@ -148,11 +148,18 @@ public class Invite extends Model {
      * Accept the invite and rejects all other received invites
      */
     public void accept() {
-        // Reject all pending of the sender and receiver invites
-        String updStatement = "update invite set state = :st where receiverId = :rcvId and practicalId = :prctId";
+        // Reject all pending of the receiver invites
+        String updStatement = "update invite set state = :st where (receiverId = :rcvId or senderId = :rcvId) and practicalId = :prctId";
         Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
         update.set("st", State.Rejected);
         update.set("rcvId", receiver.getId());
+        update.set("prctId", practical.getId());
+        update.execute();
+
+        updStatement = "update invite set state = :st where receiverId = :rcvId and practicalId = :prctId";
+        update = Ebean.createUpdate(Invite.class, updStatement);
+        update.set("st", State.Rejected);
+        update.set("rcvId", sender.getId());
         update.set("prctId", practical.getId());
         update.execute();
 
@@ -164,7 +171,7 @@ public class Invite extends Model {
         // Delete practical group of receiver
         PracticalGroup receiversPracticalGroup =
                 PracticalGroup.findWithPracticalAndUser(practical, receiver);
-        Logger.debug("receiversPracticalGroup: " + receiversPracticalGroup);
+        Logger.debug("receiversPracticalGroup: " + receiversPracticalGroup.getOwner().getFirstName());
         Ebean.delete(receiversPracticalGroup);
         // Add receiver to practical group of sender
         PracticalGroup sendersPracticalGroup =

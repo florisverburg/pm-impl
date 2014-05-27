@@ -93,7 +93,6 @@ public class PracticalGroup extends Model {
         sqlQuery.setParameter("groupMemberId2", groupMember.getId());
         SqlRow sqlRow = sqlQuery.findUnique();
         if(sqlRow == null) {
-            Logger.debug("Entered the if");
             return null;
         }
         return PracticalGroup.findById(sqlRow.getLong("c0"));
