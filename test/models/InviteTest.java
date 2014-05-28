@@ -172,8 +172,8 @@ public class InviteTest extends WithApplication {
         assertEquals(invite2.getState(), Invite.State.Accepted);
         assertEquals(invite3.getState(), Invite.State.Rejected);
         assertNull(practicalGroupUser3);
-        assertEquals(practicalGroupUser2.getGroupMembers().size(), 1);
-        assertEquals(practicalGroupUser1.getGroupMembers().size(), 0);
+        assertEquals(practicalGroupUser2.getGroupMembers().size(), 2);
+        assertEquals(practicalGroupUser1.getGroupMembers().size(), 1);
     }
 
     /**
@@ -217,7 +217,7 @@ public class InviteTest extends WithApplication {
         PracticalGroup practicalGroupUser3 = new PracticalGroup(createdPractical, createdUser3);
         practicalGroupUser3.save();
         User createdUser4 = new User("CreatedUser4", "LastName", "createduser4@example.com", User.Type.User);
-        createdUser3.save();
+        createdUser4.save();
         PracticalGroup practicalGroupUser4 = new PracticalGroup(createdPractical, createdUser4);
         practicalGroupUser4.save();
 
@@ -254,10 +254,10 @@ public class InviteTest extends WithApplication {
         assertEquals(invite3.getState(), Invite.State.Pending);
         assertEquals(invite4.getState(), Invite.State.Rejected);
         assertEquals(invite5.getState(), Invite.State.Rejected);
-        assertEquals(practicalGroupUser1.getGroupMembers().size(), 1);
+        assertEquals(practicalGroupUser1.getGroupMembers().size(), 2);
         assertNull(practicalGroupUser2);
-        assertEquals(practicalGroupUser3.getGroupMembers().size(), 0);
-        assertEquals(practicalGroupUser4.getGroupMembers().size(), 0);
+        assertEquals(practicalGroupUser3.getGroupMembers().size(), 1);
+        assertEquals(practicalGroupUser4.getGroupMembers().size(), 1);
 
         invite3.accept();
         // Reload values
@@ -274,10 +274,10 @@ public class InviteTest extends WithApplication {
         assertEquals(invite2.getState(), Invite.State.Rejected);
         assertEquals(invite3.getState(), Invite.State.Accepted);
         assertEquals(invite4.getState(), Invite.State.Rejected);
-        assertEquals(practicalGroupUser1.getGroupMembers().size(), 2);
+        assertEquals(practicalGroupUser1.getGroupMembers().size(), 3);
         assertNull(practicalGroupUser2);
         assertNull(practicalGroupUser3);
-        assertEquals(practicalGroupUser4.getGroupMembers().size(), 0);
+        assertEquals(practicalGroupUser4.getGroupMembers().size(), 1);
     }
 
     /**
@@ -324,7 +324,7 @@ public class InviteTest extends WithApplication {
         practicalGroupUser2 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2);
         practicalGroupUser3 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser3);
         // Check if the basis is correct
-        assertEquals(practicalGroupUser1.getGroupMembers().size(), 2);
+        assertEquals(practicalGroupUser1.getGroupMembers().size(), 3);
         assertEquals(practicalGroupUser1.getId(), practicalGroupUser2.getId());
         assertEquals(practicalGroupUser1.getId(), practicalGroupUser3.getId());
         assertEquals(Invite.State.Accepted, invite1.getState());
@@ -337,8 +337,8 @@ public class InviteTest extends WithApplication {
         practicalGroupUser1 = PracticalGroup.findById(practicalGroupUser1.getId());
         practicalGroupUser2 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2);
         practicalGroupUser3 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser3);
-        assertEquals(1, practicalGroupUser1.getGroupMembers().size());
-        assertEquals(0, practicalGroupUser2.getGroupMembers().size());
+        assertEquals(2, practicalGroupUser1.getGroupMembers().size());
+        assertEquals(1, practicalGroupUser2.getGroupMembers().size());
         assert(!(practicalGroupUser1.getId() == practicalGroupUser2.getId()));
         assertEquals(practicalGroupUser1.getId(), practicalGroupUser3.getId());
         assertEquals(Invite.State.Rejected, invite1.getState());
@@ -350,8 +350,8 @@ public class InviteTest extends WithApplication {
         practicalGroupUser1 = PracticalGroup.findById(practicalGroupUser1.getId());
         practicalGroupUser2 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2);
         practicalGroupUser3 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser3);
-        assertEquals(0, practicalGroupUser1.getGroupMembers().size());
-        assertEquals(0, practicalGroupUser2.getGroupMembers().size());
+        assertEquals(1, practicalGroupUser1.getGroupMembers().size());
+        assertEquals(1, practicalGroupUser2.getGroupMembers().size());
         assert(!(practicalGroupUser1.getId() == practicalGroupUser2.getId()));
         assert(!(practicalGroupUser1.getId() == practicalGroupUser3.getId()));
         assertEquals(Invite.State.Rejected, invite2.getState());
