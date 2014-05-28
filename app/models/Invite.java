@@ -97,6 +97,18 @@ public class Invite extends Model {
         return find.where().eq("id", id).findUnique();
     }
 
+    public static Invite findByPracticalSenderReceiver(Practical practical, User sender, User receiver) {
+        return find.where()
+                .and(
+                    eq("practicalId", practical.getId()),
+                    and(
+                            eq("senderId", sender.getId()),
+                            eq("receiverId", receiver.getId())
+                    )
+                )
+                .findUnique();
+    }
+
     /**
      * Method to find the pending invites a specific user has
      * @param user to find pending invites off
@@ -237,8 +249,9 @@ public class Invite extends Model {
         // Check whether the sender has not already send an invite to the receiver and
         // Check whether the receiver has not already send an invite to the receiver and
         // Check whether the amount of send invitations does not exceed the set maximum
-        if(!checkInvite(sender, receiver)
-                || !checkInvite(receiver, sender)
+        if(!checkInvite(sender, receiver, practical)
+                || !checkInvite(receiver, sender, practical)
+                || sender.equals(receiver)
                 || sender.findPendingInvitesUser(practical).size() > INVITES_MAX) {
             return null;
         }
@@ -253,12 +266,16 @@ public class Invite extends Model {
      * @param receiver second user
      * @return Resembles the success/failure of the check
      */
-    private static boolean checkInvite(User sender, User receiver) {
+    public static boolean checkInvite(User sender, User receiver, Practical practical) {
         // Check whether the sender has not already send an invite to the receiver
         Invite alreadySentInvite = find.where()
                 .and(
-                    eq("sender.id", sender.getId()),
-                    eq("receiver.id", receiver.getId()))
+                    eq("practical.id", practical.getId()),
+                    and(
+                        eq("sender.id", sender.getId()),
+                        eq("receiver.id", receiver.getId())
+                    )
+                )
                 .findUnique();
         return (null == alreadySentInvite);
     }

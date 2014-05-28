@@ -1,5 +1,8 @@
 package models;
 
+import com.avaje.ebean.Ebean;
+import junit.framework.Assert;
+import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import play.Logger;
@@ -7,6 +10,9 @@ import play.test.WithApplication;
 
 import java.util.List;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
 import static play.test.Helpers.fakeApplication;
@@ -355,5 +361,95 @@ public class InviteTest extends WithApplication {
         assert(!(practicalGroupUser1.getId() == practicalGroupUser2.getId()));
         assert(!(practicalGroupUser1.getId() == practicalGroupUser3.getId()));
         assertEquals(Invite.State.Rejected, invite2.getState());
+    }
+
+    /**
+     * Test for checkinvite method
+     */
+    @Test
+    public void testCheckInvite() {
+        Practical practical = Practical.findByName("InviteControllerTest");
+        User user1 = User.findByName("DefaultUser1");
+        User user2 = User.findByName("DefaultUser2");
+        // check if basic is correct
+        assertTrue(Invite.checkInvite(user1, user2, practical));
+        assertTrue( Invite.checkInvite(user2, user1, practical));
+
+        Invite invite1 = new Invite(practical, user1, user2);
+        invite1.save();
+
+        // check if result is correct
+        assertFalse(Invite.checkInvite(user1, user2, practical));
+        assertTrue(Invite.checkInvite(user2, user1, practical));
+
+        Ebean.delete(invite1);
+        Invite invite2 = new Invite(practical, user2, user1);
+        invite2.save();
+
+        // check if result the other way is also correct
+        assertTrue(Invite.checkInvite(user1, user2, practical));
+        assertFalse(Invite.checkInvite(user2, user1, practical));
+    }
+
+    /**
+     * Test to check send invite method works properly
+     */
+    @Test
+    public void testSendInviteSuccess() {
+        Practical practical = Practical.findByName("InviteControllerTest");
+        User user1 = User.findByName("DefaultUser1");
+        User user2 = User.findByName("DefaultUser2");
+
+        assertTrue(Invite.checkInvite(user1, user2, practical));
+        assertTrue(Invite.checkInvite(user2, user1, practical));
+
+        // Send the invite
+        assertNotNull(Invite.sendInvite(practical, user1, user2));
+        // Check whether the invite has been truly added
+        assertFalse(Invite.checkInvite(user1, user2, practical));
+        assertTrue(Invite.checkInvite(user2, user1, practical));
+    }
+
+    /**
+     * Test
+     */
+    @Test
+    public void testSendInviteAlready() {
+        Practical practical = Practical.findByName("InviteControllerTest");
+        User user1 = User.findByName("DefaultUser1");
+        User user2 = User.findByName("DefaultUser2");
+
+        Invite invite1 = new Invite(practical, user1, user2);
+        invite1.save();
+
+        assertFalse(Invite.checkInvite(user1, user2, practical));
+        assertTrue(Invite.checkInvite(user2, user1, practical));
+
+        // Check whether the method returns the right value
+        assertNull(Invite.sendInvite(practical, user1, user2));
+
+        // Check whether there still hasn't been added an invite
+        assertFalse(Invite.checkInvite(user1, user2, practical));
+        assertTrue(Invite.checkInvite(user2, user1, practical));
+    }
+
+    /**
+     * Test
+     */
+    @Test
+    public void testSendInviteEqualSenderReceiver() {
+        Practical practical = Practical.findByName("InviteControllerTest");
+        User user1 = User.findByName("DefaultUser1");
+        User user2 = User.findByName("DefaultUser2");
+
+        assertTrue(Invite.checkInvite(user1, user2, practical));
+        assertTrue(Invite.checkInvite(user2, user1, practical));
+
+        // Check whether the method returns the right value
+        assertNull(Invite.sendInvite(practical, user1, user1));
+
+        // Check whether there still hasn't been added an invite
+        assertTrue(Invite.checkInvite(user1, user2, practical));
+        assertTrue(Invite.checkInvite(user2, user1, practical));
     }
 }

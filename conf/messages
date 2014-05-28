@@ -28,6 +28,12 @@ practical.wrongSecret = This secret does not match the practical secret
 practical.isNoAdmin = You need to be the administrator to complete this action
 practical.deleted = The practical is deleted
 
+# Invite
+invite.accepted = Invite has been accepted
+invite.withdrawn = Invite has been withdrawn
+invite.resend = Invite has been resend
+invite.reject = Invite has been rejected
+
 # Profile
 profileText = A basic profile description
 profileImage = Profile image
