@@ -26,18 +26,18 @@ public class PracticalControllerTest extends WithApplication {
 
         callAction(controllers.routes.ref.PracticalController.register(practical.getId(), practical.getSecret()),
                 fakeRequest().withSession("user_id",
-                        User.findByEmail("admin@test.com").getId().toString()));
+                        User.findByEmail("admin@example.com").getId().toString()));
         Practical resultPractical = Practical.findById(1);
 
         assertEquals(resultPractical.getUsers().size(), 6);
-        assertEquals(resultPractical.getUsers().get(2).getFirstName(), "Hendrik");
+        assertEquals(resultPractical.getUsers().get(2).getFirstName(), "DefaultUser2");
     }
 
     @Test
     public void RegisterNonExisting() {
         Result result = callAction(controllers.routes.ref.PracticalController.register(99999L, "test"),
                 fakeRequest().withSession("user_id",
-                        User.findByEmail("admin@test.com").getId().toString()));
+                        User.findByEmail("admin@example.com").getId().toString()));
 
         assertEquals(SEE_OTHER, status(result));
         assertEquals("practical.doesNotExist", flash(result).get("error"));

@@ -129,18 +129,22 @@ public class UserTest extends WithApplication {
 
     @Test
     public void authenticateSuccess() {
-        new PasswordIdentity(testUser1, testUser1.getEmail(), "florina").save();
+        User createdUser = new User("CreatedUser", "lastName", "createduser@example.com", User.Type.User);
+        createdUser.save();
+        new PasswordIdentity(createdUser, createdUser.getEmail(), "florina").save();
 
-        assertNotNull(User.authenticate(testUser1.getEmail(), "florina"));
-        assertEquals(User.authenticate(testUser1.getEmail(), "florina"), testUser1);
+        assertNotNull(User.authenticate(createdUser.getEmail(), "florina"));
+        assertEquals(User.authenticate(createdUser.getEmail(), "florina"), createdUser);
     }
 
     @Test
     public void authenticateFail() {
-        new PasswordIdentity(testUser1, testUser1.getEmail(), "florina").save();
+        User createdUser = new User("CreatedUser", "lastName", "createduser@example.com", User.Type.User);
+        createdUser.save();
+        new PasswordIdentity(createdUser, createdUser.getEmail(), "florina").save();
 
         assertNull(User.authenticate("floor@wrongemail.com", "florina"));
-        assertNull(User.authenticate(testUser1.getEmail(), "wrongpass"));
+        assertNull(User.authenticate(createdUser.getEmail(), "wrongpass"));
     }
 
     @Test

@@ -168,16 +168,16 @@ invites:
 #Identities
 identities:
   - &identity1 !!models.PasswordIdentity
-    user: *user1
-    email: mistertest@test.com
+    user: *user3
+    email: defaultuser1@example.com
     password: freak
 
   - &identity2 !!models.PasswordIdentity
-    user: *user2
-    email: test@test.com
+    user: *user4
+    email: defaultuser2@example.com
     password: floor
 
   - &identity3 !!models.PasswordIdentity
     user: *user5
-    email: peter@example.com
+    email: defaultuser3@example.com
     password: 55bvo

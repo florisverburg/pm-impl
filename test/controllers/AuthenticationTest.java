@@ -33,11 +33,11 @@ public class AuthenticationTest extends WithApplication {
         Result result = callAction(
                 controllers.routes.ref.Authentication.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
-                        "email", "mistertest@test.com",
+                        "email", "defaultuser1@example.com",
                         "password", "freak"))
         );
         assertEquals(SEE_OTHER, status(result));
-        assertEquals(User.findByEmail("mistertest@test.com").getId().toString(), session(result).get("user_id"));
+        assertEquals(User.findByEmail("defaultuser1@example.com").getId().toString(), session(result).get("user_id"));
     }
 
     @Test
@@ -45,13 +45,13 @@ public class AuthenticationTest extends WithApplication {
         Result result = callAction(
                 controllers.routes.ref.Authentication.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
-                        "email", "test@test.com",
+                        "email", "defaultuser1@example.com",
                         "password", "wrongpass"))
         );
 
         assertEquals(BAD_REQUEST, status(result));
         assertTrue(contentAsString(result).contains("Wrong login information supplied"));
-        assertNotEquals(User.findByEmail("test@test.com").getId().toString(), session(result).get("user_id"));
+        assertNotEquals(User.findByEmail("defaultuser1@example.com").getId().toString(), session(result).get("user_id"));
     }
 
     @Test

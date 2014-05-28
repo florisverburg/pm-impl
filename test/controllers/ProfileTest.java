@@ -35,7 +35,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void viewProfileSuccess() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
                 routes.ref.Profile.view(),
                 fakeRequest().withSession("user_id", user.getId().toString())
@@ -60,7 +60,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void editProfileSuccess() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
                 routes.ref.Profile.edit(),
                 fakeRequest().withSession("user_id", user.getId().toString())
@@ -74,7 +74,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void saveProfileRequired() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
@@ -93,7 +93,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void saveProfileInvalidEmail() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
@@ -113,7 +113,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void saveProfileEmailInUse() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
@@ -121,20 +121,20 @@ public class ProfileTest extends WithApplication {
                         .withFormUrlEncodedBody(ImmutableMap.of(
                                 "firstName", user.getFirstName(),
                                 "lastName", user.getLastName(),
-                                "email", "mistertest@test.com",
+                                "email", "defaultuser2@example.com",
                                 "profileImage", "Gravatar"))
         );
 
         assertEquals(BAD_REQUEST, status(result));
         assertTrue(contentAsString(result).contains(user.getFirstName()));
         assertTrue(contentAsString(result).contains(user.getLastName()));
-        assertTrue(contentAsString(result).contains("mistertest@test.com"));
+        assertTrue(contentAsString(result).contains("defaultuser2@example.com"));
         assertTrue(contentAsString(result).contains("The email address is already registered"));
     }
 
     @Test
     public void saveProfileSuccess() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
@@ -156,7 +156,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void saveProfileWrongPass() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         HashMap<String, String> body = new HashMap<String, String>();
         body.put("firstName", user.getFirstName());
         body.put("lastName", user.getLastName());
@@ -181,7 +181,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void saveProfileWrongPassShort() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
@@ -203,7 +203,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void saveProfileFailNone() {
-        User user = User.findByEmail("admin@test.com");
+        User user = User.findByEmail("admin@example.com");
         HashMap<String, String> body = new HashMap<String, String>();
         body.put("firstName", user.getFirstName());
         body.put("lastName", user.getLastName());
@@ -226,7 +226,7 @@ public class ProfileTest extends WithApplication {
 
     @Test
     public void saveProfileSuccessPass() {
-        User user = User.findByEmail("test@test.com");
+        User user = User.findByEmail("defaultuser1@example.com");
         HashMap<String, String> body = new HashMap<String, String>();
         body.put("firstName", user.getFirstName());
         body.put("lastName", user.getLastName());
