@@ -1,4 +1,6 @@
-@(practicals: List[Practical])
+@(practicals: List[Practical], practicalForm: Form[forms.PracticalForm])
+
+@implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
 
 @main("Practicals", "practicals") {
 
@@ -8,9 +10,39 @@
             This is an overview of the course practicals you are enrolled for.
         </p>
     </div>
+
+    @if(practicalForm != null) {
+        @helper.form(routes.PracticalController.create, 'class -> "form-horizontal") {
+            <div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Create a new practical</h4>
+                        </div>
+                        <div class="modal-body">
+                            @form.inputText(practicalForm("name"))
+                            @form.textarea(practicalForm("description"))
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" value="Save changes"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createForm">
+            Create a new practical
+        </button>
+    }
+
     @practicals.map { practical =>
         <fieldset>
-            <legend><a href="@routes.PracticalController.view(practical.getId())">@practical.getName()</a></legend>
+            <legend>
+                <a href="@routes.PracticalController.view(practical.getId())">@practical.getName()</a>
+            </legend>
             <label>Description</label><br />
             @practical.getDescription()<br />
         </fieldset>

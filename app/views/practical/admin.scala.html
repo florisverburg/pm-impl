@@ -1,0 +1,20 @@
+@(practical: Practical)
+
+@main("Practicals", "practicals") {
+    <div class="page-header">
+        <h2>
+            @practical.getName()
+            <a class="btn btn-danger pull-right" href="@routes.PracticalController.delete(practical.getId())">Delete</a>
+        </h2>
+        <p>
+        @practical.getDescription()
+        </p>
+    </div>
+
+    <div>
+        The secret registration URL:
+            <a href="@routes.PracticalController.register(practical.getId(), practical.getSecret())">
+                @routes.PracticalController.register(practical.getId(), practical.getSecret()).absoluteURL()
+            </a>
+    </div>
+}

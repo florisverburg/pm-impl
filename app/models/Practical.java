@@ -65,7 +65,6 @@ public class Practical extends Model {
      * One-to-many relationship between practical and user
      */
     @ManyToOne
-    @JoinColumn(name = "adminId")
     private User admin;
 
     /**
@@ -77,8 +76,8 @@ public class Practical extends Model {
     /**
      * One-to-many relationship between practical and invite
      */
-    @OneToMany(mappedBy = "practical", cascade =  CascadeType.ALL)
-    List<Invite> invites = new ArrayList<>();
+    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
+    List<Invite> invites = new ArrayList<Invite>();
 
     /**
      * Finder defined for the practical
@@ -250,5 +249,43 @@ public class Practical extends Model {
      */
     public List<Invite> getInvites() {
         return invites;
+    }
+
+    /**
+     * Setter for invites
+     * @param invites to set
+     */
+    public void setInvites(List<Invite> invites) {
+        this.invites = invites;
+    }
+
+    /**
+     * Add invite to the list of invites
+     * @param invite to add
+     */
+    public void addInvites(Invite invite) {
+        this.invites.add(invite);
+    }
+
+    /**
+     * Check if a user is an administrator of the course
+     * @param user The user to check
+     * @return If the user is the administrator
+     */
+    public boolean isAdmin(User user) {
+        return user.equals(this.admin);
+    }
+
+    /**
+     * Deletes the object
+     */
+    @Override
+    public void delete() {
+        // Since many-to-many -> many-to-many delete fails we have to do it separately
+        for(PracticalGroup group : getPracticalGroups()) {
+            group.delete();
+        }
+
+        super.delete();
     }
 }
