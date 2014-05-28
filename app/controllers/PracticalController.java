@@ -162,7 +162,7 @@ public class PracticalController extends Controller {
      */
     public static Result sendInvitePracticalGroup(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
-        User receiver =  practicalGroup.getUsers().get(0);
+        User receiver =  practicalGroup.getGroupMembers().get(0);
         User sender = Secure.getUser();
 
         // Check if the invite was successfully send

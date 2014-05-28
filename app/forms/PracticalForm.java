@@ -77,7 +77,7 @@ public class PracticalForm {
     public Practical save(User user) {
         Practical practical = new Practical(this.name, this.description);
         practical.setAdmin(user);
-        practical.addUsers(user);
+        practical.addUser(user);
         practical.save();
 
         return practical;

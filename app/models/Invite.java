@@ -110,15 +110,15 @@ public class Invite extends Model {
                     .or(
                             and(
                                     and(
-                                            eq("senderId", user.getId()),
-                                            eq("practicalId", practical.getId())
+                                            eq("sender.id", user.getId()),
+                                            eq("practical.id", practical.getId())
                                     ),
                                     eq("state", State.Pending)
                             ),
                             and(
                                     and(
-                                            eq("receiverId", user.getId()),
-                                            eq("practicalId", practical.getId())
+                                            eq("receiver.id", user.getId()),
+                                            eq("practical.id", practical.getId())
                                     ),
                                     eq("state", State.Pending)
                             )
@@ -172,11 +172,11 @@ public class Invite extends Model {
     private void rejectOtherInvitesUser(User user, boolean include) {
         String updStatement = "update invite set state = :st1 "
                 + "where "
-                + "( practicalId = :prctId "
+                + "(practical_id = :prctId "
                 + "and "
-                + "(receiverId = :rcvId1 ";
+                + "(receiver_id = :rcvId1 ";
         if(include) {
-            updStatement = updStatement + "or senderId = :rcvId2 ";
+            updStatement = updStatement + "or sender_id = :rcvId2 ";
         }
         updStatement = updStatement + ") and state = :st2 )";
         Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
@@ -257,8 +257,8 @@ public class Invite extends Model {
         // Check whether the sender has not already send an invite to the receiver
         Invite alreadySentInvite = find.where()
                 .and(
-                    eq("senderId", sender.getId()),
-                    eq("receiverId", receiver.getId()))
+                    eq("sender.id", sender.getId()),
+                    eq("receiver.id", receiver.getId()))
                 .findUnique();
         return (null == alreadySentInvite);
     }
