@@ -21,8 +21,12 @@ error.wrongToken = This verification token is not valid
 linkedin.unknownError = An unknown error with Linkedin occurred, please try again later
 
 # Practical
+name = Name
+description = Description
 practical.doesNotExist = Practical does not exist
 practical.wrongSecret = This secret does not match the practical secret
+practical.isNoAdmin = You need to be the administrator to complete this action
+practical.deleted = The practical is deleted
 
 # Profile
 profileText = A basic profile description

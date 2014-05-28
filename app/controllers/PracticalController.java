@@ -1,12 +1,16 @@
 package controllers;
 
+import forms.PracticalForm;
 import helpers.Secure;
 import models.*;
+import play.data.*;
 import play.mvc.*;
 import views.html.practical.list;
 import views.html.practical.view;
 import views.html.practical.admin;
 import views.html.viewPracticalGroup;
+
+import static play.data.Form.form;
 
 /**
  * Created by Marijn Goedegebure on 15-5-2014.
@@ -52,44 +56,25 @@ public class PracticalController extends Controller {
      * @return Show the practical information
      */
     public static Result view(long id) {
-        Practical practicalToRender = Practical.findById(id);
+        User user = Secure.getUser();
+        Practical practical = Practical.findById(id);
+
         // If practical does not exist
-        if (practicalToRender == null) {
+        if(practical == null) {
             flash("error", "practical.doesNotExist");
-            return redirect(routes.Application.index());
+            return redirect(routes.PracticalController.list());
         }
         // If user is not enrolled to practical, it can't view it
-        if (!practicalToRender.isEnrolled(Secure.getUser())) {
+        if(!practical.isEnrolled(user) && !practical.isAdmin(user)) {
             flash("error", "practical.userIsNotEnrolled");
-            return redirect(routes.Application.index());
+            return redirect(routes.PracticalController.list());
         }
         // Check if I'm the admin of the course
-        if (practicalToRender.getAdmin().equals(Secure.getUser())) {
-            return ok(admin.render(practicalToRender));
+        if(practical.isAdmin(user)) {
+            return ok(admin.render(practical));
         }
 
-        return ok(view.render(practicalToRender));
-    }
-
-    /**
-     * Method to send an invite to a practical group (you are actually sending an invite
-     * to the first user of this group)
-     * @param id of the practical group to send to
-     * @return a redirect to the view practical
-     */
-    public static Result sendInvitePracticalGroup(long id) {
-        PracticalGroup practicalGroup = PracticalGroup.findById(id);
-        User receiver =  practicalGroup.getOwner();
-        User sender = Secure.getUser();
-
-        // Check if the invite was successfully send
-        if(Invite.sendInvite(practicalGroup.getPractical(), sender, receiver) == null) {
-            flash("error", "practical.unsuccessfulSend");
-            return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
-        }
-
-        flash("success", "practical.inviteSend");
-        return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
+        return ok(view.render(practical));
     }
 
     /**
@@ -98,7 +83,58 @@ public class PracticalController extends Controller {
      */
     public static Result list() {
         User user = Secure.getUser();
-        return ok(list.render(user.getPracticals()));
+        Form<PracticalForm> practicalForm = null;
+
+        // Check if the user is a teacher then show a form
+        if(Secure.isTeacher()) {
+            practicalForm = form(PracticalForm.class);
+        }
+
+        return ok(list.render(user.getPracticals(), practicalForm));
+    }
+
+    /**
+     * Create a new practical
+     * @return Redirects to the new practical or errors
+     */
+    @Secure.Authenticated({User.Type.Admin, User.Type.Teacher})
+    public static Result create() {
+        User user = Secure.getUser();
+        Form<PracticalForm> practicalForm = form(PracticalForm.class).bindFromRequest();
+
+        // Check for errors in the form
+        if(practicalForm.hasErrors()) {
+            return ok(list.render(user.getPracticals(), practicalForm));
+        }
+
+        // Else save and view the practical
+        Practical practical = practicalForm.get().save(user);
+        return redirect(routes.PracticalController.view(practical.getId()));
+    }
+
+    /**
+     * Delete the practical with a certain id
+     * @param id The id of the practical
+     * @return Whether the practical was successfully deleted
+     */
+    public static Result delete(long id) {
+        Practical practical = Practical.findById(id);
+
+        // If practical does not exist
+        if(practical == null) {
+            flash("error", "practical.doesNotExist");
+            return redirect(routes.PracticalController.list());
+        }
+        // Check if the user isn't the admin
+        if(!practical.isAdmin(Secure.getUser())) {
+            flash("error", "practical.isNoAdmin");
+            return redirect(routes.PracticalController.list());
+        }
+
+        // Delete the practical
+        practical.delete();
+        flash("success", "practical.deleted");
+        return redirect(routes.PracticalController.list());
     }
 
     /**
@@ -116,5 +152,26 @@ public class PracticalController extends Controller {
         }
 
         return ok(viewPracticalGroup.render(practicalGroup));
+    }
+
+    /**
+     * Method to send an invite to a practical group (you are actually sending an invite
+     * to the first user of this group)
+     * @param id of the practical group to send to
+     * @return a redirect to the view practical
+     */
+    public static Result sendInvitePracticalGroup(long id) {
+        PracticalGroup practicalGroup = PracticalGroup.findById(id);
+        User receiver =  practicalGroup.getUsers().get(0);
+        User sender = Secure.getUser();
+
+        // Check if the invite was successfully send
+        if(Invite.sendInvite(practicalGroup.getPractical(), sender, receiver) == null) {
+            flash("error", "practical.unsuccessfulSend");
+            return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
+        }
+
+        flash("success", "practical.inviteSend");
+        return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
     }
 }

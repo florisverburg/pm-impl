@@ -68,21 +68,18 @@ public class Invite extends Model {
      * Practical which this invite belongs to
      */
     @ManyToOne
-    @JoinColumn(name = "practicalId")
     private Practical practical;
 
     /**
      * User that send the invite
      */
     @ManyToOne
-    @JoinColumn(name = "senderId")
     private User sender;
 
     /**
      * User that received the invite
      */
     @ManyToOne
-    @JoinColumn(name = "receiverId")
     private User receiver;
 
     /**

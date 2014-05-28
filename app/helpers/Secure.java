@@ -131,4 +131,21 @@ public final class Secure {
         return Secure.getUser(Context.current());
     }
 
+    /**
+     * Check if the current user is a teacher
+     * @return If the user is a teacher
+     */
+    public static boolean isTeacher() {
+        User user = getUser();
+        return (user != null && user.getType() == User.Type.Teacher);
+    }
+
+    /**
+     * Check if the current user is an admin
+     * @return If the user is an admin
+     */
+    public static boolean isAdmin() {
+        User user = getUser();
+        return (user != null && user.getType() == User.Type.Admin);
+    }
 }

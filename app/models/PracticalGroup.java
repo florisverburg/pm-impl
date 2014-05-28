@@ -26,7 +26,6 @@ public class PracticalGroup extends Model {
      * Many-to-one relationship of the practicalgroup and the practical
      */
     @ManyToOne
-    @JoinColumn(name = "practicalId")
     private Practical practical;
 
     /**
@@ -39,7 +38,7 @@ public class PracticalGroup extends Model {
     /**
      * Many-to-many relationship of the practicalgroups and users
      */
-    @ManyToMany(targetEntity= User.class, mappedBy = "practicalGroups", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "practicalGroups", cascade=CascadeType.ALL)
     List<User> groupMembers = new ArrayList<User>();
 
     /**
