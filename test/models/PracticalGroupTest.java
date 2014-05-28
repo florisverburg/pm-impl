@@ -1,13 +1,8 @@
 package models;
 
-import junit.framework.*;
 import org.junit.*;
 import org.junit.Test;
-import play.Logger;
 import play.test.WithApplication;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
@@ -46,7 +41,7 @@ public class PracticalGroupTest extends WithApplication {
         // Check the values of the constructor and findbyid method
         assertEquals(createdPracticalGroup.getPractical(), testPractical);
         assertNotNull(createdPracticalGroup.getGroupMembers());
-        assertEquals(createdPracticalGroup.getGroupMembers().size(), 0);
+        assertEquals(createdPracticalGroup.getGroupMembers().size(), 1);
         assertEquals(createdPracticalGroup.getOwner().getId(), testUser.getId());
     }
 
@@ -66,6 +61,33 @@ public class PracticalGroupTest extends WithApplication {
         // Check the new values
         assertEquals(testPracticalGroup.getPractical().getId(), otherPractical.getId());
         assertEquals(testPracticalGroup.getOwner().getId(), otherUser.getId());
+    }
+
+    /**
+     * Method to test addGroupMember
+     */
+    @Test
+    public void testAddGroupMember() {
+        // Create the users to put into the practicalgroup
+        Practical createdPractical = new Practical("Created Practical", "Practical that has been created");
+        createdPractical.save();
+        User createdUser1 = new User("CreatedUser1", "LastName", "createduser@example.com", User.Type.User);
+        createdUser1.save();
+        User createdUser2 = new User("CreatedUser2", "LastName", "createduser@example.com", User.Type.User);
+        createdUser2.save();
+        // Save the users to the practical
+        createdPractical.addUser(createdUser1);
+        createdPractical.addUser(createdUser2);
+        createdPractical.save();
+
+        PracticalGroup createdPracticalGroup = new PracticalGroup(createdPractical, createdUser1);
+        createdPracticalGroup.save();
+
+        assertEquals(1, createdPracticalGroup.getGroupMembers().size());
+        // Add a groupmember to the group
+        createdPracticalGroup.addGroupMember(createdUser2);
+        createdPracticalGroup.save();
+        assertEquals(2, createdPracticalGroup.getGroupMembers().size());
     }
 
     /**
@@ -89,8 +111,6 @@ public class PracticalGroupTest extends WithApplication {
         // Create the first practicalGroup
         PracticalGroup createdPracticalGroup = new PracticalGroup(createdPractical, createdUser1);
         createdPracticalGroup.save();
-        createdUser1.save();
-        createdPractical.save();
 
         // Check the returned values of the method
         assertEquals(PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser1).getId(), createdPracticalGroup.getId());

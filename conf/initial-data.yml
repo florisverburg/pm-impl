@@ -97,16 +97,23 @@ practicalGroups:
   - &practicalGroup1 !!models.PracticalGroup
     practical: *practical1
     owner: *user2
+    groupMembers:
+      - *user2
   - &practicalGroup2 !!models.PracticalGroup
     practical: *practical1
     owner: *user3
+    groupMembers:
+          - *user3
   - &practicalGroup3 !!models.PracticalGroup
     practical: *practical1
     owner: *user4
+    groupMembers:
+          - *user4
   - &practicalGroup4 !!models.PracticalGroup
     practical: *practical1
     owner: *user5
     groupMembers:
+      - *user5
       - *user6
   - &practicalGroup6 !!models.PracticalGroup
     practical: *practical2
