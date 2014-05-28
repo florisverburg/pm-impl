@@ -111,16 +111,16 @@ public class UserTest extends WithApplication {
 
         User retrievedUser = User.findById(createdUser.getId());
         // Check values
-        assertEquals(retrievedUser.getSkills().size(), 0);
+        assertEquals(retrievedUser.getUserSkills().size(), 0);
 
         // Add skill to user
-        retrievedUser.addSkill(programming);
-        retrievedUser.save();
+        UserSkill uSkill = new UserSkill(retrievedUser, programming, 8);
+        uSkill.save();
 
         retrievedUser = User.findById(createdUser.getId());
         // Check values
-        assertEquals(retrievedUser.getSkills().size(), 1);
-        assertEquals(retrievedUser.getSkills().get(0).getName(), programming.getName());
+        assertEquals(retrievedUser.getUserSkills().size(), 1);
+        assertEquals(retrievedUser.getUserSkills().get(0).getSkill().getName(), programming.getName());
     }
     
     @Test

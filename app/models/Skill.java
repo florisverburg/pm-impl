@@ -34,14 +34,9 @@ public class Skill extends Model {
     }
 
     /**
-     * The unique identifier of a skill
-     */
-    @Id
-    private Long id;
-
-    /**
      *  The name of the skill
      */
+    @Id
     @Constraints.Required
     @Constraints.MaxLength(20)
     private String name;
@@ -59,16 +54,16 @@ public class Skill extends Model {
     private Integer maxValue;
 
     /**
-     * The many-to-many relationship defined for the skills and users
+     * One-to-many relationship between user skill and skill
      */
-    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
-    private List<User> users = new ArrayList<User>();
+    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
+    private List<UserSkill> userSkills = new ArrayList<UserSkill>();
 
     /**
      * Finder defined for the Skills, used in the many-to-many relationship
      */
-    private static Model.Finder<Long, Skill> find =
-            new Model.Finder<Long, Skill>(Long.class, Skill.class);
+    public static Model.Finder<String, Skill> find =
+            new Model.Finder<String, Skill>(String.class, Skill.class);
 
     /**
      * Getter for the Name
@@ -87,19 +82,19 @@ public class Skill extends Model {
     }
 
     /**
-     * Getter for the users
-     * @return users
+     * Add a user skill to the list for the many-to-many relationship
+     * @param userSkill to add to the list
      */
-    public List<User> getUsers() {
-        return users;
+    public void addUserSkill(UserSkill userSkill) {
+        userSkills.add(userSkill);
     }
 
     /**
-     * Setter for the users list
-     * @param users to set
+     * Getter for the user skills
+     * @return user skills
      */
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public List<UserSkill> getUserSkills() {
+        return userSkills;
     }
 
     /**
@@ -112,14 +107,6 @@ public class Skill extends Model {
         name = nm;
         maxValue = maxV;
         type = tp;
-    }
-
-    /**
-     * Getter for the ID
-     * @return the id
-     */
-    public long getId() {
-        return this.id;
     }
 
     /**
@@ -160,15 +147,23 @@ public class Skill extends Model {
      * @return skill with the name
      */
     public static Skill findByName(String name) {
-        return find.where().eq("name", name).findUnique();
+        return find.byId(name);
     }
 
     /**
-     * Method to find a skill by its id
-     * @param id of the skill to be found
-     * @return skill with the id
+     * Method to get all the skills
+     * @return all the skills
      */
-    public static Skill findById(long id) {
-        return find.where().eq("id", id).findUnique();
+    public static List<Skill> findAll() {
+        return find.all();
     }
+
+//    /**
+//     * Method to find a skill by its id
+//     * @param id of the skill to be found
+//     * @return skill with the id
+//     */
+//    public static Skill findById(long id) {
+//        return find.where().eq("id", id).findUnique();
+//    }
 }

@@ -1,6 +1,7 @@
 @(profileForm: play.data.Form[forms.ProfileForm], hasPassword: Boolean)
 
 @implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
+@user = @{ Secure.getUser }
 
 @main("Profile", "profile") {
     <div>
@@ -35,6 +36,15 @@
             } {
                 @form.inputRadioGroup(profileForm("profileImage"), options = Seq("Gravatar"->"Gravatar", "None"->"None"))
                 @form.textarea(profileForm("profileText"), 'rows->10)
+            }
+
+            @form.section {
+                <h2>Skills</h2>
+            } {
+                @helper.repeat(profileForm("profileSkills")) { skillField =>
+                    @form.hidden(skillField("name"), 'type -> "hidden")
+                    @form.slider(skillField("value"), '_label -> skillField("name").value.head)
+                }
             }
 
             @form.submit("Save")

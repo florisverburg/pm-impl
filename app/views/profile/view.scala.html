@@ -1,5 +1,7 @@
 @(user: User)
 
+@skills = @{ Skill.findAll() }
+
 @main("Profile", "profile") {
     <div>
         <div class="page-header">
@@ -9,13 +11,27 @@
             </h1>
         </div>
 
-        <div>
+        <fieldset>
+            <legend>Basic information</legend>
             <img src="@Html(user.getProfileImageUrl())" alt="Profile image"/>
             <p>Name: @user.getFullName()</p>
             <p>Type: @user.getType()</p>
             <p>Email: @user.getEmail()</p>
 
             <p>@user.getProfileText()</p>
-        </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Skills</legend>
+            @user.findAllSkills().map { skill =>
+                <p>@{skill.getName}:
+                    @if(skill.getUserSkills.size == 0) {
+                        Not yet provided.
+                    } else {
+                        @skill.getUserSkills.get(0).getValue
+                    }
+                </p>
+            }
+        </fieldset>
     </div>
 }

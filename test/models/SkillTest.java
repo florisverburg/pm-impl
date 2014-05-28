@@ -36,7 +36,7 @@ public class SkillTest extends WithApplication {
         createdSkill.save();
 
         // Retrieve skill from database
-        createdSkill = Skill.findById(createdSkill.getId());
+        createdSkill = Skill.findByName(createdSkill.getName());
 
         // Check the values of the setUp() method
         assertEquals(createdSkill.getName(), "CreatedSkill");
@@ -50,13 +50,12 @@ public class SkillTest extends WithApplication {
     @Test
     public void testSetters() {
         // Set different values
-        testSkill.setName("Documenting");
         testSkill.setType(Skill.Type.DOCUMENTING);
         testSkill.setMaxValue(5);
         testSkill.save();
 
         // Check the new values
-        assertThat(testSkill.getName()).isEqualTo("Documenting");
+        assertThat(testSkill.getName()).isEqualTo("Programming");
         assertThat(testSkill.getType()).isEqualTo(Skill.Type.DOCUMENTING);
         assertThat(testSkill.getMaxValue()).isEqualTo(5);
     }

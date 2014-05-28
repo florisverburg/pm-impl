@@ -22,6 +22,7 @@ users:
     lastName: Verburg
     profileImage: None
     email: defaultuser1@example.com
+    token: null
 
   - &user4 !!models.User
     type: User
@@ -57,15 +58,25 @@ skills:
     name: Programming
     type: PROGRAMMING
     maxValue: 10
-    users:
-      - *user3
-      - *user4
   - &skill2 !!models.Skill
     name: Documenting
     type: DOCUMENTING
     maxValue: 10
-    users:
-      - *user3
+
+# UserSkills
+userSkills:
+  - &userSkill1 !!models.UserSkill
+    value: 8
+    user: *user3
+    skill: *skill1
+  - &userSkill2 !!models.UserSkill
+    value: 6
+    user: *user4
+    skill: *skill1
+  - &userSkill3 !!models.UserSkill
+    value: 7
+    user: *user3
+    skill: *skill2
 
 # Practical
 practicals:

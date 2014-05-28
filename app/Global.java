@@ -50,22 +50,18 @@ public class Global extends GlobalSettings {
 
             // Insert users
             insertObjects(all.get("users"));
-
             // Insert skills
             insertObjects(all.get("skills"));
-            insertManyToMany(all.get("skills"), "users");
-
+            // Insert user skills
+            insertObjects(all.get("userSkills"));
             // Insert projects
             insertObjects(all.get("practicals"));
             insertManyToMany(all.get("practicals"), "users");
-
             // Insert identities
             insertObjects(all.get("identities"));
-
             // Insert practical groups
             insertObjects(all.get("practicalGroups"));
             insertManyToMany(all.get("practicalGroups"), "groupMembers");
-
             // Insert invites
             insertObjects(all.get("invites"));
         }

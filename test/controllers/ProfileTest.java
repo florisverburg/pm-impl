@@ -9,6 +9,7 @@ import play.mvc.*;
 import play.test.WithApplication;
 
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -75,14 +76,20 @@ public class ProfileTest extends WithApplication {
     @Test
     public void saveProfileRequired() {
         User user = User.findByEmail("defaultuser1@example.com");
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", user.getFirstName());
+        body.put("lastName", "");
+        body.put("email", "trolololo@trol.com");
+        List<Skill> skills = Skill.findAll();
+        for(int i = 0; i < skills.size(); i++) {
+            body.put("profileSkills[" + i + "].name", skills.get(i).getName());
+            body.put("profileSkills[" + i + "].value", "5");
+        }
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
-                        .withFormUrlEncodedBody(ImmutableMap.of(
-                                "firstName", user.getFirstName(),
-                                "lastName", "",
-                                "email", "trolololo@trol.com"))
+                        .withFormUrlEncodedBody(body)
         );
 
         assertEquals(BAD_REQUEST, status(result));
@@ -94,14 +101,20 @@ public class ProfileTest extends WithApplication {
     @Test
     public void saveProfileInvalidEmail() {
         User user = User.findByEmail("defaultuser1@example.com");
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", user.getFirstName());
+        body.put("lastName", user.getLastName());
+        body.put("email", "nonvalidemailaddress!@#");
+        List<Skill> skills = Skill.findAll();
+        for(int i = 0; i < skills.size(); i++) {
+            body.put("profileSkills[" + i + "].name", skills.get(i).getName());
+            body.put("profileSkills[" + i + "].value", "5");
+        }
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
-                        .withFormUrlEncodedBody(ImmutableMap.of(
-                                "firstName", user.getFirstName(),
-                                "lastName", user.getLastName(),
-                                "email", "nonvalidemailaddress!@#"))
+                        .withFormUrlEncodedBody(body)
         );
 
         assertEquals(BAD_REQUEST, status(result));
@@ -114,15 +127,21 @@ public class ProfileTest extends WithApplication {
     @Test
     public void saveProfileEmailInUse() {
         User user = User.findByEmail("defaultuser1@example.com");
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", user.getFirstName());
+        body.put("lastName", user.getLastName());
+        body.put("email", "defaultuser2@example.com");
+        body.put("profileImage", "Gravatar");
+        List<Skill> skills = Skill.findAll();
+        for(int i = 0; i < skills.size(); i++) {
+            body.put("profileSkills[" + i + "].name", skills.get(i).getName());
+            body.put("profileSkills[" + i + "].value", "5");
+        }
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
-                        .withFormUrlEncodedBody(ImmutableMap.of(
-                                "firstName", user.getFirstName(),
-                                "lastName", user.getLastName(),
-                                "email", "defaultuser2@example.com",
-                                "profileImage", "Gravatar"))
+                        .withFormUrlEncodedBody(body)
         );
 
         assertEquals(BAD_REQUEST, status(result));
@@ -135,15 +154,21 @@ public class ProfileTest extends WithApplication {
     @Test
     public void saveProfileSuccess() {
         User user = User.findByEmail("defaultuser1@example.com");
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", "NewFirst Name");
+        body.put("lastName", "New last Name");
+        body.put("email", "newemail@test.com");
+        body.put("profileImage", "Gravatar");
+        List<Skill> skills = Skill.findAll();
+        for(int i = 0; i < skills.size(); i++) {
+            body.put("profileSkills[" + i + "].name", skills.get(i).getName());
+            body.put("profileSkills[" + i + "].value", "5");
+        }
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
-                        .withFormUrlEncodedBody(ImmutableMap.of(
-                                "firstName", "NewFirst Name",
-                                "lastName", "New last Name",
-                                "email", "newemail@test.com",
-                                "profileImage", "Gravatar"))
+                        .withFormUrlEncodedBody(body)
         );
         User newUser = User.findByEmail("newemail@test.com");
 
@@ -164,6 +189,11 @@ public class ProfileTest extends WithApplication {
         body.put("password", "veryGoodPassword");
         body.put("passwordRepeat", "notTheSamePassword");
         body.put("profileImage", "Gravatar");
+        List<Skill> skills = Skill.findAll();
+        for(int i = 0; i < skills.size(); i++) {
+            body.put("profileSkills[" + i + "].name", skills.get(i).getName());
+            body.put("profileSkills[" + i + "].value", "5");
+        }
 
         Result result = callAction(
                 routes.ref.Profile.save(),
@@ -182,16 +212,22 @@ public class ProfileTest extends WithApplication {
     @Test
     public void saveProfileWrongPassShort() {
         User user = User.findByEmail("defaultuser1@example.com");
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("firstName", user.getFirstName());
+        body.put("lastName", user.getLastName());
+        body.put("email", user.getEmail());
+        body.put("password", "short");
+        body.put("passwordRepeat", "short");
+        List<Skill> skills = Skill.findAll();
+        for(int i = 0; i < skills.size(); i++) {
+            body.put("profileSkills[" + i + "].name", skills.get(i).getName());
+            body.put("profileSkills[" + i + "].value", "5");
+        }
         Result result = callAction(
                 routes.ref.Profile.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
-                        .withFormUrlEncodedBody(ImmutableMap.of(
-                                "firstName", user.getFirstName(),
-                                "lastName", user.getLastName(),
-                                "email", user.getEmail(),
-                                "password", "short",
-                                "passwordRepeat", "short"))
+                        .withFormUrlEncodedBody(body)
         );
 
         assertEquals(BAD_REQUEST, status(result));
@@ -211,6 +247,11 @@ public class ProfileTest extends WithApplication {
         body.put("password", "myNewPassword");
         body.put("passwordRepeat", "myNewPassword");
         body.put("profileImage", "Gravatar");
+        List<Skill> skills = Skill.findAll();
+        for(int i = 0; i < skills.size(); i++) {
+            body.put("profileSkills[" + i + "].name", skills.get(i).getName());
+            body.put("profileSkills[" + i + "].value", "5");
+        }
 
         Result result = callAction(
                 routes.ref.Profile.save(),
@@ -234,6 +275,11 @@ public class ProfileTest extends WithApplication {
         body.put("password", "myNewPassword");
         body.put("passwordRepeat", "myNewPassword");
         body.put("profileImage", "None");
+        List<Skill> skills = Skill.findAll();
+        for(int i = 0; i < skills.size(); i++) {
+            body.put("profileSkills[" + i + "].name", skills.get(i).getName());
+            body.put("profileSkills[" + i + "].value", "5");
+        }
 
         Result result = callAction(
                 routes.ref.Profile.save(),
