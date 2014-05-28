@@ -57,6 +57,9 @@ public class ProfileForm {
     @Constraints.Required
     private User.ProfileImage profileImage;
 
+    /**
+     * The list with skill forms
+     */
     @Constraints.Required
     private List<SkillsForm> profileSkills = new ArrayList<SkillsForm>();
 

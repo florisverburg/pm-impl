@@ -191,4 +191,4 @@ identities:
   - &identity3 !!models.PasswordIdentity
     user: *user5
     email: defaultuser3@example.com
-    password: 55bvo
+    password: 58bvo

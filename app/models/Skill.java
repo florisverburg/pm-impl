@@ -157,13 +157,4 @@ public class Skill extends Model {
     public static List<Skill> findAll() {
         return find.all();
     }
-
-//    /**
-//     * Method to find a skill by its id
-//     * @param id of the skill to be found
-//     * @return skill with the id
-//     */
-//    public static Skill findById(long id) {
-//        return find.where().eq("id", id).findUnique();
-//    }
 }

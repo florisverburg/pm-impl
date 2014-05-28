@@ -1,7 +1,6 @@
 @(profileForm: play.data.Form[forms.ProfileForm], hasPassword: Boolean)
 
 @implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
-@user = @{ Secure.getUser }
 
 @main("Profile", "profile") {
     <div>
