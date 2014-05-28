@@ -196,7 +196,7 @@ public class Invite extends Model {
      * @param user that wants to reject the invite
      */
     public void reject(User user) {
-        if(!(this.state == State.Accepted)) {
+        if(!this.state.equals(State.Accepted)) {
             return;
         }
         PracticalGroup practicalGroupOfRejecter =

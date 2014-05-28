@@ -122,11 +122,7 @@ public class UserTest extends WithApplication {
         assertEquals(retrievedUser.getSkills().size(), 1);
         assertEquals(retrievedUser.getSkills().get(0).getName(), programming.getName());
     }
-
-    /**
-     *
-     */
-
+    
     @Test
     public void authenticateSuccess() {
         User createdUser = new User("CreatedUser", "lastName", "createduser@example.com", User.Type.User);

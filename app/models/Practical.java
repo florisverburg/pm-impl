@@ -124,21 +124,6 @@ public class Practical extends Model {
     }
 
     /**
-     * Method to add a user to a practical(group)
-     * @param practical to add a user to
-     * @param user to add
-     */
-    /*
-    public void addUserToPractical(User user) {
-        this.addUser(user);
-        PracticalGroup newPracticalGroup = new PracticalGroup(this);
-        newPracticalGroup.addUser(user);
-        newPracticalGroup.save();
-        this.addPracticalGroup(newPracticalGroup);
-        this.save();
-    }*/
-
-    /**
      * Check if a user is enrolled for a practical
      * @param user The user to check
      * @return Whether the user is enrolled or not
@@ -244,7 +229,7 @@ public class Practical extends Model {
     }
 
     /**
-     * Add a practicalgroup to the list3
+     * Add a practicalgroup to the list
      * @param practicalGroup to add
      */
     public void addPracticalGroup(PracticalGroup practicalGroup) {
