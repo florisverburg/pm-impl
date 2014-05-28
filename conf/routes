@@ -26,7 +26,8 @@ GET         /invite/:id                            controllers.InviteController.
 GET         /acceptInvite/:id                      controllers.InviteController.acceptInvite(id: Long)
 GET         /withdrawInvite/:id                    controllers.InviteController.withdrawInvite(id: Long)
 GET         /resendInvite/:id                      controllers.InviteController.resendInvite(id: Long)
-GET         /rejectInvite/:inviteId/:userId        controllers.InviteController.rejectInvite(inviteId: Long, userId: Long)
+GET         /rejectInvite/:id                      controllers.InviteController.rejectInvite(id: Long)
+GET         /resendRejectedInvite/:id              controllers.InviteController.resendRejectedInvite(id: Long)
 
 # Authentication
 GET         /login                                 controllers.Authentication.login()

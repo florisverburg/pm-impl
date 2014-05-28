@@ -110,7 +110,7 @@ public class InviteControllerTest extends WithApplication {
         Invite invite = new Invite(practical, user1, user2);
         invite.save();
         Result result = callAction(
-                routes.ref.InviteController.rejectInvite(invite.getId(), user1.getId()),
+                routes.ref.InviteController.rejectInvite(invite.getId()),
                 fakeRequest().withSession("user_id", user1.getId().toString())
         );
 

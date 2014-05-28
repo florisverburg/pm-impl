@@ -97,16 +97,23 @@ public class Invite extends Model {
         return find.where().eq("id", id).findUnique();
     }
 
+    /**
+     * Method to find an invite when you do not know the id
+     * @param practical of the invite
+     * @param sender of the invite
+     * @param receiver of the invite
+     * @return the found invite
+     */
     public static Invite findByPracticalSenderReceiver(Practical practical, User sender, User receiver) {
         return find.where()
-                .and(
-                    eq("practicalId", practical.getId()),
-                    and(
-                            eq("senderId", sender.getId()),
-                            eq("receiverId", receiver.getId())
-                    )
+            .and(
+                eq("practicalId", practical.getId()),
+                and(
+                        eq("senderId", sender.getId()),
+                        eq("receiverId", receiver.getId())
                 )
-                .findUnique();
+            )
+            .findUnique();
     }
 
     /**
@@ -118,6 +125,7 @@ public class Invite extends Model {
     public static List<Invite> findPendingInvitesWhereUser(User user, Practical practical) {
         // Get invites that have state pending and are sent by the user
         List<Invite> pendingInvites =
+<<<<<<< HEAD
                 find.where()
                     .or(
                             and(
@@ -134,8 +142,26 @@ public class Invite extends Model {
                                     ),
                                     eq("state", State.Pending)
                             )
+=======
+            find.where()
+                .or(
+                    and(
+                        and(
+                                eq("senderId", user.getId()),
+                                eq("practicalId", practical.getId())
+                        ),
+                        eq("state", State.Pending)
+                    ),
+                    and(
+                        and(
+                                eq("receiverId", user.getId()),
+                                eq("practicalId", practical.getId())
+                        ),
+                        eq("state", State.Pending)
+>>>>>>> Added some more funtionality that was still missing for the correct accepting/rejecting/... of invites
                     )
-                    .findList();
+                )
+                .findList();
         return pendingInvites;
     }
 
@@ -156,7 +182,7 @@ public class Invite extends Model {
      * Accept the invite and rejects all other received invites
      */
     public void accept() {
-        if(state.equals(State.Accepted)) {
+        if(!state.equals(State.Pending)) {
             return;
         }
         // Accept the invite
@@ -183,10 +209,17 @@ public class Invite extends Model {
      */
     private void rejectOtherInvitesUser(User user, boolean include) {
         String updStatement = "update invite set state = :st1 "
+<<<<<<< HEAD
                 + "where "
                 + "(practical_id = :prctId "
                 + "and "
                 + "(receiver_id = :rcvId1 ";
+=======
+            + "where "
+            + "( practicalId = :prctId "
+            + "and "
+            + "(receiverId = :rcvId1 ";
+>>>>>>> Added some more funtionality that was still missing for the correct accepting/rejecting/... of invites
         if(include) {
             updStatement = updStatement + "or sender_id = :rcvId2 ";
         }
@@ -225,16 +258,47 @@ public class Invite extends Model {
      * Method to withdraw invite
      */
     public void withdraw() {
+        if(!this.state.equals(State.Pending)) {
+            return;
+        }
         state = State.Withdrawn;
         this.save();
     }
 
     /**
      * Method to resend invite
+     * @param user that wants to resend the invite
      */
-    public void resend() {
-        state = State.Pending;
-        this.save();
+    public void resend(User user) {
+        if(!this.state.equals(State.Withdrawn)) {
+            return;
+        }
+        if(this.sender.equals(user)) {
+            state = State.Pending;
+            this.save();
+            return;
+        }
+        Invite invite = new Invite(this.practical, this.receiver, this.sender);
+        invite.save();
+        Ebean.delete(this);
+    }
+
+    /**
+     * Method to resend a rejected invite
+     * @param user that wants to resend the invite
+     */
+    public void resendRejectedInvite(User user) {
+        if(this.state.equals(State.Rejected)) {
+            return;
+        }
+        if(this.sender.equals(user)) {
+            this.state = State.Pending;
+            return;
+        }
+        // If the receiver of the original invite wants to resend it, create a new invite from him to the user
+        Invite invite = new Invite(this.practical, this.receiver, this.sender);
+        invite.save();
+        Ebean.delete(this);
     }
 
     /**
@@ -264,6 +328,7 @@ public class Invite extends Model {
      * Returns true if the first user has not send an invite to the second user
      * @param sender first user
      * @param receiver second user
+     * @param practical of the invite that needs to be checked
      * @return Resembles the success/failure of the check
      */
     public static boolean checkInvite(User sender, User receiver, Practical practical) {

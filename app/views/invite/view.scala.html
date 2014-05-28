@@ -19,19 +19,19 @@
             @if(invite.getState().equals(Invite.State.Pending)) {
                 <a href="@routes.InviteController.acceptInvite(invite.getId())" class="btn btn-primary">accept invite</a>
             }
-            @if(invite.getState().equals(Invite.State.Accepted)) {
-                <a href="@routes.InviteController.rejectInvite(invite.getId(), Secure.getUser().getId() )" class="btn btn-primary">reject invite</a>
-            }
-            @if(invite.getState().equals(Invite.State.Accepted)) {
-                <a href="@routes.InviteController.rejectInvite(invite.getId(), Secure.getUser().getId())" class="btn btn-primary">reject invite</a>
-            }
-            @if(invite.getState().equals(Invite.State.Withdrawn)) {
-                <a href="@routes.InviteController.resendInvite(invite.getId())" class="btn btn-primary">resend invite</a>
-            }
         } else {
             @if(invite.getState().equals(Invite.State.Pending)) {
                 <a href="@routes.InviteController.withdrawInvite(invite.getId())" class="btn btn-primary">withdraw invite</a>
             }
+        }
+        @if(invite.getState().equals(Invite.State.Accepted)) {
+            <a href="@routes.InviteController.rejectInvite(invite.getId())" class="btn btn-primary">reject invite</a>
+        }
+        @if(invite.getState().equals(Invite.State.Withdrawn)) {
+            <a href="@routes.InviteController.resendInvite(invite.getId())" class="btn btn-primary">send invite</a>
+        }
+        @if(invite.getState().equals(Invite.State.Rejected)) {
+            <a href="@routes.InviteController.resendRejectedInvite(invite.getId())" class="btn btn-primary">resend invite</a>
         }
     </div>
 </div>
