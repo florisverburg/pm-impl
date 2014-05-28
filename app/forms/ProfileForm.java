@@ -1,5 +1,7 @@
 package forms;
 
+import com.avaje.ebean.Ebean;
+import helpers.Secure;
 import models.*;
 import play.data.validation.*;
 
@@ -56,6 +58,12 @@ public class ProfileForm {
     private User.ProfileImage profileImage;
 
     /**
+     * The list with skill forms
+     */
+    @Constraints.Required
+    private List<SkillsForm> profileSkills = new ArrayList<SkillsForm>();
+
+    /**
      * Generate an empty form
      */
     public ProfileForm() {
@@ -72,6 +80,16 @@ public class ProfileForm {
         this.email = user.getEmail();
         this.profileText = user.getProfileText();
         this.profileImage = user.getProfileImage();
+        for(Skill skill : Secure.getUser().findAllSkills()) {
+            List<UserSkill> uSkills = skill.getUserSkills();
+            if(uSkills.isEmpty()) {
+                UserSkill uSkill = new UserSkill(Secure.getUser(), skill, 1);
+                profileSkills.add(new SkillsForm(uSkill));
+            }
+            else {
+                profileSkills.add(new SkillsForm(uSkills.get(0)));
+            }
+        }
     }
 
     /**
@@ -187,6 +205,22 @@ public class ProfileForm {
     }
 
     /**
+     * Getter for the profile skills.
+     * @return The profile skills
+     */
+    public List<SkillsForm> getProfileSkills() {
+        return profileSkills;
+    }
+
+    /**
+     * Setter for the profile skills.
+     * @param profileSkills The profile skills
+     */
+    public void setProfileSkills(List<SkillsForm> profileSkills) {
+        this.profileSkills = profileSkills;
+    }
+
+    /**
      * Validates the profile form
      * @return A list of errors
      */
@@ -220,6 +254,12 @@ public class ProfileForm {
                     identity.save();
                 }
             }
+        }
+
+        Ebean.delete(UserSkill.find.where().eq("user.id", user.getId()).findList());
+
+        for(SkillsForm sForm : profileSkills) {
+            sForm.updateUserSkill(Secure.getUser());
         }
 
         user.save();

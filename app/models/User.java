@@ -134,15 +134,16 @@ public class User extends Model {
 
     /**
      * The identities linked to the user
+     * One-to-many relationship between identity and user
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Identity> identities = new ArrayList<Identity>();
 
     /**
-     * The many-to-many relationship defined by the skills and users
+     * One-to-many relationship between user skill and user
      */
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Skill> skills = new ArrayList<Skill>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserSkill> userSkills = new ArrayList<UserSkill>();
 
     /**
      * The many-to-many relationship defined for the users and practicals
@@ -299,19 +300,19 @@ public class User extends Model {
     }
 
     /**
-     * Method to add a skill to the list, used for the many-to-many relationship
-     * @param skill to add to the list
+     * Method to add a user skill to the list, used for the one-to-many relationship
+     * @param userSkill user skill to add to the list
      */
-    public void addSkill(Skill skill) {
-        skills.add(skill);
+    public void addUserSkill(UserSkill userSkill) {
+        userSkills.add(userSkill);
     }
 
     /**
      * Used to return the list of skills
      * @return returns the current list of skills
      */
-    public List<Skill> getSkills() {
-        return skills;
+    public List<UserSkill> getUserSkills() {
+        return userSkills;
     }
 
     /**
@@ -522,5 +523,44 @@ public class User extends Model {
      */
     public List<Invite> getInvitesReceived() {
         return invitesReceived;
+    }
+
+    /**
+     * Setter invites received
+     * @param invitesReceived to set
+     */
+    public void setInvitesReceived(List<Invite> invitesReceived) {
+        this.invitesReceived = invitesReceived;
+    }
+
+    /**
+     * Add invite to the invites received
+     * @param invite to add
+     */
+    public void addInvitesReceived(Invite invite) {
+        this.invitesReceived.add(invite);
+    }
+
+    /**
+     * Find the user skill form this user by a skill.
+     * @param skill The skill to search the user skill
+     * @return The user skill
+     */
+    public UserSkill findUserSkillBySkill(Skill skill) {
+        for(UserSkill uSkill : this.getUserSkills()) {
+            if(uSkill.getSkill().equals(skill)) {
+                return uSkill;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Find all the skills, including the skills the user hasn't an user skill for.
+     * @return A list with all the skills
+     */
+    public List<Skill> findAllSkills() {
+        return Skill.find.fetch("userSkills", "*").where().filterMany("userSkills")
+                .eq("user.id", this.id).findList();
     }
 }
