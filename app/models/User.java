@@ -560,6 +560,7 @@ public class User extends Model {
      * @return A list with all the skills
      */
     public List<Skill> findAllSkills() {
-        return Skill.find.fetch("userSkills", "*").where().filterMany("userSkills").eq("user.id", this.id).findList();
+        return Skill.find.fetch("userSkills", "*").where().filterMany("userSkills")
+                .eq("user.id", this.id).findList();
     }
 }
