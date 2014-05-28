@@ -1,55 +1,54 @@
 # Users
 users:
   - &user1 !!models.User
-    type: User
-    firstName: MisterTest
-    lastName: Test
-    email: mistertest@test.com
+    type: Teacher
+    firstName: Teacher
+    lastName: Computer Science
+    email: teacher@example.com
     token: null
     profileImage: None
 
   - &user2 !!models.User
-    type: Teacher
-    firstName: Test
-    lastName: Test
-    email: test@test.com
+    type: User
+    firstName: Unverified
+    lastName: Email
+    email: unverifiedemail@example.com
     token: 123456
     profileImage: None
 
   - &user3 !!models.User
     type: User
-    firstName: Bob
+    firstName: DefaultUser1
     lastName: Verburg
-    email: bob@example.com
     profileImage: None
+    email: defaultuser1@example.com
 
   - &user4 !!models.User
     type: User
-    firstName: Hendrik
+    firstName: DefaultUser2
     lastName: Tienen
-    email: hendrik@example.com
     profileImage: None
+    email: defaultuser2@example.com
 
   - &user5 !!models.User
     type: User
-    firstName: Peter
+    firstName: DefaultUser3
     lastName: Goedegebure
-    email: peter@example.com
     profileImage: None
+    email: defaultuser3@example.com
 
   - &user6 !!models.User
     type: User
-    firstName: Leon
+    firstName: DefaultUser4
     lastName: Janssen
-    email: leon@example.com
+    email: defaultuser4@example.com
     profileImage: None
 
   - &user7 !!models.User
     type: Admin
-    firstName: admin
-    lastName: TestAdmin
-    email: admin@test.com
-    token: 12345
+    firstName: Admin
+    lastName: Istrator
+    email: admin@example.com
     profileImage: None
 
 # Skills
@@ -97,34 +96,35 @@ practicals:
 practicalGroups:
   - &practicalGroup1 !!models.PracticalGroup
     practical: *practical1
-    users:
+    owner: *user2
+    groupMembers:
       - *user2
   - &practicalGroup2 !!models.PracticalGroup
     practical: *practical1
-    users:
-      - *user3
+    owner: *user3
+    groupMembers:
+          - *user3
   - &practicalGroup3 !!models.PracticalGroup
     practical: *practical1
-    users:
-      - *user4
+    owner: *user4
+    groupMembers:
+          - *user4
   - &practicalGroup4 !!models.PracticalGroup
     practical: *practical1
-    users:
+    owner: *user5
+    groupMembers:
       - *user5
-  - &practicalGroup5 !!models.PracticalGroup
-    practical: *practical1
-    users:
       - *user6
   - &practicalGroup6 !!models.PracticalGroup
     practical: *practical2
-    users:
+    owner: *user3
+    groupMembers:
       - *user3
-      - *user4
   - &practicalGroup7 !!models.PracticalGroup
     practical: *practical2
-    users:
+    owner: *user5
+    groupMembers:
       - *user5
-      - *user6
 
 
 # Invites
@@ -168,16 +168,16 @@ invites:
 #Identities
 identities:
   - &identity1 !!models.PasswordIdentity
-    user: *user1
-    email: mistertest@test.com
+    user: *user3
+    email: defaultuser1@example.com
     password: freak
 
   - &identity2 !!models.PasswordIdentity
-    user: *user2
-    email: test@test.com
+    user: *user4
+    email: defaultuser2@example.com
     password: floor
 
   - &identity3 !!models.PasswordIdentity
     user: *user5
-    email: peter@example.com
+    email: defaultuser3@example.com
     password: 55bvo

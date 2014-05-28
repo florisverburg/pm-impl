@@ -159,7 +159,7 @@ public class User extends Model {
     /**
      * Many-to-many relationship defined for the users and practicalGroups
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = PracticalGroup.class, cascade = CascadeType.ALL)
     private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
 
     /**
@@ -178,6 +178,12 @@ public class User extends Model {
      */
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
     private List<Invite> invitesReceived = new ArrayList<Invite>();
+
+    /**
+     * One-to-many relationship between user and practicalgroup, the practicalgroups where the user is owner of
+     */
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<PracticalGroup> practicalGroupsOwner = new ArrayList<PracticalGroup>();
 
     /**
      * Finder to be defined to use the many-to-many relationship of user and skill
@@ -262,9 +268,10 @@ public class User extends Model {
     /**
      * Method to find the pending invites an user has
      * @return list of pending invites
+     * @param practical of the user
      */
-    public List<Invite> findPendingInvitesUser() {
-        return Invite.findPendingInvitesWhereUser(this);
+    public List<Invite> findPendingInvitesUser(Practical practical) {
+        return Invite.findPendingInvitesWhereUser(this, practical);
     }
 
     /**
@@ -293,18 +300,10 @@ public class User extends Model {
 
     /**
      * Method to add a skill to the list, used for the many-to-many relationship
-     * @param skill skill to add to the list
+     * @param skill to add to the list
      */
     public void addSkill(Skill skill) {
         skills.add(skill);
-    }
-
-    /**
-     * Method to add a practical to the list
-     * @param practical to be added to the list
-     */
-    public void addPractical(Practical practical) {
-        practicals.add(practical);
     }
 
     /**
@@ -316,6 +315,14 @@ public class User extends Model {
     }
 
     /**
+     * Method to add a practical to the list
+     * @param practical to be added to the list
+     */
+    public void addPractical(Practical practical) {
+        practicals.add(practical);
+    }
+
+    /**
      * Used to return the list of practicals
      * @return practicals practicals
      */
@@ -324,51 +331,11 @@ public class User extends Model {
     }
 
     /**
-     * Used to return the list of practicals the user is admin of
-     * @return list of practical the user is admin of
-     */
-    public List<Practical> getPracticalsAdmin() {
-        return practicalsAdmin;
-    }
-
-    /**
      * Getter for practicalgroups
      * @return practicalgroups practical groups
      */
     public List<PracticalGroup> getPracticalGroups() {
         return practicalGroups;
-    }
-
-    /**
-     * Add a practicalgroup to the list
-     * @param practicalGroup to add
-     */
-    public void addPracticalGroup(PracticalGroup practicalGroup) {
-        this.practicalGroups.add(practicalGroup);
-    }
-
-    /**
-     * Method to remove practical group from the list of practical groups
-     * @param practicalGroup to remove
-     */
-    public void removePracticalGroup(PracticalGroup practicalGroup) {
-        this.practicalGroups.remove(practicalGroup);
-    }
-
-    /**
-     * Setter of the list of practicals the user is admin of
-     * @param practicalsAdmin the user is admin of
-     */
-    public void setPracticalsAdmin(List<Practical> practicalsAdmin) {
-        this.practicalsAdmin = practicalsAdmin;
-    }
-
-    /**
-     * Add a practical to the list of practicals the user is admin of
-     * @param practical to be added to the list
-     */
-    public void addPracticalAdmin(Practical practical) {
-        practicalsAdmin.add(practical);
     }
 
     /**
@@ -550,42 +517,10 @@ public class User extends Model {
     }
 
     /**
-     * Setter invites send
-     * @param invitesSend to set
-     */
-    public void setInvitesSend(List<Invite> invitesSend) {
-        this.invitesSend = invitesSend;
-    }
-
-    /**
-     * add invite to the invites send
-     * @param invite to add
-     */
-    public void addInvitesSend(Invite invite) {
-        this.invitesSend.add(invite);
-    }
-
-    /**
      * Getter invites received
      * @return invites received
      */
     public List<Invite> getInvitesReceived() {
         return invitesReceived;
-    }
-
-    /**
-     * Setter invites received
-     * @param invitesReceived to set
-     */
-    public void setInvitesReceived(List<Invite> invitesReceived) {
-        this.invitesReceived = invitesReceived;
-    }
-
-    /**
-     * Add invite to the invites received
-     * @param invite to add
-     */
-    public void addInvitesReceived(Invite invite) {
-        this.invitesReceived.add(invite);
     }
 }

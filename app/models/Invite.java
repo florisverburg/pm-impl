@@ -103,17 +103,30 @@ public class Invite extends Model {
     /**
      * Method to find the pending invites a specific user has
      * @param user to find pending invites off
+     * @param practical that the invite are attached to
      * @return List of invites that are pending for this user
      */
-    public static List<Invite> findPendingInvitesWhereUser(User user) {
+    public static List<Invite> findPendingInvitesWhereUser(User user, Practical practical) {
         // Get invites that have state pending and are sent by the user
         List<Invite> pendingInvites =
-                find.where().or(
-                        and(eq("senderId", user.getId()),
-                                eq("state", State.Pending)),
-                        and(eq("receiverId", user.getId())
-                                , eq("state", State.Pending)))
-                        .findList();
+                find.where()
+                    .or(
+                            and(
+                                    and(
+                                            eq("senderId", user.getId()),
+                                            eq("practicalId", practical.getId())
+                                    ),
+                                    eq("state", State.Pending)
+                            ),
+                            and(
+                                    and(
+                                            eq("receiverId", user.getId()),
+                                            eq("practicalId", practical.getId())
+                                    ),
+                                    eq("state", State.Pending)
+                            )
+                    )
+                    .findList();
         return pendingInvites;
     }
 
@@ -134,25 +147,48 @@ public class Invite extends Model {
      * Accept the invite and rejects all other received invites
      */
     public void accept() {
-        // Reject all pending of the sender and receiver invites
-        String updStatement = "update invite set state = :st where receiverId = :rcvId or senderId = :sndrId";
-        Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
-        update.set("st", State.Rejected);
-        update.set("rcvId", receiver.getId());
-        update.set("sndrId", sender.getId());
-        update.execute();
+        if(state.equals(State.Accepted)) {
+            return;
+        }
         // Accept the invite
-        state = State.Accepted;
+        this.state = State.Accepted;
         this.save();
+        // Reject all pending of the receiver invites
+        rejectOtherInvitesUser(this.getReceiver(), true);
+        rejectOtherInvitesUser(this.getSender(), false);
+        this.refresh();
+
         // Delete practical group of receiver
-        PracticalGroup receiversPracticalGroup =
-                PracticalGroup.findWithPracticalAndUser(practical, receiver);
+        PracticalGroup receiversPracticalGroup = PracticalGroup.findWithPracticalAndUser(practical, receiver);
         Ebean.delete(receiversPracticalGroup);
         // Add receiver to practical group of sender
         PracticalGroup sendersPracticalGroup =
                 PracticalGroup.findWithPracticalAndUser(practical, sender);
-        sendersPracticalGroup.addUser(receiver);
+        sendersPracticalGroup.addGroupMember(receiver);
         sendersPracticalGroup.save();
+    }
+
+    /**
+     * @param user that wants to reject the invite
+     * @param include whether or not to include that also the send invites should be rejected
+     */
+    private void rejectOtherInvitesUser(User user, boolean include) {
+        String updStatement = "update invite set state = :st1 "
+                + "where "
+                + "( practicalId = :prctId "
+                + "and "
+                + "(receiverId = :rcvId1 ";
+        if(include) {
+            updStatement = updStatement + "or senderId = :rcvId2 ";
+        }
+        updStatement = updStatement + ") and state = :st2 )";
+        Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
+        update.set("st1", State.Rejected);
+        update.set("st2", State.Pending);
+        update.set("rcvId1", user.getId());
+        update.set("rcvId2", user.getId());
+        update.set("prctId", this.practical.getId());
+        update.execute();
     }
 
     /**
@@ -160,15 +196,17 @@ public class Invite extends Model {
      * @param user that wants to reject the invite
      */
     public void reject(User user) {
+        if(!this.state.equals(State.Accepted)) {
+            return;
+        }
         PracticalGroup practicalGroupOfRejecter =
                 PracticalGroup.findWithPracticalAndUser(practical, user);
 
-        // Only remove the rejecting user from the group and update the group
-        practicalGroupOfRejecter.removeUser(receiver);
+        // Only remove the receiver of the invite from the group and update the group
+        practicalGroupOfRejecter.removeGroupMember(receiver);
         practicalGroupOfRejecter.save();
         // Create a new practical group for the removed user
-        PracticalGroup newPracticalGroup = new PracticalGroup(practical);
-        newPracticalGroup.addUser(user);
+        PracticalGroup newPracticalGroup = new PracticalGroup(practical, receiver);
         newPracticalGroup.save();
         state = State.Rejected;
         this.save();
@@ -204,7 +242,7 @@ public class Invite extends Model {
         // Check whether the amount of send invitations does not exceed the set maximum
         if(!checkInvite(sender, receiver)
                 || !checkInvite(receiver, sender)
-                || sender.findPendingInvitesUser().size() > INVITES_MAX) {
+                || sender.findPendingInvitesUser(practical).size() > INVITES_MAX) {
             return null;
         }
         Invite newInvite = new Invite(practical, sender, receiver);

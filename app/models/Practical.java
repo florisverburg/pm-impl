@@ -124,20 +124,6 @@ public class Practical extends Model {
     }
 
     /**
-     * Method to add a user to a practical(group)
-     * @param practical to add a user to
-     * @param user to add
-     */
-    public static void addUserToPractical(Practical practical, User user) {
-        practical.addUsers(user);
-        PracticalGroup newPracticalGroup = new PracticalGroup(practical);
-        newPracticalGroup.addUser(user);
-        newPracticalGroup.save();
-        practical.addPracticalGroup(newPracticalGroup);
-        practical.save();
-    }
-
-    /**
      * Check if a user is enrolled for a practical
      * @param user The user to check
      * @return Whether the user is enrolled or not
@@ -211,14 +197,6 @@ public class Practical extends Model {
     }
 
     /**
-     * Setter for the secret
-     * @param secret to set
-     */
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    /**
      * Getter for users
      * @return users
      */
@@ -238,7 +216,7 @@ public class Practical extends Model {
      * Method to add a user to the list
      * @param user to add
      */
-    public void addUsers(User user) {
+    public void addUser(User user) {
         users.add(user);
     }
 
@@ -259,11 +237,11 @@ public class Practical extends Model {
     }
 
     /**
-     * Remove a practical group from the list
-     * @param practicalGroup to remove
+     * Setter secret
+     * @param secret to set
      */
-    public void removePracticalGroup(PracticalGroup practicalGroup) {
-        this.practicalGroups.remove(practicalGroup);
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     /**
@@ -272,21 +250,5 @@ public class Practical extends Model {
      */
     public List<Invite> getInvites() {
         return invites;
-    }
-
-    /**
-     * Setter for invites
-     * @param invites to set
-     */
-    public void setInvites(List<Invite> invites) {
-        this.invites = invites;
-    }
-
-    /**
-     * Add invite to the list of invites
-     * @param invite to add
-     */
-    public void addInvites(Invite invite) {
-        this.invites.add(invite);
     }
 }

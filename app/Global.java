@@ -64,7 +64,7 @@ public class Global extends GlobalSettings {
 
             // Insert practical groups
             insertObjects(all.get("practicalGroups"));
-            insertManyToMany(all.get("practicalGroups"), "users");
+            insertManyToMany(all.get("practicalGroups"), "groupMembers");
 
             // Insert invites
             insertObjects(all.get("invites"));

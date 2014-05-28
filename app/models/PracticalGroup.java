@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.avaje.ebean.Expr.eq;
+
 /**
  * Created by Marijn Goedegebure on 15-5-2014.
  * Class for the model representation of the database table practicalgroup
@@ -28,10 +30,17 @@ public class PracticalGroup extends Model {
     private Practical practical;
 
     /**
+     * Many-to-one relationship of the practicalgroup and the owner of a group
+     */
+    @ManyToOne
+    @JoinColumn(name = "ownerId")
+    private User owner;
+
+    /**
      * Many-to-many relationship of the practicalgroups and users
      */
-    @ManyToMany(mappedBy = "practicalGroups", cascade = CascadeType.ALL)
-    List<User> users = new ArrayList<User>();
+    @ManyToMany(targetEntity= User.class, mappedBy = "practicalGroups", cascade = CascadeType.ALL)
+    List<User> groupMembers = new ArrayList<User>();
 
     /**
      * Finder defined for the practicalgroup
@@ -42,9 +51,12 @@ public class PracticalGroup extends Model {
     /**
      * Constructor of practical group
      * @param practical to which this group belongs to
+     * @param owner of the new group
      */
-    public PracticalGroup(Practical practical) {
+    public PracticalGroup(Practical practical, User owner) {
         this.practical = practical;
+        this.owner = owner;
+        this.groupMembers.add(owner);
     }
 
     /**
@@ -59,45 +71,48 @@ public class PracticalGroup extends Model {
     /**
      * A method to find a practical group using a given practical and a given user
      * @param practical of the practical group
-     * @param user of the practical group
+     * @param groupMember of the practical group
      * @return practical group that was sought after
      */
-    public static PracticalGroup findWithPracticalAndUser(Practical practical, User user) {
-        return find.where()
-                .eq("practicalId", practical.getId())
-                .eq("users.id", user.getId())
+    public static PracticalGroup findWithPracticalAndUser(Practical practical, User groupMember) {
+        return find
+                .where()
+                .and(
+                        eq("practical.id", practical.getId()),
+                        eq("groupMembers.id", groupMember.getId())
+                )
                 .findUnique();
     }
 
     /**
-     * Getter for users
-     * @return users
+     * Getter for groupMembers
+     * @return groupMembers
      */
-    public List<User> getUsers() {
-        return users;
+    public List<User> getGroupMembers() {
+        return groupMembers;
     }
 
     /** Setter for users
-     * @param users to set
+     * @param groupMembers to set
      */
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setGroupMembers(List<User> groupMembers) {
+        this.groupMembers = groupMembers;
     }
 
     /**
      * Add user to list
-     * @param user to add
+     * @param groupMember to add
      */
-    public void addUser(User user) {
-        users.add(user);
+    public void addGroupMember(User groupMember) {
+        groupMembers.add(groupMember);
     }
 
     /**
      * Remove user from list
-     * @param user to remove
+     * @param groupMember to remove
      */
-    public void removeUser(User user) {
-        users.remove(user);
+    public void removeGroupMember(User groupMember) {
+        groupMembers.remove(groupMember);
     }
 
     /**
@@ -106,14 +121,6 @@ public class PracticalGroup extends Model {
      */
     public long getId() {
         return id;
-    }
-
-    /**
-     * Setter for Id
-     * @param id to set
-     */
-    public void setId(long id) {
-        this.id = id;
     }
 
     /**
@@ -130,5 +137,21 @@ public class PracticalGroup extends Model {
      */
     public void setPractical(Practical practical) {
         this.practical = practical;
+    }
+
+    /**
+     * Getter of owner
+     * @return owner
+     */
+    public User getOwner() {
+        return owner;
+    }
+
+    /**
+     * Setter of owner
+     * @param owner to set
+     */
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

@@ -1,14 +1,14 @@
 @(practicalGroup: PracticalGroup)
 
 @main("View - Practical", "view") {
-    @if(practicalGroup.getUsers().contains(Secure.getUser())) {
+    @if(practicalGroup.getGroupMembers().contains(Secure.getUser())) {
         <h1>This is your practical group #@practicalGroup.getId()</h1>
         <h2>Group participants:</h2>
     } else {
         <h1>Practical group #@practicalGroup.getId()</h1>
         <h2>Group participants:</h2>
     }
-    @practicalGroup.getUsers().map { user =>
+    @practicalGroup.getGroupMembers().map { user =>
         <div class="row">
             <div class="col-xs-4">
                 <p>@user.getFullName()</p>
