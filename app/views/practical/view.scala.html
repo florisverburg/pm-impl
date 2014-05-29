@@ -15,7 +15,8 @@
         <li>@user.getFullName()</li>
     }
 </ul>
-<h2>Your practical group</h2>
+<h2>Your practical group @PracticalGroup.findWithPracticalAndUser(practical, sessionUser).getId()</h2>
+<h3>Owner: @PracticalGroup.findWithPracticalAndUser(practical, sessionUser).getOwner.getFullName()</h3>
 @PracticalGroup.findWithPracticalAndUser(practical, sessionUser).getGroupMembers().map { user =>
     <div class="row">
         <div class="col-xs-4">
@@ -101,7 +102,9 @@
             <a href="@routes.PracticalController.viewPracticalGroup(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
         </div>
         <div class="col-xs-8">
+        @if(PracticalGroup.findWithPracticalAndUser(practical, sessionUser).getOwner().equals(sessionUser)) {
             <a href="@routes.PracticalController.sendInvitePracticalGroup(practicalGroup.getId())" class="btn btn-primary">Invite</a>
+            }
         </div>
     </div>
     }
