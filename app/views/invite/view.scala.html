@@ -27,11 +27,8 @@
         @if(invite.getState().equals(Invite.State.Accepted)) {
             <a href="@routes.InviteController.rejectInvite(invite.getId())" class="btn btn-primary">reject invite</a>
         }
-        @if(invite.getState().equals(Invite.State.Withdrawn)) {
-            <a href="@routes.InviteController.resendInvite(invite.getId())" class="btn btn-primary">send invite</a>
-        }
-        @if(invite.getState().equals(Invite.State.Rejected)) {
-            <a href="@routes.InviteController.resendRejectedInvite(invite.getId())" class="btn btn-primary">resend invite</a>
+        @if(invite.getState().equals(Invite.State.Withdrawn) || invite.getState().equals(Invite.State.Rejected)) {
+            <a href="@routes.InviteController.resendInvite(invite.getId())" class="btn btn-primary">resend invite</a>
         }
     </div>
 </div>

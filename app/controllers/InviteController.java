@@ -54,7 +54,7 @@ public class InviteController extends Controller {
     public static Result resendInvite(long id) {
         Invite invite = Invite.findById(id);
         User user = Secure.getUser();
-        invite.resend(user);
+        Invite.resend(user, invite);
         flash("success", "invite.resend");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
@@ -69,19 +69,6 @@ public class InviteController extends Controller {
         User user = Secure.getUser();
         invite.reject(user);
         flash("success", "invite.reject");
-        return redirect(routes.PracticalController.view(invite.getPractical().getId()));
-    }
-
-    /**
-     * Method to resend a previous rejected invite
-     * @param id of the invite to resend
-     * @return redirect to the view practical
-     */
-    public static Result resendRejectedInvite(long id) {
-        Invite invite = Invite.findById(id);
-        User user = Secure.getUser();
-        invite.resendRejectedInvite(user);
-        flash("success", "invite.resend");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 }

@@ -35,6 +35,7 @@ public class PracticalController extends Controller {
         }
         else if (practicalToRender.getUsers().contains(user)){
             // Checks of the user is not already a part of the practical
+            flash("error", "practical.alreadyCoupled");
             return redirect(routes.PracticalController.view(practicalToRender.getId()));
         }
         else if (!practicalToRender.getSecret().equals(secret)) {
@@ -47,6 +48,7 @@ public class PracticalController extends Controller {
         practicalToRender.save();
         PracticalGroup newPracticalGroup = new PracticalGroup(practicalToRender, Secure.getUser());
         newPracticalGroup.save();
+        flash("success", "practical.successfulAddition");
         return redirect(routes.PracticalController.view(practicalToRender.getId()));
     }
 

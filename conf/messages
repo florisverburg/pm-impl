@@ -27,6 +27,8 @@ practical.doesNotExist = Practical does not exist
 practical.wrongSecret = This secret does not match the practical secret
 practical.isNoAdmin = You need to be the administrator to complete this action
 practical.deleted = The practical is deleted
+practical.alreadyCoupled = User already coupled to the practical
+practical.successfulAddition = User has been successfully added to the practical
 
 # Invite
 invite.accepted = Invite has been accepted

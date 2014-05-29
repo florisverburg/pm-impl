@@ -110,6 +110,15 @@ practicals:
       - *user4
       - *user5
       - *user6
+  - &practical4 !!models.Practical
+    name: PracticalControllerTest
+    description: Assignment about testing a practical controller
+    secret: abc
+    admin: *user1
+    users:
+      - *user4
+      - *user5
+      - *user6
 
 # PracticalGroup
 practicalGroups:
