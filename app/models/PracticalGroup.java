@@ -91,9 +91,13 @@ public class PracticalGroup extends Model {
         if(this.getGroupMembers().size() == 1) {
             return;
         }
+        // Remove user from group
         this.removeGroupMember(user);
         this.save();
         this.refresh();
+
+        // If user is the owner there needs to be a new owner,
+        // so the next first member from the group will be the new owner
         if(this.getOwner().equals(user)) {
             this.setOwner(this.getGroupMembers().listIterator().next());
             this.save();
