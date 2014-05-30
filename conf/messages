@@ -29,6 +29,7 @@ practical.isNoAdmin = You need to be the administrator to complete this action
 practical.deleted = The practical is deleted
 practical.alreadyCoupled = User already coupled to the practical
 practical.successfulAddition = User has been successfully added to the practical
+practical.removeGroupMember = User has been sucessfully removed from practical group
 
 # Invite
 invite.accepted = Invite has been accepted

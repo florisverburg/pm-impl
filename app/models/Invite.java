@@ -189,8 +189,8 @@ public class Invite extends Model {
         this.state = State.Accepted;
         this.save();
         // Reject all pending of the receiver invites
-        rejectOtherInvitesUser(this.getReceiver(), true);
-        rejectOtherInvitesUser(this.getSender(), false);
+        rejectOtherInvitesUser(this.getReceiver(), this.practical, true, State.Pending);
+        rejectOtherInvitesUser(this.getSender(), this.practical, false, State.Pending);
         this.refresh();
 
         // Delete practical group of receiver
@@ -207,9 +207,12 @@ public class Invite extends Model {
 
     /**
      * @param user that wants to reject the invite
-     * @param include whether or not to include that also the send invites should be rejected
+     * @param practical of the invite that needs to be updated
+     * @param include whether or not to include the send invites while rejecting
+     * @param formerState of the invite
      */
-    private void rejectOtherInvitesUser(User user, boolean include) {
+    public static void rejectOtherInvitesUser(User user,
+        Practical practical, boolean include, Invite.State formerState) {
         String updStatement = "update invite set state = :st1 "
 <<<<<<< HEAD
                 + "where "
@@ -228,30 +231,20 @@ public class Invite extends Model {
         updStatement = updStatement + ") and state = :st2 )";
         Update<Invite> update = Ebean.createUpdate(Invite.class, updStatement);
         update.set("st1", State.Rejected);
-        update.set("st2", State.Pending);
+        update.set("st2", formerState);
         update.set("rcvId1", user.getId());
         update.set("rcvId2", user.getId());
-        update.set("prctId", this.practical.getId());
+        update.set("prctId", practical.getId());
         update.execute();
     }
 
     /**
      * Method to reject an invite
-     * @param user that wants to reject the invite
      */
-    public void reject(User user) {
-        if(!this.state.equals(State.Accepted)) {
+    public void reject() {
+        if(!this.state.equals(State.Pending)) {
             return;
         }
-        PracticalGroup practicalGroupOfRejecter =
-                PracticalGroup.findWithPracticalAndUser(practical, user);
-
-        // Only remove the receiver of the invite from the group and update the group
-        practicalGroupOfRejecter.removeGroupMember(receiver);
-        practicalGroupOfRejecter.save();
-        // Create a new practical group for the removed user
-        PracticalGroup newPracticalGroup = new PracticalGroup(practical, receiver);
-        newPracticalGroup.save();
         state = State.Rejected;
         this.save();
     }
@@ -270,6 +263,7 @@ public class Invite extends Model {
     /**
      * Method to resend invite when it has been withdrawn or rejected
      * @param user that wants to resend the invite
+     * @param invite that needs to be resend
      */
     public static void resend(User user, Invite invite) {
         if(!invite.state.equals(State.Withdrawn) && !invite.state.equals(State.Rejected)) {

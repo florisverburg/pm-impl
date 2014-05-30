@@ -299,81 +299,36 @@ public class InviteTest extends WithApplication {
         assertEquals(practicalGroupUser4.getGroupMembers().size(), 1);
     }
 
-    /**
-     * Method to test the reject functionality of the invite class
-     * Invite1: CreatedUser1 -> CreatedUser2 : Accepted
-     * Invite2: CreatedUser1 -> CreatedUser3 : Accepted
-     * reject invite1
-     * Invite1: CreatedUser1 -> CreatedUser2 : Rejected
-     * Invite2: CreatedUser1 -> CreatedUser3 : Accepted
-     */
     @Test
-    public void testReject() {
-        // Create the practical
-        Practical createdPractical = new Practical("Created Practical", "Practical that has been created");
-        createdPractical.save();
-        // Create the first user
-        User createdUser1 = new User("CreatedUser1", "LastName", "createduser1@example.com", User.Type.User);
-        createdUser1.save();
-        PracticalGroup practicalGroupUser1 = new PracticalGroup(createdPractical, createdUser1);
-        practicalGroupUser1.save();
-        // Create the second user
-        User createdUser2 = new User("CreatedUser2", "LastName", "createduser2@example.com", User.Type.User);
-        createdUser2.save();
-        PracticalGroup practicalGroupUser2 = new PracticalGroup(createdPractical, createdUser2);
-        practicalGroupUser2.save();
-        // Create the third user
-        User createdUser3 = new User("CreatedUser3", "LastName", "createduser3@example.com", User.Type.User);
-        createdUser3.save();
-        PracticalGroup practicalGroupUser3 = new PracticalGroup(createdPractical, createdUser3);
-        practicalGroupUser3.save();
-        // Create the invites
-        Invite invite1 = new Invite(createdPractical, createdUser1, createdUser2);
-        invite1.save();
-        Invite invite2 = new Invite(createdPractical, createdUser1, createdUser3);
-        invite2.save();
+    public void testRejectSuccess() {
+        Practical practical = Practical.findByName("InviteControllerTest");
+        User user1 = User.findByName("DefaultUser1");
+        User user2 = User.findByName("DefaultUser2");
 
-        // Accept the invites
-        invite1.accept();
-        invite2.accept();
-        // Refresh all the variables
-        invite1.refresh();
-        invite2.refresh();
-        practicalGroupUser1.refresh();
-        practicalGroupUser2 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2);
-        practicalGroupUser3 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser3);
-        // Check if the basis is correct
-        assertEquals(practicalGroupUser1.getGroupMembers().size(), 3);
-        assertEquals(practicalGroupUser1.getId(), practicalGroupUser2.getId());
-        assertEquals(practicalGroupUser1.getId(), practicalGroupUser3.getId());
-        assertEquals(Invite.State.Accepted, invite1.getState());
-        assertEquals(Invite.State.Accepted, invite2.getState());
+        Invite invite = new Invite(practical, user1, user2);
+        invite.save();
 
-        // Reject the invite
-        invite1.reject(createdUser1);
-        // Refresh the variables
-        invite1.refresh();
-        practicalGroupUser1 = PracticalGroup.findById(practicalGroupUser1.getId());
-        practicalGroupUser2 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2);
-        practicalGroupUser3 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser3);
-        assertEquals(2, practicalGroupUser1.getGroupMembers().size());
-        assertEquals(1, practicalGroupUser2.getGroupMembers().size());
-        assert(!(practicalGroupUser1.getId() == practicalGroupUser2.getId()));
-        assertEquals(practicalGroupUser1.getId(), practicalGroupUser3.getId());
-        assertEquals(Invite.State.Rejected, invite1.getState());
+        assertEquals(Invite.State.Pending, invite.getState());
+        invite.reject();
+        invite.findById(invite.getId());
+        assertEquals(Invite.State.Rejected, invite.getState());
+    }
 
-        // Reject the second invite
-        invite2.reject(createdUser3);
-        // Refresh the variables
-        invite2.refresh();
-        practicalGroupUser1 = PracticalGroup.findById(practicalGroupUser1.getId());
-        practicalGroupUser2 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2);
-        practicalGroupUser3 = PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser3);
-        assertEquals(1, practicalGroupUser1.getGroupMembers().size());
-        assertEquals(1, practicalGroupUser2.getGroupMembers().size());
-        assert(!(practicalGroupUser1.getId() == practicalGroupUser2.getId()));
-        assert(!(practicalGroupUser1.getId() == practicalGroupUser3.getId()));
-        assertEquals(Invite.State.Rejected, invite2.getState());
+    @Test
+    public void testRejectWrongState() {
+        Practical practical = Practical.findByName("InviteControllerTest");
+        User user1 = User.findByName("DefaultUser1");
+        User user2 = User.findByName("DefaultUser2");
+
+        Invite invite = new Invite(practical, user1, user2);
+        invite.save();
+        invite.setState(Invite.State.Accepted);
+        invite.save();
+
+        assertEquals(Invite.State.Accepted, invite.getState());
+        invite.reject();
+        invite.findById(invite.getId());
+        assertEquals(Invite.State.Accepted, invite.getState());
     }
 
     /**

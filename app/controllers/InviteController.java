@@ -66,8 +66,7 @@ public class InviteController extends Controller {
      */
     public static Result rejectInvite(long inviteId) {
         Invite invite = Invite.findById(inviteId);
-        User user = Secure.getUser();
-        invite.reject(user);
+        invite.reject();
         flash("success", "invite.reject");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }

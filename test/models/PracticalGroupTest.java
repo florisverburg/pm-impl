@@ -123,4 +123,122 @@ public class PracticalGroupTest extends WithApplication {
         // Check if you can find the group by one of its groupmembers
         assertEquals(PracticalGroup.findWithPracticalAndUser(createdPractical, createdUser2).getId(), createdPracticalGroup.getId());
     }
+
+    /**
+     * Method to test leaveGroup
+     * Start:
+     * CreatedPracticalGroup:
+     * Owner: user1
+     * Groupmembers: user2
+     * leaveGroup(user1)
+     * Two practical groups
+     * #1:
+     * Owner: user2
+     * #2:
+     * Owner: user1
+     */
+    @Test
+    public void testLeaveGroupOwnerSuccess() {
+        // Create the users to put into the practicalgroup
+        Practical practical = new Practical("Created Practical", "Practical that has been created");
+        practical.save();
+        User user1 = new User("CreatedUser1", "LastName", "createduser@example.com", User.Type.User);
+        user1.save();
+        User user2 = new User("CreatedUser2", "LastName", "createduser@example.com", User.Type.User);
+        user2.save();
+
+        practical.addUser(user1);
+        practical.addUser(user2);
+        practical.save();
+
+        PracticalGroup practicalGroup1 = new PracticalGroup(practical, user1);
+        practicalGroup1.save();
+        PracticalGroup practicalGroup2 = new PracticalGroup(practical, user2);
+        practicalGroup2.save();
+
+        Invite invite = new Invite(practical, user1, user2);
+        invite.accept();
+
+        practicalGroup1.refresh();
+        invite.refresh();
+        assertEquals(2, practicalGroup1.getGroupMembers().size());
+        assertEquals(Invite.State.Accepted, invite.getState());
+
+        practicalGroup1.leaveGroup(user1);
+
+        practicalGroup1 = PracticalGroup.findById(practicalGroup1.getId());
+        PracticalGroup newPracticalGroup = PracticalGroup.findWithPracticalAndUser(practical, user2);
+        assertEquals(1, newPracticalGroup.getGroupMembers().size());
+        assertEquals(1, practicalGroup1.getGroupMembers().size());
+        invite.refresh();
+        assertEquals(Invite.State.Rejected, invite.getState());
+    }
+
+    /**
+     * Method to test leaveGroup
+     * Start:
+     * CreatedPracticalGroup:
+     * Owner: user1
+     * Groupmembers: user2
+     * leaveGroup(user2)
+     * Two practical groups
+     * #1:
+     * Owner: user1
+     * #2:
+     * Owner: user2
+     */
+    @Test
+    public void testLeaveGroupGroupMemberSuccess() {
+        // Create the users to put into the practicalgroup
+        Practical practical = new Practical("Created Practical", "Practical that has been created");
+        practical.save();
+        User user1 = new User("CreatedUser1", "LastName", "createduser@example.com", User.Type.User);
+        user1.save();
+        User user2 = new User("CreatedUser2", "LastName", "createduser@example.com", User.Type.User);
+        user2.save();
+
+        practical.addUser(user1);
+        practical.addUser(user2);
+        practical.save();
+
+        PracticalGroup practicalGroup1 = new PracticalGroup(practical, user1);
+        practicalGroup1.save();
+        PracticalGroup practicalGroup2 = new PracticalGroup(practical, user2);
+        practicalGroup2.save();
+
+        Invite invite = new Invite(practical, user1, user2);
+        invite.accept();
+
+        practicalGroup1.refresh();
+        invite.refresh();
+        assertEquals(2, practicalGroup1.getGroupMembers().size());
+        assertEquals(Invite.State.Accepted, invite.getState());
+
+        practicalGroup1.leaveGroup(user2);
+
+        practicalGroup1 = PracticalGroup.findById(practicalGroup1.getId());
+        PracticalGroup newPracticalGroup = PracticalGroup.findWithPracticalAndUser(practical, user2);
+        assertEquals(1, newPracticalGroup.getGroupMembers().size());
+        assertEquals(1, practicalGroup1.getGroupMembers().size());
+    }
+
+    @Test
+    public void testLeaveGroupErrorSize() {
+        // Create the users to put into the practicalgroup
+        Practical practical = new Practical("Created Practical", "Practical that has been created");
+        practical.save();
+        User user1 = new User("CreatedUser1", "LastName", "createduser@example.com", User.Type.User);
+        user1.save();
+
+        practical.addUser(user1);
+        practical.save();
+
+        PracticalGroup practicalGroup = new PracticalGroup(practical, user1);
+        practicalGroup.save();
+        assertEquals(1, practicalGroup.getGroupMembers().size());
+
+        practicalGroup.leaveGroup(user1);
+        practicalGroup = PracticalGroup.findById(practicalGroup.getId());
+        assertEquals(1, practicalGroup.getGroupMembers().size());
+    }
 }

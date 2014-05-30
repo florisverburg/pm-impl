@@ -84,6 +84,29 @@ public class PracticalGroup extends Model {
     }
 
     /**
+     * Method to leave a group
+     * @param user that wants to leave the group
+     */
+    public void leaveGroup(User user) {
+        if(this.getGroupMembers().size() == 1) {
+            return;
+        }
+        this.removeGroupMember(user);
+        this.save();
+        this.refresh();
+        if(this.getOwner().equals(user)) {
+            this.setOwner(this.getGroupMembers().listIterator().next());
+            this.save();
+        }
+        // Create a new practical group for the removed user
+        PracticalGroup newPracticalGroup = new PracticalGroup(practical, user);
+        newPracticalGroup.save();
+
+        // Reset the states of the invites to Rejected
+        Invite.rejectOtherInvitesUser(user, practical, true, Invite.State.Accepted);
+    }
+
+    /**
      * Getter for groupMembers
      * @return groupMembers
      */

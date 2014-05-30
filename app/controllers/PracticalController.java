@@ -176,4 +176,18 @@ public class PracticalController extends Controller {
         flash("success", "practical.inviteSend");
         return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
     }
+
+    /**
+     * Method to leave a practical group
+     * @param id of the user that wants to leave his/her practical group
+     * @return redirect to the practical page
+     */
+    public static Result leavePracticalGroup(long id) {
+        PracticalGroup practicalGroup = PracticalGroup.findById(id);
+        User user = Secure.getUser();
+
+        practicalGroup.leaveGroup(user);
+        flash("success", "practical.removeGroupMember");
+        return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
+    }
 }
