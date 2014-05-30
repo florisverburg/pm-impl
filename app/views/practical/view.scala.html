@@ -84,7 +84,7 @@
 }
 
 <h2>Recommended Practical Groups:</h2>
-@practical.getRecommendedPracticalGroups().map { practicalGroup =>
+@Recommendation.getRandomRecommendations(practical, sessionUser).map { practicalGroup =>
 @if(!practicalGroup.getGroupMembers.contains(sessionUser)) {
 <div class="row">
     <div class="col-xs-4">
