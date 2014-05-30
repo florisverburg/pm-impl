@@ -107,10 +107,10 @@ public class Invite extends Model {
     public static Invite findByPracticalSenderReceiver(Practical practical, User sender, User receiver) {
         return find.where()
             .and(
-                eq("practicalId", practical.getId()),
+                eq("practical_id", practical.getId()),
                 and(
-                        eq("senderId", sender.getId()),
-                        eq("receiverId", receiver.getId())
+                        eq("sender_id", sender.getId()),
+                        eq("receiver_id", receiver.getId())
                 )
             )
             .findUnique();
@@ -125,40 +125,21 @@ public class Invite extends Model {
     public static List<Invite> findPendingInvitesWhereUser(User user, Practical practical) {
         // Get invites that have state pending and are sent by the user
         List<Invite> pendingInvites =
-<<<<<<< HEAD
-                find.where()
-                    .or(
-                            and(
-                                    and(
-                                            eq("sender.id", user.getId()),
-                                            eq("practical.id", practical.getId())
-                                    ),
-                                    eq("state", State.Pending)
-                            ),
-                            and(
-                                    and(
-                                            eq("receiver.id", user.getId()),
-                                            eq("practical.id", practical.getId())
-                                    ),
-                                    eq("state", State.Pending)
-                            )
-=======
             find.where()
                 .or(
                     and(
                         and(
-                                eq("senderId", user.getId()),
-                                eq("practicalId", practical.getId())
+                                eq("sender_id", user.getId()),
+                                eq("practical_id", practical.getId())
                         ),
                         eq("state", State.Pending)
                     ),
                     and(
                         and(
-                                eq("receiverId", user.getId()),
-                                eq("practicalId", practical.getId())
+                                eq("receiver_id", user.getId()),
+                                eq("practical_id", practical.getId())
                         ),
                         eq("state", State.Pending)
->>>>>>> Added some more funtionality that was still missing for the correct accepting/rejecting/... of invites
                     )
                 )
                 .findList();
@@ -214,17 +195,10 @@ public class Invite extends Model {
     public static void rejectOtherInvitesUser(User user,
         Practical practical, boolean include, Invite.State formerState) {
         String updStatement = "update invite set state = :st1 "
-<<<<<<< HEAD
                 + "where "
                 + "(practical_id = :prctId "
                 + "and "
                 + "(receiver_id = :rcvId1 ";
-=======
-            + "where "
-            + "( practicalId = :prctId "
-            + "and "
-            + "(receiverId = :rcvId1 ";
->>>>>>> Added some more funtionality that was still missing for the correct accepting/rejecting/... of invites
         if(include) {
             updStatement = updStatement + "or sender_id = :rcvId2 ";
         }
