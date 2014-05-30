@@ -30,6 +30,7 @@ public class InviteController extends Controller {
     public static Result acceptInvite(long id) {
         Invite invite = Invite.findById(id);
         invite.accept();
+        flash("success", "invite.accepted");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 
@@ -41,6 +42,7 @@ public class InviteController extends Controller {
     public static Result withdrawInvite(long id) {
         Invite invite = Invite.findById(id);
         invite.withdraw();
+        flash("success", "invite.withdrawn");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 
@@ -51,20 +53,21 @@ public class InviteController extends Controller {
      */
     public static Result resendInvite(long id) {
         Invite invite = Invite.findById(id);
-        invite.resend();
+        User user = Secure.getUser();
+        Invite.resend(user, invite);
+        flash("success", "invite.resend");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 
     /**
      * Method to reject an invite
      * @param inviteId of the invite to be rejected
-     * @param userId that wants to reject the invite
      * @return redirect to the view practical
      */
-    public static Result rejectInvite(long inviteId, long userId) {
+    public static Result rejectInvite(long inviteId) {
         Invite invite = Invite.findById(inviteId);
-        User user = User.findById(userId);
-        invite.reject(user);
+        invite.reject();
+        flash("success", "invite.reject");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 }

@@ -35,6 +35,7 @@ public class PracticalController extends Controller {
         }
         else if (practicalToRender.getUsers().contains(user)){
             // Checks of the user is not already a part of the practical
+            flash("error", "practical.alreadyCoupled");
             return redirect(routes.PracticalController.view(practicalToRender.getId()));
         }
         else if (!practicalToRender.getSecret().equals(secret)) {
@@ -47,6 +48,7 @@ public class PracticalController extends Controller {
         practicalToRender.save();
         PracticalGroup newPracticalGroup = new PracticalGroup(practicalToRender, Secure.getUser());
         newPracticalGroup.save();
+        flash("success", "practical.successfulAddition");
         return redirect(routes.PracticalController.view(practicalToRender.getId()));
     }
 
@@ -172,6 +174,20 @@ public class PracticalController extends Controller {
         }
 
         flash("success", "practical.inviteSend");
+        return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
+    }
+
+    /**
+     * Method to leave a practical group
+     * @param id of the user that wants to leave his/her practical group
+     * @return redirect to the practical page
+     */
+    public static Result leavePracticalGroup(long id) {
+        PracticalGroup practicalGroup = PracticalGroup.findById(id);
+        User user = Secure.getUser();
+
+        practicalGroup.leaveGroup(user);
+        flash("success", "practical.removeGroupMember");
         return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
     }
 }

@@ -86,12 +86,10 @@ practicals:
     secret: abc
     admin: *user2
     users:
-      - *user2
       - *user3
       - *user4
       - *user5
       - *user6
-
   - &practical2 !!models.Practical
     name: Documenting
     description: Assignment about documenting
@@ -102,40 +100,84 @@ practicals:
       - *user4
       - *user5
       - *user6
+  - &practical3 !!models.Practical
+    name: InviteControllerTest
+    description: Assignment about testing an invite controller
+    secret: abc
+    admin: *user1
+    users:
+      - *user3
+      - *user4
+      - *user5
+      - *user6
+  - &practical4 !!models.Practical
+    name: PracticalControllerTest
+    description: Assignment about testing a practical controller
+    secret: abc
+    admin: *user1
+    users:
+      - *user4
+      - *user5
+      - *user6
 
 # PracticalGroup
 practicalGroups:
   - &practicalGroup1 !!models.PracticalGroup
     practical: *practical1
-    owner: *user2
-    groupMembers:
-      - *user2
-  - &practicalGroup2 !!models.PracticalGroup
-    practical: *practical1
     owner: *user3
     groupMembers:
           - *user3
-  - &practicalGroup3 !!models.PracticalGroup
+  - &practicalGroup2 !!models.PracticalGroup
     practical: *practical1
     owner: *user4
     groupMembers:
           - *user4
-  - &practicalGroup4 !!models.PracticalGroup
+  - &practicalGroup3 !!models.PracticalGroup
     practical: *practical1
     owner: *user5
     groupMembers:
       - *user5
       - *user6
-  - &practicalGroup6 !!models.PracticalGroup
+  - &practicalGroup4 !!models.PracticalGroup
     practical: *practical2
     owner: *user3
     groupMembers:
       - *user3
-  - &practicalGroup7 !!models.PracticalGroup
+  - &practicalGroup5 !!models.PracticalGroup
+    practical: *practical2
+    owner: *user4
+    groupMembers:
+      - *user4
+  - &practicalGroup6 !!models.PracticalGroup
     practical: *practical2
     owner: *user5
     groupMembers:
       - *user5
+  - &practicalGroup7 !!models.PracticalGroup
+    practical: *practical2
+    owner: *user6
+    groupMembers:
+      - *user6
+  - &practicalGroup8 !!models.PracticalGroup
+    practical: *practical3
+    owner: *user3
+    groupMembers:
+      - *user3
+  - &practicalGroup9 !!models.PracticalGroup
+    practical: *practical3
+    owner: *user4
+    groupMembers:
+      - *user4
+  - &practicalGroup10 !!models.PracticalGroup
+    practical: *practical3
+    owner: *user5
+    groupMembers:
+      - *user5
+  - &practicalGroup11 !!models.PracticalGroup
+    practical: *practical3
+    owner: *user6
+    groupMembers:
+      - *user6
 
 
 # Invites
