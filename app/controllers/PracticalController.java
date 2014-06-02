@@ -73,7 +73,9 @@ public class PracticalController extends Controller {
         }
         // Check if I'm the admin of the course
         if(practical.isAdmin(user)) {
-            return ok(admin.render(practical));
+            Form<PracticalForm> practicalForm = form(PracticalForm.class, PracticalForm.All.class)
+                    .fill(new PracticalForm(practical));
+            return ok(admin.render(practical, practicalForm));
         }
 
         return ok(view.render(practical));
@@ -89,10 +91,37 @@ public class PracticalController extends Controller {
 
         // Check if the user is a teacher then show a form
         if(Secure.isTeacher()) {
-            practicalForm = form(PracticalForm.class);
+            practicalForm = form(PracticalForm.class, PracticalForm.Registration.class);
         }
 
         return ok(list.render(user.getPracticals(), practicalForm));
+    }
+
+    @Secure.Authenticated({User.Type.Admin, User.Type.Teacher})
+    public static Result edit(long id) {
+        User user = Secure.getUser();
+        Practical practical = Practical.findById(id);
+
+        // If practical does not exist
+        if(practical == null) {
+            flash("error", "practical.doesNotExist");
+            return redirect(routes.PracticalController.list());
+        }
+        // If user is not enrolled to practical, it can't view it
+        if(!practical.isAdmin(user)) {
+            flash("error", "practical.userIsNotEnrolled");
+            return redirect(routes.PracticalController.list());
+        }
+
+        Form<PracticalForm> practicalForm = form(PracticalForm.class, PracticalForm.All.class)
+                .bindFromRequest();
+        if(practicalForm.hasErrors()) {
+            return badRequest(admin.render(practical, practicalForm));
+        }
+
+        practicalForm.get().save(practical);
+        flash("success", "practical.edited");
+        return redirect(routes.PracticalController.view(id));
     }
 
     /**

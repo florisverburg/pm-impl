@@ -80,6 +80,12 @@ public class Practical extends Model {
     List<Invite> invites = new ArrayList<Invite>();
 
     /**
+     * One-to-many relationship between value skill and practical
+     */
+    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
+    private List<SkillValuePractical> skills = new ArrayList<SkillValuePractical>();
+
+    /**
      * Finder defined for the practical
      */
     public static Model.Finder<Long, Practical> find =
@@ -133,7 +139,7 @@ public class Practical extends Model {
 
     /**
      * Getter for id
-     * @return id
+     * @return id id
      */
     public long getId() {
         return id;
@@ -141,7 +147,7 @@ public class Practical extends Model {
 
     /**
      * Getter for name
-     * @return name
+     * @return name name
      */
     public String getName() {
         return name;
@@ -157,7 +163,7 @@ public class Practical extends Model {
 
     /**
      * Getter for description
-     * @return description
+     * @return description description
      */
     public String getDescription() {
         return description;
@@ -173,7 +179,7 @@ public class Practical extends Model {
 
     /**
      * Getter for admin
-     * @return admin
+     * @return admin admin
      */
     public User getAdmin() {
         return admin;
@@ -189,7 +195,7 @@ public class Practical extends Model {
 
     /**
      * Getter for the secret
-     * @return secret
+     * @return secret secret
      */
     public String getSecret() {
         return secret;
@@ -197,7 +203,7 @@ public class Practical extends Model {
 
     /**
      * Getter for users
-     * @return users
+     * @return users users
      */
     public List<User> getUsers() {
         return users;
@@ -221,7 +227,7 @@ public class Practical extends Model {
 
     /**
      * Getter for practicalGroups
-     * @return practicalGroups
+     * @return practicalGroups practical groups
      */
     public List<PracticalGroup> getPracticalGroups() {
         return practicalGroups;
@@ -245,7 +251,7 @@ public class Practical extends Model {
 
     /**
      * Getter for invites
-     * @return invites
+     * @return invites invites
      */
     public List<Invite> getInvites() {
         return invites;
@@ -277,6 +283,22 @@ public class Practical extends Model {
     }
 
     /**
+     * Gets skills.
+     * @return The skills
+     */
+    public List<SkillValuePractical> getSkills() {
+        return skills;
+    }
+
+    /**
+     * Sets skills.
+     * @param skills The skills
+     */
+    public void setSkills(List<SkillValuePractical> skills) {
+        this.skills = skills;
+    }
+
+    /**
      * Deletes the object
      */
     @Override
@@ -287,5 +309,14 @@ public class Practical extends Model {
         }
 
         super.delete();
+    }
+
+    /**
+     * Find all the skills, including the skills the practical hasn't set.
+     * @return A list with all the skills
+     */
+    public List<Skill> findAllSkills() {
+        return Skill.find.fetch("skillValues", "*").where().filterMany("skillValues")
+                .eq("practical.id", this.id).findList();
     }
 }

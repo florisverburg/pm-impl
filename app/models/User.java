@@ -26,6 +26,26 @@ import play.mvc.*;
 public class User extends Model {
 
     /**
+     * The email address where mails are send from
+     */
+    private static final String EMAIL_FROM = Play.application().configuration().getString("email.address");
+
+    /**
+     * The amount of random bits that needs to be generated for the token
+     * */
+    private static final int TOKEN_RANDOM_BITS = 130;
+
+    /**
+     * The base number of the random token generated number
+     */
+    private static final int TOKEN_RANDOM_BASE = 16;
+
+    /**
+     * The Gravatar avatar URL
+     */
+    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+
+    /**
      * The different types the user can be
      */
     public enum Type {
@@ -66,21 +86,6 @@ public class User extends Model {
         @EnumValue("None")
         None
     }
-
-    /**
-     * The amount of random bits that needs to be generated for the token
-     * */
-    private static final int TOKEN_RANDOM_BITS = 130;
-
-    /**
-     * The base number of the random token generated number
-     */
-    private static final int TOKEN_RANDOM_BASE = 16;
-
-    /**
-     * The Gravatar avatar URL
-     */
-    private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 
     /**
      * The user identifier
@@ -143,7 +148,7 @@ public class User extends Model {
      * One-to-many relationship between user skill and user
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserSkill> userSkills = new ArrayList<UserSkill>();
+    private List<SkillValueUser> skillValues = new ArrayList<SkillValueUser>();
 
     /**
      * The many-to-many relationship defined for the users and practicals
@@ -162,11 +167,6 @@ public class User extends Model {
      */
     @ManyToMany(targetEntity = PracticalGroup.class, cascade = CascadeType.ALL)
     private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
-
-    /**
-     * The client identifier of the Linkedin API
-     */
-    private static final String EMAIL = Play.application().configuration().getString("email.address");
 
     /**
      * One-to-many relationship between user and invite (sender)
@@ -301,18 +301,18 @@ public class User extends Model {
 
     /**
      * Method to add a user skill to the list, used for the one-to-many relationship
-     * @param userSkill user skill to add to the list
+     * @param skillValue user skill to add to the list
      */
-    public void addUserSkill(UserSkill userSkill) {
-        userSkills.add(userSkill);
+    public void addUserSkill(SkillValueUser skillValue) {
+        skillValues.add(skillValue);
     }
 
     /**
      * Used to return the list of skills
      * @return returns the current list of skills
      */
-    public List<UserSkill> getUserSkills() {
-        return userSkills;
+    public List<SkillValueUser> getSkillValues() {
+        return skillValues;
     }
 
     /**
@@ -497,7 +497,7 @@ public class User extends Model {
         MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
         mail.setSubject("APMatch - Verify your mail");
         mail.setRecipient(this.getFullName() + " <" + this.getEmail() + ">");
-        mail.setFrom("APMatch <" + EMAIL + ">");
+        mail.setFrom("APMatch <" + EMAIL_FROM + ">");
         //sends text/text
         String link = controllers.routes.Authentication.verify(this.getEmail(), this.getToken()).absoluteURL(false,
                 Http.Context.current()._requestHeader());
@@ -546,8 +546,8 @@ public class User extends Model {
      * @param skill The skill to search the user skill
      * @return The user skill
      */
-    public UserSkill findUserSkillBySkill(Skill skill) {
-        for(UserSkill uSkill : this.getUserSkills()) {
+    public SkillValueUser findUserSkillBySkill(Skill skill) {
+        for(SkillValueUser uSkill : this.getSkillValues()) {
             if(uSkill.getSkill().equals(skill)) {
                 return uSkill;
             }
@@ -560,7 +560,7 @@ public class User extends Model {
      * @return A list with all the skills
      */
     public List<Skill> findAllSkills() {
-        return Skill.find.fetch("userSkills", "*").where().filterMany("userSkills")
+        return Skill.find.fetch("skillValues", "*").where().filterMany("skillValues")
                 .eq("user.id", this.id).findList();
     }
 }

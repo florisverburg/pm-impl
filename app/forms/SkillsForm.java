@@ -29,7 +29,7 @@ public class SkillsForm {
      * Constructor for the skills form.
      * @param uSkill The user skill to fill the form
      */
-    public SkillsForm(UserSkill uSkill) {
+    public SkillsForm(SkillValue uSkill) {
         this.name = uSkill.getSkill().getName();
         this.value = uSkill.getValue();
     }
@@ -71,7 +71,16 @@ public class SkillsForm {
      * @param user The user from who the user skill is
      */
     public void updateUserSkill(User user) {
-        UserSkill userSkill = new UserSkill(user, Skill.findByName(this.name), this.value);
-        userSkill.save();
+        SkillValueUser skillValue = new SkillValueUser(user, Skill.findByName(this.name), this.value);
+        skillValue.save();
+    }
+
+    /**
+     * Method to update the practical skill.
+     * @param practical The practical from which the skill is
+     */
+    public void updatePracticalSkill(Practical practical) {
+        SkillValuePractical skillValue = new SkillValuePractical(practical, Skill.findByName(this.name), this.value);
+        skillValue.save();
     }
 }

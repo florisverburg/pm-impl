@@ -1,6 +1,5 @@
 package models;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import play.test.WithApplication;
@@ -18,8 +17,8 @@ public class UserSkillTest extends WithApplication {
 
     private User user;
     private Skill skill;
-    private List<UserSkill> userSkills;
-    private UserSkill userSkill1;
+    private List<SkillValue> skillValues;
+    private SkillValue skillValue1;
 
     /**
      * Setup method for the UserSkillTest
@@ -29,8 +28,8 @@ public class UserSkillTest extends WithApplication {
         start(fakeApplication(inMemoryDatabase()));
         user = User.findByEmail("defaultuser1@example.com");
         skill = Skill.findByName("Programming");
-        userSkills = user.getUserSkills();
-        userSkill1 = userSkills.get(0);
+        skillValues = user.getSkillValues();
+        skillValue1 = skillValues.get(0);
     }
 
     /**
@@ -39,10 +38,10 @@ public class UserSkillTest extends WithApplication {
     @Test
     public void testCreationUserSkill() {
         // Check the values of the setUp() method
-        assertEquals(userSkills.size(), 2);
-        assertEquals(userSkill1.getValue(), new Integer(8));
-        assertEquals(userSkill1.getUser(), user);
-        assertEquals(userSkill1.getSkill(), skill);
+        assertEquals(skillValues.size(), 2);
+        assertEquals(skillValue1.getValue(), new Integer(8));
+        assertEquals(skillValue1.getUser(), user);
+        assertEquals(skillValue1.getSkill(), skill);
     }
 
     /**
@@ -51,10 +50,10 @@ public class UserSkillTest extends WithApplication {
     @Test
     public void testSetters() {
         // Set different values
-        userSkill1.setValue(new Integer(5));
-        userSkill1.save();
+        skillValue1.setValue(new Integer(5));
+        skillValue1.save();
 
         // Check the new values
-        assertEquals(userSkill1.getValue(), new Integer(5));
+        assertEquals(skillValue1.getValue(), new Integer(5));
     }
 }

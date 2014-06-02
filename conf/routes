@@ -3,40 +3,41 @@
 # ~~~~
 
 # Application
-GET         /                            controllers.Application.index()
-GET         /about                       controllers.Application.about()
-GET         /contact                     controllers.Application.contact()
+GET         /                                 controllers.Application.index()
+GET         /about                            controllers.Application.about()
+GET         /contact                          controllers.Application.contact()
 
 # Practical
-GET         /practical                   controllers.PracticalController.list()
-POST        /practical                   controllers.PracticalController.create()
-GET         /practical/invite/:id        controllers.PracticalController.sendInvitePracticalGroup(id: Long)
-GET         /practical/group/:id         controllers.PracticalController.viewPracticalGroup(id: Long)
-GET         /practical/group/:id/leave   controllers.PracticalController.leavePracticalGroup(id: Long)
-GET         /practical/:id               controllers.PracticalController.view(id: Long)
-GET         /practical/:id               controllers.PracticalController.register(id: Long, secret: String)
-GET         /practical/:id/delete        controllers.PracticalController.delete(id: Long)
+GET         /practical                        controllers.PracticalController.list()
+POST        /practical                        controllers.PracticalController.create()
+GET         /practical/invite/:id             controllers.PracticalController.sendInvitePracticalGroup(id: Long)
+GET         /practical/group/:id              controllers.PracticalController.viewPracticalGroup(id: Long)
+GET         /practical/group/:id/leave        controllers.PracticalController.leavePracticalGroup(id: Long)
+GET         /practical/:id                    controllers.PracticalController.view(id: Long)
+POST        /practical/:id                    controllers.PracticalController.edit(id: Long)
+GET         /practical/:id                    controllers.PracticalController.register(id: Long, secret: String)
+GET         /practical/:id/delete             controllers.PracticalController.delete(id: Long)
 
 # Profile
-GET         /profile                     controllers.Profile.view()
-GET         /profile/edit                controllers.Profile.edit()
-POST        /profile/edit                controllers.Profile.save()
+GET         /profile                          controllers.Profile.view()
+GET         /profile/edit                     controllers.Profile.edit()
+POST        /profile/edit                     controllers.Profile.save()
 
 # Invite
-GET         /invite/:id                  controllers.InviteController.view(id: Long)
-GET         /acceptInvite/:id            controllers.InviteController.acceptInvite(id: Long)
-GET         /withdrawInvite/:id          controllers.InviteController.withdrawInvite(id: Long)
-GET         /resendInvite/:id            controllers.InviteController.resendInvite(id: Long)
-GET         /rejectInvite/:id            controllers.InviteController.rejectInvite(id: Long)
+GET         /invite/:id                       controllers.InviteController.view(id: Long)
+GET         /acceptInvite/:id                 controllers.InviteController.acceptInvite(id: Long)
+GET         /withdrawInvite/:id               controllers.InviteController.withdrawInvite(id: Long)
+GET         /resendInvite/:id                 controllers.InviteController.resendInvite(id: Long)
+GET         /rejectInvite/:id                 controllers.InviteController.rejectInvite(id: Long)
 
 # Authentication
-GET         /login                       controllers.Authentication.login()
-POST        /login                       controllers.Authentication.authenticate()
-GET         /register                    controllers.Authentication.login()
-POST        /register                    controllers.Authentication.registration()
-GET         /logout                      controllers.Authentication.logout()
-GET         /auth                        controllers.Authentication.auth(code: String ?= "", state: String, error: String ?= "", error_description: String ?= "")
-GET         /verify/:mail/:token         controllers.Authentication.verify(mail: String, token: String)
+GET         /login                            controllers.Authentication.login()
+POST        /login                            controllers.Authentication.authenticate()
+GET         /register                         controllers.Authentication.login()
+POST        /register                         controllers.Authentication.registration()
+GET         /logout                           controllers.Authentication.logout()
+GET         /auth                             controllers.Authentication.auth(code: String ?= "", state: String, error: String ?= "", error_description: String ?= "")
+GET         /verify/:mail/:token              controllers.Authentication.verify(mail: String, token: String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                controllers.Assets.at(path="/public", file)
+GET         /assets/*file                     controllers.Assets.at(path="/public", file)
