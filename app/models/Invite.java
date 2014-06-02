@@ -237,21 +237,22 @@ public class Invite extends Model {
     /**
      * Method to resend invite when it has been withdrawn or rejected
      * @param user that wants to resend the invite
-     * @param invite that needs to be resend
      */
-    public static void resend(User user, Invite invite) {
-        if(!invite.state.equals(State.Withdrawn) && !invite.state.equals(State.Rejected)) {
+    public void resend(User user) {
+        if(!state.equals(State.Withdrawn) && !state.equals(State.Rejected)) {
             return;
         }
-        if(invite.sender.equals(user)) {
-            invite.setState(State.Pending);
-            invite.save();
-            return;
+
+        // Check if the sender needs to be swapped
+        if(!sender.equals(user)) {
+            User tempUser = receiver;
+            setReceiver(this.sender);
+            setSender(tempUser);
         }
-        // If the receiver of the original invite wants to resend it, create a new invite from him to the user
-        Invite newInvite = new Invite(invite.practical, invite.receiver, invite.sender);
-        newInvite.save();
-        Ebean.delete(invite);
+
+        // Save the invite and set the state to pending
+        setState(State.Pending);
+        save();
     }
 
     /**

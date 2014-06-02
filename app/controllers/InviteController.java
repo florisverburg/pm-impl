@@ -54,7 +54,7 @@ public class InviteController extends Controller {
     public static Result resendInvite(long id) {
         Invite invite = Invite.findById(id);
         User user = Secure.getUser();
-        Invite.resend(user, invite);
+        invite.resend(user);
         flash("success", "invite.resend");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }

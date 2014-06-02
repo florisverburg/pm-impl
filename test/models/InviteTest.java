@@ -466,7 +466,7 @@ public class InviteTest extends WithApplication {
 
         assertEquals(Invite.State.Withdrawn, invite.getState());
         invite.findById(invite.getId());
-        Invite.resend(user1, invite);
+        invite.resend(user1);
         Invite resultInvite = Invite.findById(invite.getId());
         assertEquals(Invite.State.Pending, resultInvite.getState());
         assertEquals(user1, resultInvite.getSender());
@@ -485,7 +485,7 @@ public class InviteTest extends WithApplication {
         invite.save();
 
         assertEquals(Invite.State.Withdrawn, invite.getState());
-        Invite.resend(user2, invite);
+        invite.resend(user2);
 
         //assertNull(Invite.findById(invite.getId()));
         invite = Invite.findByPracticalSenderReceiver(practical, user2, user1);
@@ -508,7 +508,7 @@ public class InviteTest extends WithApplication {
 
         invite = Invite.findById(invite.getId());
         assertEquals(Invite.State.Accepted, invite.getState());
-        Invite.resend(user2, invite);
+        invite.resend(user2);
 
         invite = invite.findById(invite.getId());
         assertEquals(Invite.State.Accepted, invite.getState());
