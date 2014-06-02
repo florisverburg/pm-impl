@@ -403,6 +403,10 @@ public class Invite extends Model {
         this.messages = messages;
     }
 
+    /**
+     * Get a list of messages sorted on timestamp.
+     * @return a sorted list of messages
+     */
     public List<Message> getSortedMessages() {
         List<Message> messages = this.getMessages();
         Collections.sort(messages);

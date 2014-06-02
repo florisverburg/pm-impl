@@ -1,7 +1,6 @@
 package controllers;
 
 import forms.MessageForm;
-import forms.RegisterForm;
 import helpers.Secure;
 import models.*;
 import play.data.*;
@@ -75,6 +74,12 @@ public class InviteController extends Controller {
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
     }
 
+    /**
+     * Method to send a message
+     * @param inviteId of the invite form the message
+     * @param userId of the user that sends the message
+     * @return redirect to the invite view
+     */
     @Secure.Authenticated
     public static Result sendMessage(long inviteId, long userId) {
         User user = User.findById(userId);
