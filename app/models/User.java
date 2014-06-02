@@ -175,6 +175,12 @@ public class User extends Model {
     private List<Invite> invitesSend = new ArrayList<Invite>();
 
     /**
+     * One-to-many relationship between user and message
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Message> messages = new ArrayList<Message>();
+
+    /**
      * One-to-many relationship between user and invite (receiver)
      */
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
@@ -515,6 +521,30 @@ public class User extends Model {
      */
     public List<Invite> getInvitesSend() {
         return invitesSend;
+    }
+
+    /**
+     * Getter messages
+     * @return messages
+     */
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    /**
+     * Setter messages
+     * @param messages the messages
+     */
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    /**
+     * Add message
+     * @param message to add
+     */
+    public void addMessage(Message message) {
+        this.messages.add(message);
     }
 
     /**

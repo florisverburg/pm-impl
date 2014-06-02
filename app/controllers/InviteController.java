@@ -1,9 +1,13 @@
 package controllers;
 
+import forms.MessageForm;
+import forms.RegisterForm;
 import helpers.Secure;
 import models.*;
+import play.data.*;
 import play.mvc.*;
 import views.html.invite.view;
+import static play.data.Form.*;
 
 /**
  * Created by Marijn Goedegebure on 20-5-2014.
@@ -19,7 +23,7 @@ public class InviteController extends Controller {
      */
     public static Result view(long id) {
         Invite invite = Invite.findById(id);
-        return ok(view.render(invite));
+        return ok(view.render(invite, form(MessageForm.class)));
     }
 
     /**
@@ -69,5 +73,24 @@ public class InviteController extends Controller {
         invite.reject();
         flash("success", "invite.reject");
         return redirect(routes.PracticalController.view(invite.getPractical().getId()));
+    }
+
+    @Secure.Authenticated
+    public static Result sendMessage(long inviteId, long userId) {
+        User user = User.findById(userId);
+        Form<MessageForm> messageForm = form(MessageForm.class).bindFromRequest();
+        Invite invite = Invite.findById(inviteId);
+        if(messageForm.hasErrors()) {
+            flash("error", "message.empty");
+            return badRequest(view.render(invite, form(MessageForm.class)));
+        }
+        else {
+            Message message = new Message(invite, user, messageForm.get().getMessage());
+            message.save();
+            flash("success", "message.sent");
+            return redirect(
+                    routes.InviteController.view(inviteId)
+            );
+        }
     }
 }

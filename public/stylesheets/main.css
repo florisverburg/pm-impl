@@ -53,6 +53,15 @@ h1, h2, h3, h4, h5, h6 {
   padding: 15px;
 }
 
+.message {
+  background-color: #eee;
+  margin: 5px;
+}
+
+.container .message {
+    border-radius: 6px; // Only round corners at higher resolutions if contained in a container
+}
+
 .container .page-header {
     border-radius: 6px; // Only round corners at higher resolutions if contained in a container
 }

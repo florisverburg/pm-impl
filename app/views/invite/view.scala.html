@@ -1,37 +1,65 @@
-@(invite : Invite)
+@(invite : Invite, messageForm: play.data.Form[forms.MessageForm])
 @sessionUser = @{Secure.getUser()}
 @practicalGroupOfUser = @{PracticalGroup.findWithPracticalAndUser(invite.getPractical(), sessionUser)}
+@implicitField = @{ helper.FieldConstructor(form.noLabelConstructor.f) }
 
 @main("View - Practical", "view") {
 
-<div class="main-text jumbotron">
-    <h1>Invite #@invite.getId()</h1>
-</div>
-<h2>Practical</h2>
-@invite.getPractical().getName()
-
-<h2>Sender</h2>
-@invite.getSender().getFullName()
-
-<h2>Receiver</h2>
-@invite.getReceiver().getFullName()
-<div class="row">
-    <div class="col-xs-3">
-    @if(practicalGroupOfUser.getOwner().equals(sessionUser)) {
-        @if(invite.getReceiver().getId().equals(sessionUser.getId())) {
-            @if(invite.getState().equals(Invite.State.Pending)) {
-                <a href="@routes.InviteController.acceptInvite(invite.getId())" class="btn btn-primary">accept invite</a>
-                <a href="@routes.InviteController.rejectInvite(invite.getId())" class="btn btn-primary">reject invite</a>
-            }
-        } else {
-            @if(invite.getState().equals(Invite.State.Pending)) {
-                <a href="@routes.InviteController.withdrawInvite(invite.getId())" class="btn btn-primary">withdraw invite</a>
-            }
-        }
-        @if(invite.getState().equals(Invite.State.Withdrawn) || invite.getState().equals(Invite.State.Rejected)) {
-            <a href="@routes.InviteController.resendInvite(invite.getId())" class="btn btn-primary">resend invite</a>
-        }
-    }
+    <div class="main-text jumbotron">
+        <h1>Invite #@invite.getId()</h1>
     </div>
-</div>
+    <h2>Practical</h2>
+    @invite.getPractical().getName()
+
+    <h2>Sender</h2>
+    @invite.getSender().getFullName()
+
+    <h2>Receiver</h2>
+    @invite.getReceiver().getFullName()
+    <div class="row">
+        <div class="col-xs-3">
+        @if(practicalGroupOfUser.getOwner().equals(sessionUser)) {
+            @if(invite.getReceiver().getId().equals(sessionUser.getId())) {
+                @if(invite.getState().equals(Invite.State.Pending)) {
+                    <a href="@routes.InviteController.acceptInvite(invite.getId())" class="btn btn-primary">accept invite</a>
+                    <a href="@routes.InviteController.rejectInvite(invite.getId())" class="btn btn-primary">reject invite</a>
+                }
+            } else {
+                @if(invite.getState().equals(Invite.State.Pending)) {
+                    <a href="@routes.InviteController.withdrawInvite(invite.getId())" class="btn btn-primary">withdraw invite</a>
+                }
+            }
+            @if(invite.getState().equals(Invite.State.Withdrawn) || invite.getState().equals(Invite.State.Rejected)) {
+                <a href="@routes.InviteController.resendInvite(invite.getId())" class="btn btn-primary">resend invite</a>
+            }
+        }
+        </div>
+    </div>
+
+    <h2>Messages</h2>
+    @invite.getSortedMessages.map { message =>
+        <div class="row message">
+            <div class="col-xs-3">
+                <p>From: @message.getUser.getFullName</p>
+                <p>@message.getTime</p>
+            </div>
+            <div class="col-xs-6">
+                <p>@message.getMessage</p>
+            </div>
+        </div>
+    }
+
+    @helper.form(routes.InviteController.sendMessage(invite.getId, sessionUser.getId)) {
+        <h2>Send a new message</h2>
+        @if(messageForm.hasGlobalErrors) {
+            <p class="error red-text">
+            @messageForm.globalError.message
+            </p>
+        }
+        <p>
+            @form.textarea(messageForm("message"))
+        </p>
+
+        @form.submit("Send")
+    }
 }

@@ -38,6 +38,11 @@ invite.withdrawn = Invite has been withdrawn
 invite.resend = Invite has been resend
 invite.reject = Invite has been rejected
 
+# Message
+message.sent = Message has been sent
+message.empty = You cannot send an empty message
+message = Send new message
+
 # Profile
 profileText = A basic profile description
 profileImage = Profile image
