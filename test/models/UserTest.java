@@ -113,7 +113,7 @@ public class UserTest extends WithApplication {
         assertEquals(retrievedUser.getSkillValues().size(), 0);
 
         // Add skill to user
-        SkillValue uSkill = new SkillValue(retrievedUser, programming, 8);
+        SkillValueUser uSkill = new SkillValueUser(retrievedUser, programming, 8);
         uSkill.save();
 
         retrievedUser = User.findById(createdUser.getId());

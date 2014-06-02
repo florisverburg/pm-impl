@@ -97,6 +97,11 @@ public class PracticalController extends Controller {
         return ok(list.render(user.getPracticals(), practicalForm));
     }
 
+    /**
+     * Edit a practical
+     * @param id The id of the practical to edit
+     * @return Whether the practical is successfully edited
+     */
     @Secure.Authenticated({User.Type.Admin, User.Type.Teacher})
     public static Result edit(long id) {
         User user = Secure.getUser();

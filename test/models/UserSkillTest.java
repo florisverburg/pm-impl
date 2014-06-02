@@ -17,8 +17,8 @@ public class UserSkillTest extends WithApplication {
 
     private User user;
     private Skill skill;
-    private List<SkillValue> skillValues;
-    private SkillValue skillValue1;
+    private List<SkillValueUser> skillValues;
+    private SkillValueUser skillValue1;
 
     /**
      * Setup method for the UserSkillTest

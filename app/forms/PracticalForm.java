@@ -1,9 +1,7 @@
 package forms;
 
 import com.avaje.ebean.Ebean;
-import helpers.Secure;
 import models.*;
-import play.Logger;
 import play.data.validation.*;
 
 import java.util.ArrayList;

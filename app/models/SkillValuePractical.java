@@ -19,6 +19,12 @@ public class SkillValuePractical extends SkillValue {
     @Constraints.Required
     protected Practical practical;
 
+    /**
+     * Create a new skill value based on a practical
+     * @param practical The practical it is linked to
+     * @param skill The skill that is valued
+     * @param value The value of the skill
+     */
     public SkillValuePractical(Practical practical, Skill skill, Integer value) {
         this.practical = practical;
         this.skill = skill;
