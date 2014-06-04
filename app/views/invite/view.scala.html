@@ -49,7 +49,7 @@
         </div>
     }
 
-    @helper.form(routes.InviteController.sendMessage(invite.getId, sessionUser.getId)) {
+    @helper.form(routes.InviteController.sendMessage(invite.getId())) {
         <h2>Send a new message</h2>
         @if(messageForm.hasGlobalErrors) {
             <p class="error red-text">

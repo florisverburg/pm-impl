@@ -77,12 +77,9 @@ public class InviteController extends Controller {
     /**
      * Method to send a message
      * @param inviteId of the invite form the message
-     * @param userId of the user that sends the message
      * @return redirect to the invite view
      */
-    @Secure.Authenticated
-    public static Result sendMessage(long inviteId, long userId) {
-        User user = User.findById(userId);
+    public static Result sendMessage(long inviteId) {
         Form<MessageForm> messageForm = form(MessageForm.class).bindFromRequest();
         Invite invite = Invite.findById(inviteId);
         if(messageForm.hasErrors()) {
@@ -90,7 +87,7 @@ public class InviteController extends Controller {
             return badRequest(view.render(invite, form(MessageForm.class)));
         }
         else {
-            Message message = new Message(invite, user, messageForm.get().getMessage());
+            Message message = new Message(invite, Secure.getUser(), messageForm.get().getMessage());
             message.save();
             flash("success", "message.sent");
             return redirect(
