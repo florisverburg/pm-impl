@@ -82,38 +82,22 @@
         </div>
     }
 }
-    
+
 <h2>Recommended Practical Groups:</h2>
 @Recommendation.getRandomRecommendations(practical, sessionUser).map { practicalGroup =>
-@if(!practicalGroup.getGroupMembers.contains(sessionUser)) {
-<div class="row">
-    <div class="col-xs-4">
-        <a href="@routes.PracticalController.viewPracticalGroup(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
-    </div>
-    <div class="col-xs-8">
-        @if(practicalGroupOfUser.getOwner().equals(sessionUser)) {
-        <a href="@routes.PracticalController.sendInvitePracticalGroup(practicalGroup.getId())" class="btn btn-primary">Invite</a>
-        }
-    </div>
-</div>
-}
-    }
-    <h2>Random Recommended Practical Groups:</h2>
-    @Recommendation.getRecommendations(practical, sessionUser).map { practicalGroup =>
-        @if(practicalGroup.getGroupMembers.contains(sessionUser)) {
-        } else {
-        <div class="row">
-            <div class="col-xs-4">
-                <a href="@routes.PracticalController.viewPracticalGroup(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
-            </div>
-            <div class="col-xs-8">
-                @if(practicalGroupOfUser.getOwner().equals(sessionUser)) {
-                <a href="@routes.PracticalController.sendInvitePracticalGroup(practicalGroup.getId())" class="btn btn-primary">Invite</a>
-                }
-            </div>
+    @if(!practicalGroup.getGroupMembers.contains(sessionUser)) {
+    <div class="row">
+        <div class="col-xs-4">
+            <a href="@routes.PracticalController.viewPracticalGroup(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
         </div>
-        }
+        <div class="col-xs-8">
+            @if(practicalGroupOfUser.getOwner().equals(sessionUser)) {
+            <a href="@routes.PracticalController.sendInvitePracticalGroup(practicalGroup.getId())" class="btn btn-primary">Invite</a>
+            }
+        </div>
+    </div>
     }
+}
 
 <h2>Practical Groups:</h2>
 @practical.getPracticalGroups().map { practicalGroup =>

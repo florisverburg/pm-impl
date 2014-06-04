@@ -14,7 +14,11 @@ import static com.avaje.ebean.Expr.or;
  * Class that will be used for the generation of recommendations
  */
 public final class Recommendation {
-    private static final int MAXAMOUNTOFRECCOMENDATIONS = 5;
+
+    /**
+     * The maximum number of recommendations
+     */
+    private static final int MAX_RECOMMENDATIONS = 5;
 
     /**
      * Method to prevent instantiation
@@ -33,7 +37,7 @@ public final class Recommendation {
      */
     public static List<PracticalGroup> getRandomRecommendations(Practical practical, User user) {
         List<PracticalGroup> newRecommendations = new ArrayList<PracticalGroup>();
-        for (int i = 0; i < MAXAMOUNTOFRECCOMENDATIONS; i++) {
+        for (int i = 0; i < MAX_RECOMMENDATIONS; i++) {
             newRecommendations.add(getRandomRecommendation(practical.getPracticalGroups()));
         }
         return newRecommendations;
@@ -136,7 +140,7 @@ public final class Recommendation {
      */
     public static int calculateAverageForSkill(
             Skill skill, PracticalGroup practicalGroupOfUser, PracticalGroup practicalGroupToCompare) {
-        List<UserSkill> userSkillsPracticalGroup = UserSkill.find.where().and(
+        List<SkillValue> userSkillsPracticalGroup = SkillValue.find.where().and(
                 eq("skill.name", skill.getName()),
                 or(
                         eq("user.practicalGroups.id", practicalGroupOfUser.getId()),
@@ -144,7 +148,7 @@ public final class Recommendation {
                 )
         ).findList();
         int average = 0;
-        for(UserSkill userSkill : userSkillsPracticalGroup) {
+        for(SkillValue userSkill : userSkillsPracticalGroup) {
             // calculate average
             average += userSkill.getValue();
         }
@@ -160,7 +164,7 @@ public final class Recommendation {
      * @return list where an addition has been made
      */
     public static List<Integer> addIntegerToListGivenIndex(List<Integer> list, int index, int item) {
-        for(int i = index; i < MAXAMOUNTOFRECCOMENDATIONS-1 && i < list.size(); i++) {
+        for(int i = index; i < MAX_RECOMMENDATIONS -1 && i < list.size(); i++) {
             list.set(i+1, list.get(i));
         }
         list.set(index, item);
@@ -176,7 +180,7 @@ public final class Recommendation {
      */
     public static List<PracticalGroup> addPracticalGroupToListGivenIndex(
             List<PracticalGroup> list, int index, PracticalGroup item) {
-        for(int i = index; i < MAXAMOUNTOFRECCOMENDATIONS-1 && i < list.size(); i++) {
+        for(int i = index; i < MAX_RECOMMENDATIONS -1 && i < list.size(); i++) {
             list.set(i+1, list.get(i));
         }
         list.set(index, item);
