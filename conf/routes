@@ -24,11 +24,12 @@ GET         /profile/edit                     controllers.Profile.edit()
 POST        /profile/edit                     controllers.Profile.save()
 
 # Invite
+GET         /invite/:id/accept                controllers.InviteController.acceptInvite(id: Long)
+GET         /invite/:id/withdraw              controllers.InviteController.withdrawInvite(id: Long)
+GET         /invite/:id/resend                controllers.InviteController.resendInvite(id: Long)
+GET         /invite/:id/reject                controllers.InviteController.rejectInvite(id: Long)
+GET         /invite/:id/message               controllers.InviteController.sendMessage(id: Long)
 GET         /invite/:id                       controllers.InviteController.view(id: Long)
-GET         /acceptInvite/:id                 controllers.InviteController.acceptInvite(id: Long)
-GET         /withdrawInvite/:id               controllers.InviteController.withdrawInvite(id: Long)
-GET         /resendInvite/:id                 controllers.InviteController.resendInvite(id: Long)
-GET         /rejectInvite/:id                 controllers.InviteController.rejectInvite(id: Long)
 
 # Authentication
 GET         /login                            controllers.Authentication.login()
