@@ -23,10 +23,10 @@
             <legend>Skills</legend>
             @user.findAllSkills().map { skill =>
                 <p>@{skill.getName}:
-                    @if(skill.getUserSkills.size == 0) {
+                    @if(skill.getSkillValues.size == 0) {
                         Not yet provided.
                     } else {
-                        @skill.getUserSkills.get(0).getValue
+                        @skill.getSkillValues.get(0).getValue
                     }
                 </p>
             }

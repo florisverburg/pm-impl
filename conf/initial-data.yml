@@ -65,15 +65,15 @@ skills:
 
 # UserSkills
 userSkills:
-  - &userSkill1 !!models.UserSkill
+  - &userSkill1 !!models.SkillValueUser
     value: 8
     user: *user3
     skill: *skill1
-  - &userSkill2 !!models.UserSkill
+  - &userSkill2 !!models.SkillValueUser
     value: 6
     user: *user4
     skill: *skill1
-  - &userSkill3 !!models.UserSkill
+  - &userSkill3 !!models.SkillValueUser
     value: 7
     user: *user3
     skill: *skill2
@@ -221,16 +221,21 @@ invites:
 #Identities
 identities:
   - &identity1 !!models.PasswordIdentity
+    user: *user1
+    email: teacher@example.com
+    password: teacher
+
+  - &identity2 !!models.PasswordIdentity
     user: *user3
     email: defaultuser1@example.com
     password: freak
 
-  - &identity2 !!models.PasswordIdentity
+  - &identity3 !!models.PasswordIdentity
     user: *user4
     email: defaultuser2@example.com
     password: floor
 
-  - &identity3 !!models.PasswordIdentity
+  - &identity4 !!models.PasswordIdentity
     user: *user5
     email: defaultuser3@example.com
     password: 58bvo

@@ -4,7 +4,6 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import play.test.WithApplication;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -111,16 +110,16 @@ public class UserTest extends WithApplication {
 
         User retrievedUser = User.findById(createdUser.getId());
         // Check values
-        assertEquals(retrievedUser.getUserSkills().size(), 0);
+        assertEquals(retrievedUser.getSkillValues().size(), 0);
 
         // Add skill to user
-        UserSkill uSkill = new UserSkill(retrievedUser, programming, 8);
+        SkillValueUser uSkill = new SkillValueUser(retrievedUser, programming, 8);
         uSkill.save();
 
         retrievedUser = User.findById(createdUser.getId());
         // Check values
-        assertEquals(retrievedUser.getUserSkills().size(), 1);
-        assertEquals(retrievedUser.getUserSkills().get(0).getSkill().getName(), programming.getName());
+        assertEquals(retrievedUser.getSkillValues().size(), 1);
+        assertEquals(retrievedUser.getSkillValues().get(0).getSkill().getName(), programming.getName());
     }
     
     @Test

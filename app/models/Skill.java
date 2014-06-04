@@ -57,7 +57,7 @@ public class Skill extends Model {
      * One-to-many relationship between user skill and skill
      */
     @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
-    private List<UserSkill> userSkills = new ArrayList<UserSkill>();
+    private List<SkillValue> skillValues = new ArrayList<SkillValue>();
 
     /**
      * Finder defined for the Skills, used in the many-to-many relationship
@@ -83,18 +83,18 @@ public class Skill extends Model {
 
     /**
      * Add a user skill to the list for the many-to-many relationship
-     * @param userSkill to add to the list
+     * @param skillValue to add to the list
      */
-    public void addUserSkill(UserSkill userSkill) {
-        userSkills.add(userSkill);
+    public void addUserSkill(SkillValue skillValue) {
+        skillValues.add(skillValue);
     }
 
     /**
      * Getter for the user skills
      * @return user skills
      */
-    public List<UserSkill> getUserSkills() {
-        return userSkills;
+    public List<SkillValue> getSkillValues() {
+        return skillValues;
     }
 
     /**

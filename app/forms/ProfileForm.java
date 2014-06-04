@@ -1,7 +1,6 @@
 package forms;
 
 import com.avaje.ebean.Ebean;
-import helpers.Secure;
 import models.*;
 import play.data.validation.*;
 
@@ -80,10 +79,12 @@ public class ProfileForm {
         this.email = user.getEmail();
         this.profileText = user.getProfileText();
         this.profileImage = user.getProfileImage();
-        for(Skill skill : Secure.getUser().findAllSkills()) {
-            List<UserSkill> uSkills = skill.getUserSkills();
+
+        // Add the skills to the form and check if already set
+        for(Skill skill : user.findAllSkills()) {
+            List<SkillValue> uSkills = skill.getSkillValues();
             if(uSkills.isEmpty()) {
-                UserSkill uSkill = new UserSkill(Secure.getUser(), skill, 1);
+                SkillValue uSkill = new SkillValueUser(user, skill, 1);
                 profileSkills.add(new SkillsForm(uSkill));
             }
             else {
@@ -256,10 +257,10 @@ public class ProfileForm {
             }
         }
 
-        Ebean.delete(UserSkill.find.where().eq("user.id", user.getId()).findList());
+        Ebean.delete(SkillValue.find.where().eq("user.id", user.getId()).findList());
 
         for(SkillsForm sForm : profileSkills) {
-            sForm.updateUserSkill(Secure.getUser());
+            sForm.updateUserSkill(user);
         }
 
         user.save();
