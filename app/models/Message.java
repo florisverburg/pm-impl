@@ -70,14 +70,6 @@ public class Message extends Model implements Comparable<Message> {
     }
 
     /**
-     * Setter for the id
-     * @param id the id
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Getter for the timestamp.
      * @return the timestamp
      */

@@ -1,21 +1,20 @@
 package controllers;
 
 import models.*;
-import org.junit.Before;
-import org.junit.Test;
-import play.test.WithApplication;
+import org.junit.*;
+
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.*;
+
 import play.mvc.*;
 import static play.test.Helpers.*;
-
-import static play.test.Helpers.fakeApplication;
-import static play.test.Helpers.inMemoryDatabase;
+import play.test.WithApplication;
 
 /**
  * Created by Marijn Goedegebure on 28-5-2014.
+ * Invite controller test
  */
-public class InviteControllerTest extends WithApplication {
-
+public class InviteTest extends WithApplication {
     @Before
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));

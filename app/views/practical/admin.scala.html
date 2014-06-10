@@ -19,7 +19,6 @@
             </a>
         </p>
 
-
         <h2>Edit</h2>
         <p>Here you are able to change the practical settings and preference.
             These changes will take effect immediately.
@@ -49,5 +48,12 @@
 
             @form.submit("Save")
         }
+
+        <h2>Currently enrolled participants:</h2>
+        <ul>
+        @practical.getUsers().map { user =>
+            <li>@user.getFullName()</li>
+        }
+        </ul>
     </div>
 }

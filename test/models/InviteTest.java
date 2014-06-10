@@ -20,7 +20,7 @@ import static play.test.Helpers.inMemoryDatabase;
 
 /**
  * Created by Marijn Goedegebure on 19-5-2014.
- * Class to test the model representation of the database table of invite
+ * Class to info the model representation of the database table of invite
  */
 public class InviteTest extends WithApplication {
 
@@ -170,7 +170,7 @@ public class InviteTest extends WithApplication {
         Invite invite3 = new Invite(createdPractical, createdUser1, createdUser3);
         invite3.save();
 
-        // Check if the invite that we are going to test is pending
+        // Check if the invite that we are going to info is pending
         assertEquals(invite2.getState(), Invite.State.Pending);
 
         // Accept the invite
@@ -251,7 +251,7 @@ public class InviteTest extends WithApplication {
         Invite invite5 = new Invite(createdPractical, createdUser4, createdUser2);
         invite5.save();
 
-        // Check if the invite that we are going to test is pending
+        // Check if the invite that we are going to info is pending
         assertEquals(invite1.getState(), Invite.State.Pending);
 
         // Accept the invite

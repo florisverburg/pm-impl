@@ -28,7 +28,7 @@ public class PracticalGroupTest extends WithApplication {
     }
 
     /**
-     * Method to test whether the creation of a skill has been successful
+     * Method to info whether the creation of a skill has been successful
      */
     @Test
     public void testCreationSkill() {
@@ -46,7 +46,7 @@ public class PracticalGroupTest extends WithApplication {
     }
 
     /**
-     * Method to test the usage of the skill's setters
+     * Method to info the usage of the skill's setters
      */
     @Test
     public void testSetters() {
@@ -64,7 +64,7 @@ public class PracticalGroupTest extends WithApplication {
     }
 
     /**
-     * Method to test addGroupMember
+     * Method to info addGroupMember
      */
     @Test
     public void testAddGroupMember() {
@@ -91,7 +91,7 @@ public class PracticalGroupTest extends WithApplication {
     }
 
     /**
-     * Method to test findWithPracticalAndUser
+     * Method to info findWithPracticalAndUser
      */
     @Test
     public void testFindWithPracticalAndUser() {
@@ -125,7 +125,7 @@ public class PracticalGroupTest extends WithApplication {
     }
 
     /**
-     * Method to test leaveGroup
+     * Method to info leaveGroup
      * Start:
      * CreatedPracticalGroup:
      * Owner: user1
@@ -175,7 +175,7 @@ public class PracticalGroupTest extends WithApplication {
     }
 
     /**
-     * Method to test leaveGroup
+     * Method to info leaveGroup
      * Start:
      * CreatedPracticalGroup:
      * Owner: user1

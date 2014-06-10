@@ -27,7 +27,7 @@ public class SkillTest extends WithApplication {
     }
 
     /**
-     * Method to test whether the creation of a skill has been successful
+     * Method to info whether the creation of a skill has been successful
      */
     @Test
     public void testCreationSkill() {
@@ -45,7 +45,7 @@ public class SkillTest extends WithApplication {
     }
 
     /**
-     * Method to test the usage of the skill's setters
+     * Method to info the usage of the skill's setters
      */
     @Test
     public void testSetters() {

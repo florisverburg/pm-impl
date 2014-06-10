@@ -157,7 +157,7 @@ public class ProfileTest extends WithApplication {
         HashMap<String, String> body = new HashMap<String, String>();
         body.put("firstName", "NewFirst Name");
         body.put("lastName", "New last Name");
-        body.put("email", "newemail@test.com");
+        body.put("email", "newemail@info.com");
         body.put("profileImage", "Gravatar");
         List<Skill> skills = Skill.findAll();
         for(int i = 0; i < skills.size(); i++) {
@@ -170,13 +170,13 @@ public class ProfileTest extends WithApplication {
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
         );
-        User newUser = User.findByEmail("newemail@test.com");
+        User newUser = User.findByEmail("newemail@info.com");
 
         assertEquals(SEE_OTHER, status(result));
         assertEquals("profile.saved", flash(result).get("success"));
         assertEquals("NewFirst Name New last Name", newUser.getFullName());
         assertEquals(user.getId(), newUser.getId());
-        assertEquals("newemail@test.com", newUser.getEmail());
+        assertEquals("newemail@info.com", newUser.getEmail());
     }
 
     @Test

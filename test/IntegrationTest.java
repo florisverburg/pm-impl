@@ -12,7 +12,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class IntegrationTest {
 
     /**
-     * add your integration test here
+     * add your integration info here
      * in this example we just check if the welcome page is being shown
      */
     @Test

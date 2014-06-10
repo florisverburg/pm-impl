@@ -510,7 +510,7 @@ public class User extends Model {
         String message = "Verify your account by opening this link: " + link;
 
         // Avoid testing accounts
-        if(!this.getEmail().contains("@example.com") && !this.getEmail().contains("@test.com")) {
+        if(!this.getEmail().contains("@example.com") && !this.getEmail().contains("@info.com")) {
             mail.send(message);
         }
     }

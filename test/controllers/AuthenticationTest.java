@@ -203,6 +203,30 @@ public class AuthenticationTest extends WithApplication {
     }
 
     @Test
+    public void unknownValidation() {
+        Result result = callAction(routes.ref.Authentication.verify("test@nonvalidemail.com", "nonValid"));
+
+        assertEquals(SEE_OTHER, status(result));
+        assertEquals("error.unknownValidation", flash(result).get("error"));
+    }
+
+    @Test
+    public void unknownValidation2() {
+        Result result = callAction(routes.ref.Authentication.verify("unverifiedemail@example.com", null));
+
+        assertEquals(SEE_OTHER, status(result));
+        assertEquals("error.unknownValidation", flash(result).get("error"));
+    }
+
+    @Test
+    public void wrongToken() {
+        Result result = callAction(routes.ref.Authentication.verify("unverifiedemail@example.com", "nonValid"));
+
+        assertEquals(SEE_OTHER, status(result));
+        assertEquals("error.wrongToken", flash(result).get("error"));
+    }
+
+    @Test
     public void tokenDeletedAfterVerification() {
         HashMap<String, String> body = new HashMap<String, String>();
         body.put("firstName", "Bob");
