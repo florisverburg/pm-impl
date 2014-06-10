@@ -28,20 +28,20 @@ public class PracticalTest extends WithApplication {
     }
 
     /**
-     * Method to test whether the creation of a skill has been successful
+     * Method to info whether the creation of a skill has been successful
      */
     @Test
     public void testCreationPractical() {
-        Practical createdPractical = new Practical("Created Practical", "Created Practical to test the creation of a practical");
+        Practical createdPractical = new Practical("Created Practical", "Created Practical to info the creation of a practical");
         createdPractical.save();
         // Check the values of the setUp() method
         assertEquals(createdPractical.getName(), "Created Practical");
-        assertEquals(createdPractical.getDescription(), "Created Practical to test the creation of a practical");
+        assertEquals(createdPractical.getDescription(), "Created Practical to info the creation of a practical");
         assertEquals(createdPractical.getSecret().getClass(), String.class);
     }
 
     /**
-     * Method to test the usage of the skill's setters
+     * Method to info the usage of the skill's setters
      */
     @Test
     public void testSetters() {
@@ -64,12 +64,12 @@ public class PracticalTest extends WithApplication {
     @Test
     public void testFindByName() {
         // Test whether the findByEmail returns the correct values
-        Practical createdPractical = new Practical("Created Practical", "Created Practical to test the creation of a practical");
+        Practical createdPractical = new Practical("Created Practical", "Created Practical to info the creation of a practical");
         createdPractical.save();
         createdPractical = Practical.findByName("Created Practical");
         // Check the values of the setUp() method
         assertEquals(createdPractical.getName(), "Created Practical");
-        assertEquals(createdPractical.getDescription(), "Created Practical to test the creation of a practical");
+        assertEquals(createdPractical.getDescription(), "Created Practical to info the creation of a practical");
 
         // retrieve the practical by it's id and by it's email
         Practical retrievedUserById = Practical.findById(createdPractical.getId());

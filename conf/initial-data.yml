@@ -28,8 +28,8 @@ users:
     type: User
     firstName: DefaultUser2
     lastName: Tienen
-    profileImage: None
     email: defaultuser2@example.com
+    profileImage: Gravatar
 
   - &user5 !!models.User
     type: User
@@ -116,9 +116,21 @@ practicals:
     secret: abc
     admin: *user1
     users:
+      - *user1
       - *user4
       - *user5
       - *user6
+
+# PracticalSkills
+practicalSkills:
+  - &practicalSkill1 !!models.SkillValuePractical
+    value: 7
+    practical: *practical1
+    skill: *skill1
+  - &practicalSkill2 !!models.SkillValuePractical
+    value: 3
+    practical: *practical1
+    skill: *skill2
 
 # PracticalGroup
 practicalGroups:
@@ -239,3 +251,11 @@ identities:
     user: *user5
     email: defaultuser3@example.com
     password: 58bvo
+
+#Messages
+messages:
+  - &message1 !!models.Message
+    user: *user3
+    invite: *invite1
+    message: Test message
+    timestamp: 2012-11-22T01:02:03.567Z

@@ -2,7 +2,7 @@ import de.johoop.jacoco4sbt._
 import JacocoPlugin._
 
 //----------------------------------------
-// Setup Jacoco test coverage.
+// Setup Jacoco info coverage.
 // Invocation: jacoco:cover
 // Results: target/jacoco/html/index.html
 // See: https://github.com/sbt/jacoco4sbt

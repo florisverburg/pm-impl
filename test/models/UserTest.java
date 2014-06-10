@@ -11,11 +11,13 @@ import static play.test.Helpers.*;
 
 
 /**
- * Simple test that tests the User model
+ * Simple info that tests the User model
  */
 public class UserTest extends WithApplication {
 
     private User testUser1;
+    private User testUser2;
+    private User testUser3;
 
     /**
      * Setup method for the UserTest
@@ -24,10 +26,12 @@ public class UserTest extends WithApplication {
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
         testUser1 = User.findByName("DefaultUser1");
+        testUser2 = User.findByName("DefaultUser2");
+        testUser3 = User.findByName("Unverified");
     }
 
     /**
-     * Method to test whether the creation of an user has been successful
+     * Method to info whether the creation of an user has been successful
      */
     @Test
     public void testCreationUser() {
@@ -45,10 +49,38 @@ public class UserTest extends WithApplication {
         assertEquals(createdUser.getEmail(), "createduser@example.com");
         assertEquals(createdUser.getType(), User.Type.Admin);
         assertEquals(retrievedUser.getToken().getClass(), String.class);
+        assertFalse(createdUser.hasPassword());
+    }
+
+    @Test
+    public void findUserSkill() {
+        Skill skill = Skill.findByName("Programming");
+        SkillValueUser uSkill = testUser1.findUserSkillBySkill(skill);
+        SkillValueUser uSkill2 = testUser3.findUserSkillBySkill(skill);
+
+        assertNull(uSkill2);
+        assertNotNull(uSkill);
+        assertEquals(uSkill.getValue(), new Integer(8));
+    }
+
+    @Test
+    public void profileImage() {
+        assertEquals(testUser1.getProfileImage(), User.ProfileImage.None);
+        assertTrue(testUser1.getProfileImageUrl().contains("f=y"));
+        assertEquals(testUser2.getProfileImage(), User.ProfileImage.Gravatar);
+        assertFalse(testUser2.getProfileImageUrl().contains("f=y"));
+
+        testUser1.setProfileImage(User.ProfileImage.Gravatar);
+        testUser2.setProfileImage(User.ProfileImage.None);
+
+        assertEquals(testUser1.getProfileImage(), User.ProfileImage.Gravatar);
+        assertFalse(testUser1.getProfileImageUrl().contains("f=y"));
+        assertEquals(testUser2.getProfileImage(), User.ProfileImage.None);
+        assertTrue(testUser2.getProfileImageUrl().contains("f=y"));
     }
 
     /**
-     * Method to test the usage of the user's setters
+     * Method to info the usage of the user's setters
      */
     @Test
     public void testSetters() {
@@ -98,7 +130,7 @@ public class UserTest extends WithApplication {
     }
 
     /**
-     * Skill many-to-many relationship test
+     * Skill many-to-many relationship info
      */
     @Test
     public void testSkillManyToManyRelationship() {
@@ -143,14 +175,19 @@ public class UserTest extends WithApplication {
     }
 
     @Test
-     public void typeTest() {
+    public void typeTest() {
         assertNotEquals(testUser1.getType(), User.Type.Teacher);
         assertEquals(testUser1.getType(), User.Type.User);
     }
 
+    @Test
+    public void passwordTest() {
+        assertTrue(testUser1.hasPassword());
+        assertFalse(testUser3.hasPassword());
+    }
 
     /**
-     * This test might needs to be in the InviteTest class
+     * This info might needs to be in the InviteTest class
      */
     @Test
     public void findPendingInvitesTest() {
