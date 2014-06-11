@@ -26,7 +26,12 @@ public class PracticalGroupController extends Controller {
             return redirect(routes.Application.index());
         }
 
-        return ok(view.render(practicalGroup));
+        // Find my own practical group
+        PracticalGroup ownPracticalGroup = PracticalGroup.findWithPracticalAndUser(
+                practicalGroup.getPractical(),
+                Secure.getUser());
+
+        return ok(view.render(practicalGroup, ownPracticalGroup));
     }
 
     /**
