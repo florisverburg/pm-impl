@@ -83,16 +83,21 @@
     }
 }
 
+<h2>Recommended Skills:</h2>
+@practical.getSkills().map { skill =>
+    @skill.getSkill().getName(): @skill.getValue()<br />
+}
+
 <h2>Recommended Practical Groups:</h2>
-@Recommendation.getRandomRecommendations(practical, sessionUser).map { practicalGroup =>
+@Recommendation.recommend(sessionUser, practical, 1).map { practicalGroup =>
     @if(!practicalGroup.getGroupMembers.contains(sessionUser)) {
     <div class="row">
         <div class="col-xs-4">
-            <a href="@routes.PracticalController.viewPracticalGroup(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
+            <a href="@routes.PracticalGroupController.view(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
         </div>
         <div class="col-xs-8">
             @if(practicalGroupOfUser.getOwner().equals(sessionUser)) {
-            <a href="@routes.PracticalController.sendInvitePracticalGroup(practicalGroup.getId())" class="btn btn-primary">Invite</a>
+            <a href="@routes.PracticalGroupController.sendInvite(practicalGroup.getId())" class="btn btn-primary">Invite</a>
             }
         </div>
     </div>

@@ -1,11 +1,16 @@
-@(practicalGroup: PracticalGroup)
+@(practicalGroup: PracticalGroup, ownPracticalGroup: PracticalGroup)
 
 @main("View - Practical", "view") {
-    @if(practicalGroup.getGroupMembers().contains(Secure.getUser())) {
+    @if(practicalGroup.equals(ownPracticalGroup)) {
         <h1>This is your practical group #@practicalGroup.getId()</h1>
         <h2>Group participants:</h2>
     } else {
         <h1>Practical group #@practicalGroup.getId()</h1>
+        <h2>Average per skill combined:</h2>
+        @Recommendation.average(ownPracticalGroup, practicalGroup).map { case (skill, value) =>
+            @skill.getName(): @value<br />
+        }
+
         <h2>Group participants:</h2>
     }
     @practicalGroup.getGroupMembers().map { user =>
