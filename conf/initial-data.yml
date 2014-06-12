@@ -52,6 +52,48 @@ users:
     email: admin@example.com
     profileImage: None
 
+  - &user8 !!models.User
+    type: User
+    firstName: Freek
+    lastName: van Tienen
+    email: freek@example.com
+    profileImage: None
+
+  - &user9 !!models.User
+    type: User
+    firstName: Floris
+    lastName: Verburg
+    email: floris@example.com
+    profileImage: None
+
+  - &user10 !!models.User
+    type: User
+    firstName: Marijn
+    lastName: Goedegebure
+    email: marijn@example.com
+    profileImage: None
+
+  - &user11 !!models.User
+    type: User
+    firstName: Peter
+    lastName: de Jong
+    email: peter@example.com
+    profileImage: None
+
+  - &user12 !!models.User
+    type: User
+    firstName: Henk
+    lastName: Jansen
+    email: henk@example.com
+    profileImage: None
+
+  - &user13 !!models.User
+    type: User
+    firstName: Jan
+    lastName: Visser
+    email: jan@example.com
+    profileImage: None
+
 # Skills
 skills:
   - &skill1 !!models.Skill
@@ -76,6 +118,54 @@ userSkills:
   - &userSkill3 !!models.SkillValueUser
     value: 7
     user: *user3
+    skill: *skill2
+  - &userSkill4 !!models.SkillValueUser
+    value: 6
+    user: *user8
+    skill: *skill1
+  - &userSkill5 !!models.SkillValueUser
+    value: 7
+    user: *user8
+    skill: *skill2
+  - &userSkill6 !!models.SkillValueUser
+    value: 3
+    user: *user9
+    skill: *skill1
+  - &userSkill7 !!models.SkillValueUser
+    value: 4
+    user: *user9
+    skill: *skill2
+  - &userSkill8 !!models.SkillValueUser
+    value: 8
+    user: *user10
+    skill: *skill1
+  - &userSkill9 !!models.SkillValueUser
+    value: 8
+    user: *user10
+    skill: *skill2
+  - &userSkill10 !!models.SkillValueUser
+    value: 4
+    user: *user11
+    skill: *skill1
+  - &userSkill11 !!models.SkillValueUser
+    value: 5
+    user: *user11
+    skill: *skill2
+  - &userSkill12 !!models.SkillValueUser
+    value: 2
+    user: *user12
+    skill: *skill1
+  - &userSkill13 !!models.SkillValueUser
+    value: 3
+    user: *user12
+    skill: *skill2
+  - &userSkill14 !!models.SkillValueUser
+    value: 9
+    user: *user13
+    skill: *skill1
+  - &userSkill15 !!models.SkillValueUser
+    value: 9
+    user: *user13
     skill: *skill2
 
 # Practical
@@ -120,6 +210,18 @@ practicals:
       - *user4
       - *user5
       - *user6
+  - &practical5 !!models.Practical
+    name: User Test
+    description: Assignment created specifically for the user test
+    secret: abc
+    admin: *user1
+    users:
+      - *user8
+      - *user9
+      - *user10
+      - *user11
+      - *user12
+      - *user13
 
 # PracticalSkills
 practicalSkills:
@@ -130,6 +232,14 @@ practicalSkills:
   - &practicalSkill2 !!models.SkillValuePractical
     value: 3
     practical: *practical1
+    skill: *skill2
+  - &practicalSkill3 !!models.SkillValuePractical
+    value: 6
+    practical: *practical5
+    skill: *skill1
+  - &practicalSkill4 !!models.SkillValuePractical
+    value: 8
+    practical: *practical5
     skill: *skill2
 
 # PracticalGroup
@@ -190,7 +300,32 @@ practicalGroups:
     owner: *user6
     groupMembers:
       - *user6
-
+  - &practicalGroup12 !!models.PracticalGroup
+    practical: *practical5
+    owner: *user8
+    groupMembers:
+      - *user8
+  - &practicalGroup13 !!models.PracticalGroup
+    practical: *practical5
+    owner: *user9
+    groupMembers:
+      - *user9
+      - *user10
+  - &practicalGroup14 !!models.PracticalGroup
+    practical: *practical5
+    owner: *user11
+    groupMembers:
+      - *user11
+  - &practicalGroup15 !!models.PracticalGroup
+    practical: *practical5
+    owner: *user12
+    groupMembers:
+      - *user12
+  - &practicalGroup16 !!models.PracticalGroup
+    practical: *practical5
+    owner: *user13
+    groupMembers:
+      - *user13
 
 # Invites
 invites:
@@ -229,6 +364,11 @@ invites:
     practical: *practical2
     sender: *user4
     receiver: *user3
+  - &invite8 !!models.Invite
+    state: Pending
+    practical: *practical5
+    sender: *user9
+    receiver: *user8
 
 #Identities
 identities:
@@ -251,6 +391,11 @@ identities:
     user: *user5
     email: defaultuser3@example.com
     password: 58bvo
+
+  - &identity5 !!models.PasswordIdentity
+    user: *user10
+    email: marijn@example.com
+    password: 55bvo
 
 #Messages
 messages:
