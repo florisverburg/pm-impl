@@ -52,9 +52,15 @@ public class Authentication extends Controller {
         }
         else {
             // Set the session and redirect to home
+            User user = loginForm.get().getUser();
             session().clear();
-            session("user_id", loginForm.get().getUser().getId().toString());
+            session("user_id", user.getId().toString());
             flash("success", "authentication.loggedIn");
+
+            // Redirect to skills if not set
+            if(user.getSkillValues().size() <= 0) {
+                return redirect(routes.Profile.edit());
+            }
             return redirect(
                     routes.Application.index()
             );
@@ -87,9 +93,15 @@ public class Authentication extends Controller {
         LinkedinIdentity identity = LinkedinIdentity.authenticate(linkedinConnectionConnection);
 
         // Save login to session and redirect to home
+        User user = identity.getUser();
         session().clear();
-        session("user_id", identity.getUser().getId().toString());
+        session("user_id", user.getId().toString());
         flash("success", "authentication.loggedIn");
+
+        // Redirect to skills if not set
+        if(user.getSkillValues().size() <= 0) {
+            return redirect(routes.Profile.edit());
+        }
         return redirect(
                 routes.Application.index()
         );
