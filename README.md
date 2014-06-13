@@ -33,7 +33,7 @@ Below this the environment variables that can be set are listed.
 *The username used for connecting to the SMTP server. (no default and is required)*
 - EMAIL_PASSWORD  
 *The password used for connecting to the SMTP server. (no default and is required)*
-- EMAIL_ADDRESS
+- EMAIL_ADDRESS  
 *The email address. (no default and is required)*
 
 ###Linkedin
