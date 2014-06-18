@@ -27,9 +27,10 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="@{if(active=="index") "active"}"><a id="linkHome" href="@routes.ApplicationController.index()">Home</a></li>
-                        <li class="@{if(active=="about") "active"}"><a id="linkAbout" href="@routes.ApplicationController.about()">About</a></li>
-                        <li class="@{if(active=="contact") "active"}"><a id="linkContact" href="@routes.ApplicationController.contact()">Contact</a></li>
+                        <li class="@{if(active=="index") "active"}"><a id="linkHome" href="@routes.Application.index()">Home</a></li>
+                        <li class="@{if(active=="about") "active"}"><a id="linkAbout" href="@routes.Application.about()">About</a></li>
+                        <li class="@{if(active=="contact") "active"}"><a id="linkContact" href="@routes.Application.contact()">Contact</a></li>
+                        <li class="@{if(active=="howDoesItWork") "active"}"><a id="linkHowDoesItWork" href="@routes.Application.howDoesItWork()">How does it work?</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @user = @{ Secure.getUser() }

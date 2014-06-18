@@ -1,0 +1,58 @@
+@(message: String)
+
+@main("How does it work?", "howDoesItWork") {
+
+    <div class="main-text jumbotron">
+        <h2>How does it work?</h2>
+        <p>
+            @message
+        </p>
+    </div>
+    <div class="container marketing">
+        <hr class="featurette-divider">
+        <div class="row featurette">
+            <div class="col-md-12">
+                <h2>Register and logging in</h2>
+                You can register or log in using the button in the top right corner.
+                By registering and logging in, you will be able make use of the system.
+                You can either register and log in using your email address or by logging in using your LinkedIn account.<br />
+                When logged in, the system gives you the possibility to:
+                <ul>
+                    <li>View your profile</li>
+                    <li>Edit your profile</li>
+                    <li>View the practicals which you are enrolled for</li>
+                    <li>View a specific practical</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="featurette-divider">
+        <div class="row featurette">
+            <div class="col-md-12">
+                <h2>Subscribing to a practical</h2>
+                When you are logged in, you can add a practical to your account.
+                This is done by clicking on the URL that your teacher sent you.
+                A teacher that uses our system will be able to retrieve this URL from the system and email this to the participants.
+            </div>
+        </div>
+        <hr class="featurette-divider">
+        <div class="row featurette">
+            <div class="col-md-12">
+                <h2>Inviting other students</h2>
+                When you are logged in and subscribed to a practical, you can start forming your group.
+                You can go search and invite other participants who are also currently looking for a group.
+                The system also gives you recommendations on which participants to invite, see below for more information about the recommendations.
+            </div>
+        </div>
+        <hr class="featurette-divider">
+        <div class="row featurette">
+            <div class="col-md-12">
+                <h2>Recommendations</h2>
+                To help you quickly find the best group members, we added a recommendation algorithm to the system.
+                This algorithm combines your skills, other peoples skills and the skills filled in by the practical teacher to recommend you other students.
+                The algorithm aims to have a minimal differentiation between a group and the skills filled in by the practical teacher.
+                The teacher's skills are the skills that are recommended for each practical group.
+                Since we only recommend, you can always choose to invite someone else.
+            </div>
+        </div>
+    </div>
+}
