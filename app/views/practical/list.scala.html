@@ -39,13 +39,14 @@
     }
 
     @practicals.map { practical =>
-        <fieldset>
-            <legend>
-                <a href="@routes.PracticalController.view(practical.getId())">@practical.getName()</a>
-            </legend>
-            <label>Description</label><br />
-            @practical.getDescription()<br />
-        </fieldset>
+        <div class="list-group">
+            <a href="@routes.PracticalController.view(practical.getId())" class="list-group-item">
+                <h4 class="list-group-item-heading">@practical.getName() - @practical.getAdmin.getFullName</h4>
+                <p class="list-group-item-text">
+                    @practical.getDescription()
+                </p>
+            </a>
+        </div>
     }
 
 }

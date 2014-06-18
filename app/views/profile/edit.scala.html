@@ -37,15 +37,6 @@
                 @form.textarea(profileForm("profileText"), 'rows->10)
             }
 
-            @form.section {
-                <h2>Skills</h2>
-            } {
-                @helper.repeat(profileForm("profileSkills")) { skillField =>
-                    @form.hidden(skillField("name"), 'type -> "hidden")
-                    @form.slider(skillField("value"), '_label -> skillField("name").value.head)
-                }
-            }
-
             @form.submit("Save")
         }
     </div>

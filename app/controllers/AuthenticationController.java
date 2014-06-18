@@ -110,7 +110,7 @@ public class AuthenticationController extends Controller {
 
         // Redirect to skills if not set
         if(user.getSkillValues().size() <= 0) {
-            return redirect(routes.ProfileController.edit());
+            return redirect(routes.ProfileController.editSkills());
         }
         return redirect(
                 routes.ApplicationController.index()

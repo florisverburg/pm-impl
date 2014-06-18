@@ -1,6 +1,5 @@
 package forms;
 
-import com.avaje.ebean.Ebean;
 import models.*;
 import play.data.validation.*;
 
@@ -25,12 +24,6 @@ public class ProfileForm extends RegisterForm {
     private User.ProfileImage profileImage;
 
     /**
-     * The list with skill forms
-     */
-    @Constraints.Required(groups = {All.class})
-    private List<SkillsForm> profileSkills = new ArrayList<SkillsForm>();
-
-    /**
      * Generate an empty form
      */
     public ProfileForm() {
@@ -47,18 +40,6 @@ public class ProfileForm extends RegisterForm {
         this.email = user.getEmail();
         this.profileText = user.getProfileText();
         this.profileImage = user.getProfileImage();
-
-        // Add the skills to the form and check if already set
-        for(Skill skill : user.findAllSkills()) {
-            List<SkillValue> uSkills = skill.getSkillValues();
-            if(uSkills.isEmpty()) {
-                SkillValue uSkill = new SkillValueUser(user, skill, 1);
-                profileSkills.add(new SkillsForm(uSkill));
-            }
-            else {
-                profileSkills.add(new SkillsForm(uSkills.get(0)));
-            }
-        }
     }
 
     /**
@@ -91,22 +72,6 @@ public class ProfileForm extends RegisterForm {
      */
     public void setProfileImage(User.ProfileImage profileImage) {
         this.profileImage = profileImage;
-    }
-
-    /**
-     * Gets the profile skills from the form
-     * @return The profile skills
-     */
-    public List<SkillsForm> getProfileSkills() {
-        return profileSkills;
-    }
-
-    /**
-     * Sets the profile skills that are shown in the form
-     * @param profileSkills The profile skills
-     */
-    public void setProfileSkills(List<SkillsForm> profileSkills) {
-        this.profileSkills = profileSkills;
     }
 
     /**
@@ -143,12 +108,6 @@ public class ProfileForm extends RegisterForm {
                     identity.save();
                 }
             }
-        }
-
-        Ebean.delete(SkillValue.find.where().eq("user.id", user.getId()).findList());
-
-        for(SkillsForm sForm : profileSkills) {
-            sForm.updateUserSkill(user);
         }
 
         user.save();
