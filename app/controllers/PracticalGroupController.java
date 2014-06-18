@@ -1,6 +1,5 @@
 package controllers;
 
-import helpers.Secure;
 import models.*;
 import play.mvc.*;
 import views.html.practicalGroup.view;
@@ -23,7 +22,7 @@ public class PracticalGroupController extends Controller {
         // Check if the user is enrolled for the practical
         if(!Secure.getUser().getPracticals().contains(practicalGroup.getPractical())){
             flash("error", "practical.userIsNotEnrolled");
-            return redirect(routes.Application.index());
+            return redirect(routes.ApplicationController.index());
         }
 
         // Find my own practical group

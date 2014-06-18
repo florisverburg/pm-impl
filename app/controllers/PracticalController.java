@@ -1,7 +1,6 @@
 package controllers;
 
 import forms.PracticalForm;
-import helpers.Secure;
 import models.*;
 import play.data.*;
 import play.mvc.*;
@@ -30,7 +29,7 @@ public class PracticalController extends Controller {
         if(practicalToRender == null) {
             // When practical does not exist, show correct error
             flash("error", "practical.doesNotExist");
-            return redirect(routes.Application.index());
+            return redirect(routes.ApplicationController.index());
         }
         else if (practicalToRender.getUsers().contains(user)){
             // Checks of the user is not already a part of the practical

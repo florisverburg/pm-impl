@@ -3,9 +3,9 @@
 # ~~~~
 
 # Application
-GET         /                                 controllers.Application.index()
-GET         /about                            controllers.Application.about()
-GET         /contact                          controllers.Application.contact()
+GET         /                                 controllers.ApplicationController.index()
+GET         /about                            controllers.ApplicationController.about()
+GET         /contact                          controllers.ApplicationController.contact()
 
 # Practical
 GET         /practical                        controllers.PracticalController.list()
@@ -19,9 +19,9 @@ GET         /practical/:id/subscribe          controllers.PracticalController.re
 GET         /practical/:id/delete             controllers.PracticalController.delete(id: Long)
 
 # Profile
-GET         /profile                          controllers.Profile.view()
-GET         /profile/edit                     controllers.Profile.edit()
-POST        /profile/edit                     controllers.Profile.save()
+GET         /profile                          controllers.ProfileController.view()
+GET         /profile/edit                     controllers.ProfileController.edit()
+POST        /profile/edit                     controllers.ProfileController.save()
 
 # Invite
 GET         /invite/:id/accept                controllers.InviteController.acceptInvite(id: Long)
@@ -32,13 +32,13 @@ GET         /invite/:id/message               controllers.InviteController.sendM
 GET         /invite/:id                       controllers.InviteController.view(id: Long)
 
 # Authentication
-GET         /login                            controllers.Authentication.login()
-POST        /login                            controllers.Authentication.authenticate()
-GET         /register                         controllers.Authentication.login()
-POST        /register                         controllers.Authentication.registration()
-GET         /logout                           controllers.Authentication.logout()
-GET         /auth                             controllers.Authentication.auth(code: String ?= "", state: String, error: String ?= "", error_description: String ?= "")
-GET         /verify/:mail/:token              controllers.Authentication.verify(mail: String, token: String)
+GET         /login                            controllers.AuthenticationController.login()
+POST        /login                            controllers.AuthenticationController.authenticate()
+GET         /register                         controllers.AuthenticationController.login()
+POST        /register                         controllers.AuthenticationController.registration()
+GET         /logout                           controllers.AuthenticationController.logout()
+GET         /auth                             controllers.AuthenticationController.auth(code: String ?= "", state: String, error: String ?= "", error_description: String ?= "")
+GET         /verify/:mail/:token              controllers.AuthenticationController.verify(mail: String, token: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                     controllers.Assets.at(path="/public", file)

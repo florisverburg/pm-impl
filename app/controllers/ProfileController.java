@@ -1,7 +1,6 @@
 package controllers;
 
 import forms.ProfileForm;
-import helpers.Secure;
 import models.*;
 import play.data.*;
 import play.data.validation.*;
@@ -17,7 +16,7 @@ import static play.data.Form.form;
  * Profile controller to edit, view and manage profiles
  */
 @Secure.Authenticated
-public class Profile extends Controller {
+public class ProfileController extends Controller {
 
     /**
      * Shows the current users' view
@@ -60,7 +59,7 @@ public class Profile extends Controller {
             // Save the user
             profileForm.get().updateUser(user);
             flash("success", "profile.saved");
-            return redirect(routes.Profile.view());
+            return redirect(routes.ProfileController.view());
         }
     }
 }

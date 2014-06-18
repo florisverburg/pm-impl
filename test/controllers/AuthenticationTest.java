@@ -22,7 +22,7 @@ public class AuthenticationTest extends WithApplication {
     @Test
     public void authenticationPage() {
         Result result = callAction(
-                controllers.routes.ref.Authentication.login()
+                routes.ref.AuthenticationController.login()
         );
 
         assertEquals(OK, status(result));
@@ -31,7 +31,7 @@ public class AuthenticationTest extends WithApplication {
     @Test
     public void authenticationSuccess() {
         Result result = callAction(
-                controllers.routes.ref.Authentication.authenticate(),
+                routes.ref.AuthenticationController.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
                         "email", "defaultuser1@example.com",
                         "password", "defaultuser1"))
@@ -43,7 +43,7 @@ public class AuthenticationTest extends WithApplication {
     @Test
     public void authenticationFail() {
         Result result = callAction(
-                controllers.routes.ref.Authentication.authenticate(),
+                routes.ref.AuthenticationController.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
                         "email", "defaultuser1@example.com",
                         "password", "wrongpass"))
@@ -65,7 +65,7 @@ public class AuthenticationTest extends WithApplication {
         body.put("passwordRepeat", "myVeryGoodPass");
 
         Result result = callAction(
-                routes.ref.Authentication.registration(),
+                routes.ref.AuthenticationController.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
         assertEquals(BAD_REQUEST, status(result));
@@ -84,7 +84,7 @@ public class AuthenticationTest extends WithApplication {
         body.put("passwordRepeat", "wrong");
 
         Result result = callAction(
-                routes.ref.Authentication.registration(),
+                routes.ref.AuthenticationController.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
         assertEquals(BAD_REQUEST, status(result));
@@ -102,7 +102,7 @@ public class AuthenticationTest extends WithApplication {
         body.put("passwordRepeat", "bad");
 
         Result result = callAction(
-                routes.ref.Authentication.registration(),
+                routes.ref.AuthenticationController.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
         assertEquals(BAD_REQUEST, status(result));
@@ -120,7 +120,7 @@ public class AuthenticationTest extends WithApplication {
         body.put("passwordRepeat", "myVeryGoodPass");
 
         Result result = callAction(
-                routes.ref.Authentication.registration(),
+                routes.ref.AuthenticationController.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
 
@@ -138,7 +138,7 @@ public class AuthenticationTest extends WithApplication {
     @Test
     public void notAuthenticated() {
         Result result = callAction(
-                controllers.routes.ref.Authentication.logout(),
+                routes.ref.AuthenticationController.logout(),
                 fakeRequest()
         );
         assertEquals(SEE_OTHER, status(result));
@@ -148,7 +148,7 @@ public class AuthenticationTest extends WithApplication {
     @Test
     public void authenticated() {
         Result result = callAction(
-                controllers.routes.ref.Authentication.logout(),
+                routes.ref.AuthenticationController.logout(),
                 fakeRequest().withSession("user_id", "500")
         );
         assertEquals(SEE_OTHER, status(result));
@@ -165,7 +165,7 @@ public class AuthenticationTest extends WithApplication {
         body.put("passwordRepeat", "myVeryGoodPass");
 
         callAction(
-                routes.ref.Authentication.registration(),
+                routes.ref.AuthenticationController.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
 
@@ -188,11 +188,11 @@ public class AuthenticationTest extends WithApplication {
         body.put("passwordRepeat", "myVeryGoodPass");
 
         callAction(
-                controllers.routes.ref.Authentication.registration(),
+                routes.ref.AuthenticationController.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
         Result result = callAction(
-                controllers.routes.ref.Authentication.authenticate(),
+                routes.ref.AuthenticationController.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
                         "email", "mybob@example.com",
                         "password", "myVeryGoodPass"))
@@ -204,7 +204,7 @@ public class AuthenticationTest extends WithApplication {
 
     @Test
     public void unknownValidation() {
-        Result result = callAction(routes.ref.Authentication.verify("test@nonvalidemail.com", "nonValid"));
+        Result result = callAction(routes.ref.AuthenticationController.verify("test@nonvalidemail.com", "nonValid"));
 
         assertEquals(SEE_OTHER, status(result));
         assertEquals("error.unknownValidation", flash(result).get("error"));
@@ -212,7 +212,7 @@ public class AuthenticationTest extends WithApplication {
 
     @Test
     public void unknownValidation2() {
-        Result result = callAction(routes.ref.Authentication.verify("unverifiedemail@example.com", null));
+        Result result = callAction(routes.ref.AuthenticationController.verify("unverifiedemail@example.com", null));
 
         assertEquals(SEE_OTHER, status(result));
         assertEquals("error.unknownValidation", flash(result).get("error"));
@@ -220,7 +220,7 @@ public class AuthenticationTest extends WithApplication {
 
     @Test
     public void wrongToken() {
-        Result result = callAction(routes.ref.Authentication.verify("unverifiedemail@example.com", "nonValid"));
+        Result result = callAction(routes.ref.AuthenticationController.verify("unverifiedemail@example.com", "nonValid"));
 
         assertEquals(SEE_OTHER, status(result));
         assertEquals("error.wrongToken", flash(result).get("error"));
@@ -237,7 +237,7 @@ public class AuthenticationTest extends WithApplication {
         body.put("passwordRepeat", "myVeryGoodPass");
 
         callAction(
-                routes.ref.Authentication.registration(),
+                routes.ref.AuthenticationController.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
 
@@ -249,7 +249,7 @@ public class AuthenticationTest extends WithApplication {
         assertNotNull(user.getToken());
         assertNotNull(user.getEmail());
 
-        callAction(routes.ref.Authentication.verify(user.getEmail(), user.getToken()));
+        callAction(routes.ref.AuthenticationController.verify(user.getEmail(), user.getToken()));
 
         user = User.findByEmail("mybob@example.com");
 
@@ -269,14 +269,14 @@ public class AuthenticationTest extends WithApplication {
         body.put("passwordRepeat", "myVeryGoodPass");
 
         callAction(
-                controllers.routes.ref.Authentication.registration(),
+                routes.ref.AuthenticationController.registration(),
                 fakeRequest().withFormUrlEncodedBody(body));
 
         User user = User.findByEmail("mybob@example.com");
-        callAction(routes.ref.Authentication.verify(user.getEmail(), user.getToken()));
+        callAction(routes.ref.AuthenticationController.verify(user.getEmail(), user.getToken()));
 
         Result result = callAction(
-                controllers.routes.ref.Authentication.authenticate(),
+                routes.ref.AuthenticationController.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
                         "email", "mybob@example.com",
                         "password", "myVeryGoodPass"))

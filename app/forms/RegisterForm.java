@@ -121,10 +121,11 @@ public class RegisterForm extends LoginForm {
     /**
      * Generate the user and identity based on the entered form information
      */
-    public void save() {
+    public User save() {
         User user = this.getNewUser();
         user.save();
-        user.sendVerification();
         this.getIdentity(user).save();
+
+        return user;
     }
 }
