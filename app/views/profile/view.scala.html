@@ -7,28 +7,32 @@
                 <span class="glyphicon glyphicon-user"></span> Profile
             </h1>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Basic information <a href="@controllers.routes.ProfileController.edit()" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-wrench"></span> Edit</a></legend>
+                    <img src="@Html(user.getProfileImageUrl())" alt="Profile image"/>
+                    <p>Name: @user.getFullName()</p>
+                    <p>Type: @user.getType()</p>
+                    <p>Email: @user.getEmail()</p>
 
-        <fieldset>
-            <legend>Basic information <a href="@controllers.routes.ProfileController.edit()" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-wrench"></span> Edit</a></legend>
-            <img src="@Html(user.getProfileImageUrl())" alt="Profile image"/>
-            <p>Name: @user.getFullName()</p>
-            <p>Type: @user.getType()</p>
-            <p>Email: @user.getEmail()</p>
-
-            <p>@user.getProfileText()</p>
-        </fieldset>
-
-        <fieldset>
-            <legend>Skills <a href="@controllers.routes.ProfileController.editSkills()" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-wrench"></span> Edit</a></legend>
-            @user.findAllSkills().map { skill =>
-                <p>@{skill.getName}:
-                    @if(skill.getSkillValues.size == 0) {
-                        Not yet provided.
-                    } else {
-                        @skill.getSkillValues.get(0).getValue
+                    <p>@user.getProfileText()</p>
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Skills <a href="@controllers.routes.ProfileController.editSkills()" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-wrench"></span> Edit</a></legend>
+                    @user.findAllSkills().map { skill =>
+                        <p>@{skill.getName}:
+                            @if(skill.getSkillValues.size == 0) {
+                                Not yet provided.
+                        } else {
+                            @skill.getSkillValues.get(0).getValue
+                        }
+                        </p>
                     }
-                </p>
-            }
-        </fieldset>
+                </fieldset>
+            </div>
+        </div>
     </div>
 }
