@@ -27,7 +27,7 @@ public class ProfileTest extends WithApplication {
     @Test
     public void viewProfileDenied() {
         Result result = callAction(
-                routes.ref.Profile.view()
+                routes.ref.ProfileController.view()
         );
 
         assertEquals(SEE_OTHER, status(result));
@@ -38,7 +38,7 @@ public class ProfileTest extends WithApplication {
     public void viewProfileSuccess() {
         User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
-                routes.ref.Profile.view(),
+                routes.ref.ProfileController.view(),
                 fakeRequest().withSession("user_id", user.getId().toString())
         );
 
@@ -52,7 +52,7 @@ public class ProfileTest extends WithApplication {
     @Test
     public void editProfileDenied() {
         Result result = callAction(
-                routes.ref.Profile.edit()
+                routes.ref.ProfileController.edit()
         );
 
         assertEquals(SEE_OTHER, status(result));
@@ -63,7 +63,7 @@ public class ProfileTest extends WithApplication {
     public void editProfileSuccess() {
         User user = User.findByEmail("defaultuser1@example.com");
         Result result = callAction(
-                routes.ref.Profile.edit(),
+                routes.ref.ProfileController.edit(),
                 fakeRequest().withSession("user_id", user.getId().toString())
         );
 
@@ -86,7 +86,7 @@ public class ProfileTest extends WithApplication {
             body.put("profileSkills[" + i + "].value", "5");
         }
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
@@ -111,7 +111,7 @@ public class ProfileTest extends WithApplication {
             body.put("profileSkills[" + i + "].value", "5");
         }
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
@@ -138,7 +138,7 @@ public class ProfileTest extends WithApplication {
             body.put("profileSkills[" + i + "].value", "5");
         }
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
@@ -165,7 +165,7 @@ public class ProfileTest extends WithApplication {
             body.put("profileSkills[" + i + "].value", "5");
         }
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
@@ -196,7 +196,7 @@ public class ProfileTest extends WithApplication {
         }
 
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
@@ -224,7 +224,7 @@ public class ProfileTest extends WithApplication {
             body.put("profileSkills[" + i + "].value", "5");
         }
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
@@ -254,7 +254,7 @@ public class ProfileTest extends WithApplication {
         }
 
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
@@ -282,7 +282,7 @@ public class ProfileTest extends WithApplication {
         }
 
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)

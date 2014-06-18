@@ -9,7 +9,7 @@
                 <div class="jumbotron">
                     <h2>Log in</h2>
 
-                    @helper.form(routes.Authentication.authenticate, 'class -> "form-horizontal") {
+                    @helper.form(routes.AuthenticationController.authenticate, 'class -> "form-horizontal") {
                         @if(loginForm.hasGlobalErrors) {
                             <p class="error red-text">
                             @loginForm.globalError.message
@@ -31,7 +31,7 @@
             <div class="col-lg-6">
                 <div class="jumbotron">
                     <h2>Registration</h2>
-                    @helper.form(routes.Authentication.registration, 'class -> "form-horizontal") {
+                    @helper.form(routes.AuthenticationController.registration, 'class -> "form-horizontal") {
 
                         @if(registerForm.hasGlobalErrors) {
                             <p class="error red-text">

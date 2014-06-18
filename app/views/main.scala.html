@@ -22,14 +22,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="@routes.Application.index()">APMatch</a>
+                    <a class="navbar-brand" href="@routes.ApplicationController.index()">APMatch</a>
                 </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="@{if(active=="index") "active"}"><a id="linkHome" href="@routes.Application.index()">Home</a></li>
-                        <li class="@{if(active=="about") "active"}"><a id="linkAbout" href="@routes.Application.about()">About</a></li>
-                        <li class="@{if(active=="contact") "active"}"><a id="linkContact" href="@routes.Application.contact()">Contact</a></li>
+                        <li class="@{if(active=="index") "active"}"><a id="linkHome" href="@routes.ApplicationController.index()">Home</a></li>
+                        <li class="@{if(active=="about") "active"}"><a id="linkAbout" href="@routes.ApplicationController.about()">About</a></li>
+                        <li class="@{if(active=="contact") "active"}"><a id="linkContact" href="@routes.ApplicationController.contact()">Contact</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @user = @{ Secure.getUser() }
@@ -38,13 +38,13 @@
                                 <a href="#" class="dropdown-toggle" data-toggle='dropdown'>
                                     Welcome, @user.getFullName()<b class="caret"></b></a>
                                 <ul class="dropdown-menu inverse-dropdown">
-                                    <li class="@{if(active == "profile") "active"}"><a href="@routes.Profile.view()"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                                    <li class="@{if(active == "profile") "active"}"><a href="@routes.ProfileController.view()"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                                     <li class="@{if(active == "practicals") "active"}"><a href="@routes.PracticalController.list()"><span class="glyphicon glyphicon-briefcase"></span> Practicals</a></li>
-                                    <li><a href="@routes.Authentication.logout()">Log out</a></li>
+                                    <li><a href="@routes.AuthenticationController.logout()">Log out</a></li>
                                 </ul>
                             </li>
                         } else {
-                            <li class="@{if(active == "login") "active"}"><a href="@routes.Authentication.login()">Log in/Register</a></li>
+                            <li class="@{if(active == "login") "active"}"><a href="@routes.AuthenticationController.login()">Log in/Register</a></li>
                         }
                     </ul>
                 </div><!-- /.navbar-collapse -->

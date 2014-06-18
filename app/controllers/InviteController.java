@@ -1,7 +1,6 @@
 package controllers;
 
 import forms.MessageForm;
-import helpers.Secure;
 import models.*;
 import play.data.*;
 import play.mvc.*;

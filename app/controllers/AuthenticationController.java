@@ -3,18 +3,24 @@ package controllers;
 import forms.LoginForm;
 import forms.RegisterForm;
 import helpers.LinkedinConnection;
-import helpers.Secure;
 import models.*;
+import play.Play;
 import play.mvc.*;
 import play.data.*;
 import views.html.*;
 import static play.data.Form.*;
+import com.typesafe.plugin.*;
 
 /**
  * Created by Freek on 12/05/14.
  * This class handles all the authentication methods like login and register.
  */
-public class Authentication extends Controller {
+public class AuthenticationController extends Controller {
+
+    /**
+     * The email address where mails are send from
+     */
+    private static final String EMAIL_FROM = Play.application().configuration().getString("email.address");
 
     /**
      * Generates a new Linkedin URL with a new state saved in the session
@@ -80,7 +86,7 @@ public class Authentication extends Controller {
         if(!state.equals(sessionState) || !error.isEmpty() || code.isEmpty() || linkedinConnectionConnection == null) {
             flash("error", "linkedin.unknownError");
             return redirect(
-                    routes.Application.index()
+                    routes.ApplicationController.index()
             );
         }
 
@@ -104,10 +110,10 @@ public class Authentication extends Controller {
 
         // Redirect to skills if not set
         if(user.getSkillValues().size() <= 0) {
-            return redirect(routes.Profile.edit());
+            return redirect(routes.ProfileController.edit());
         }
         return redirect(
-                routes.Application.index()
+                routes.ApplicationController.index()
         );
     }
 
@@ -129,12 +135,33 @@ public class Authentication extends Controller {
         }
         else {
             // Create the new user and identity
-            registerForm.get().save();
+            User user = registerForm.get().save();
+            sendVerification(user);
 
             flash("success", "authentication.emailSent");
             return redirect(
-                    routes.Application.index()
+                    routes.ApplicationController.index()
             );
+        }
+    }
+
+    /**
+     * Sends an email with verification link
+     * @param user The user to send the verification to
+     */
+    private static void sendVerification(User user) {
+        MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
+        mail.setSubject("APMatch - Verify your mail");
+        mail.setRecipient(user.getFullName() + " <" + user.getEmail() + ">");
+        mail.setFrom("APMatch <" + EMAIL_FROM + ">");
+        //sends text/text
+        String link = routes.AuthenticationController.verify(user.getEmail(), user.getToken()).absoluteURL(
+                false, Http.Context.current()._requestHeader());
+        String message = "Verify your account by opening this link: " + link;
+
+        // Avoid testing accounts
+        if(!user.getEmail().contains("@example.com")) {
+            mail.send(message);
         }
     }
 
@@ -147,7 +174,7 @@ public class Authentication extends Controller {
         flash("success", "authentication.loggedOut");
         session().clear();
         return redirect(
-                routes.Application.index()
+                routes.ApplicationController.index()
         );
     }
 
@@ -157,8 +184,8 @@ public class Authentication extends Controller {
      */
     public static Result onUnauthorized() {
         flash("error", "authentication.unauthorized");
-        return redirect(
-                routes.Authentication.login()
+        return Results.redirect(
+                routes.AuthenticationController.login()
         );
     }
 
@@ -169,7 +196,7 @@ public class Authentication extends Controller {
     public static Result onAuthorized() {
         flash("error", "authentication.authorized");
         return redirect(
-                routes.Application.index()
+                routes.ApplicationController.index()
         );
     }
 
@@ -183,21 +210,21 @@ public class Authentication extends Controller {
         if(user == null || token == null) {
             flash("error", "error.unknownValidation");
             return redirect(
-                    routes.Application.index()
+                    routes.ApplicationController.index()
             );
         }
         else if (!token.equals(user.getToken())) {
             flash("error", "error.wrongToken");
             return redirect(
-                    routes.Application.index()
+                    routes.ApplicationController.index()
             );
         }
         else {
             user.setToken(null);
             user.save();
             flash("success", "authentication.verified");
-            return redirect(
-                    routes.Authentication.login()
+            return Results.redirect(
+                    routes.AuthenticationController.login()
             );
         }
     }

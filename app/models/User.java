@@ -5,7 +5,6 @@ import javax.persistence.*;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.annotation.EnumValue;
 import helpers.MD5;
-import play.Play;
 import play.data.validation.*;
 import play.db.ebean.*;
 
@@ -13,9 +12,6 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.typesafe.plugin.*;
-import play.mvc.*;
 
 
 /**
@@ -25,11 +21,6 @@ import play.mvc.*;
 @Entity
 @SuppressWarnings("serial")
 public class User extends Model {
-
-    /**
-     * The email address where mails are send from
-     */
-    private static final String EMAIL_FROM = Play.application().configuration().getString("email.address");
 
     /**
      * The amount of random bits that needs to be generated for the token
@@ -489,25 +480,6 @@ public class User extends Model {
      */
     public void setToken(String token) {
         this.token = token;
-    }
-
-    /**
-     * Sends an email with verification link
-     */
-    public void sendVerification() {
-        MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
-        mail.setSubject("APMatch - Verify your mail");
-        mail.setRecipient(this.getFullName() + " <" + this.getEmail() + ">");
-        mail.setFrom("APMatch <" + EMAIL_FROM + ">");
-        //sends text/text
-        String link = controllers.routes.Authentication.verify(this.getEmail(), this.getToken()).absoluteURL(false,
-                Http.Context.current()._requestHeader());
-        String message = "Verify your account by opening this link: " + link;
-
-        // Avoid testing accounts
-        if(!this.getEmail().contains("@example.com") && !this.getEmail().contains("@info.com")) {
-            mail.send(message);
-        }
     }
 
     /**

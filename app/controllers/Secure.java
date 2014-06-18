@@ -1,6 +1,5 @@
-package helpers;
+package controllers;
 
-import controllers.Authentication;
 import models.*;
 import play.libs.F;
 import play.mvc.*;
@@ -59,10 +58,10 @@ public final class Secure {
             if((user != null && !types.contains(user.getType()))
                     || (user == null && !types.contains(User.Type.Guest))) {
                 if(user == null) {
-                    return F.Promise.pure((SimpleResult) Authentication.onUnauthorized());
+                    return F.Promise.pure((SimpleResult) AuthenticationController.onUnauthorized());
                 }
                 else {
-                    return F.Promise.pure((SimpleResult) Authentication.onAuthorized());
+                    return F.Promise.pure((SimpleResult) AuthenticationController.onAuthorized());
                 }
             }
             else {

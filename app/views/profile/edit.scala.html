@@ -10,7 +10,7 @@
             </h1>
         </div>
 
-        @helper.form(routes.Profile.save, 'class -> "form-horizontal") {
+        @helper.form(routes.ProfileController.save, 'class -> "form-horizontal") {
             @if(profileForm.hasGlobalErrors) {
                 <p class="error red-text">
                 @profileForm.globalError.message
