@@ -10,7 +10,7 @@
             </h1>
         </div>
 
-        @helper.form(routes.Profile.saveSkills, 'class -> "form-horizontal") {
+        @helper.form(routes.ProfileController.saveSkills, 'class -> "form-horizontal") {
             @helper.repeat(skillsForm("profileSkills")) { skillField =>
                 @form.hidden(skillField("name"), 'type -> "hidden")
                 @form.slider(skillField("value"), '_label -> skillField("name").value.head)

@@ -125,7 +125,7 @@ public class ProfileTest extends WithApplication {
         }
 
         Result result = callAction(
-                routes.ref.Profile.save(),
+                routes.ref.ProfileController.save(),
                 fakeRequest()
                         .withSession("user_id", user.getId().toString())
                         .withFormUrlEncodedBody(body)
