@@ -77,7 +77,7 @@ public class PracticalController extends Controller {
             return ok(admin.render(practical, practicalForm));
         }
 
-        return ok(view.render(practical));
+        return ok(view.render(user, practical));
     }
 
     /**

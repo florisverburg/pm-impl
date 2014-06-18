@@ -516,11 +516,37 @@ public class User extends Model {
     }
 
     /**
-     * Getter invites send
-     * @return invites send
+     * Gets the invites send
+     * @return Invites send
      */
     public List<Invite> getInvitesSend() {
         return invitesSend;
+    }
+
+    /**
+     * Gets invites send for a certain practical
+     * @param practical The practical
+     * @return Invites send
+     */
+    public List<Invite> getInvitesSend(Practical practical) {
+        return Invite.find.where().eq("practical.id", practical.getId()).eq("sender.id", this.id).findList();
+    }
+
+    /**
+     * Gets the invites received
+     * @return Invites received
+     */
+    public List<Invite> getInvitesReceived() {
+        return invitesReceived;
+    }
+
+    /**
+     * Gets invites received for a certain practical
+     * @param practical The practical
+     * @return Invites received
+     */
+    public List<Invite> getInvitesReceived(Practical practical) {
+        return Invite.find.where().eq("practical.id", practical.getId()).eq("sender.id", this.id).findList();
     }
 
     /**
@@ -545,30 +571,6 @@ public class User extends Model {
      */
     public void addMessage(Message message) {
         this.messages.add(message);
-    }
-
-    /**
-     * Getter invites received
-     * @return invites received
-     */
-    public List<Invite> getInvitesReceived() {
-        return invitesReceived;
-    }
-
-    /**
-     * Setter invites received
-     * @param invitesReceived to set
-     */
-    public void setInvitesReceived(List<Invite> invitesReceived) {
-        this.invitesReceived = invitesReceived;
-    }
-
-    /**
-     * Add invite to the invites received
-     * @param invite to add
-     */
-    public void addInvitesReceived(Invite invite) {
-        this.invitesReceived.add(invite);
     }
 
     /**

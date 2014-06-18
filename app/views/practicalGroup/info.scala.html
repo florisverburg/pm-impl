@@ -1,17 +1,19 @@
 @(practicalGroup: PracticalGroup)
 
-<h2>Your practical group @practicalGroup.getId()</h2>
-<h3>Owner: @practicalGroup.getOwner.getFullName()</h3>
-@if(practicalGroup.getGroupMembers().size > 1) {
-    <a href="@routes.PracticalGroupController.leave(practicalGroup.getId())" class="btn btn-primary">
-        leave practical group</a>
-}
-@practicalGroup.getGroupMembers().map { user =>
-    <div class="row">
-        <div class="col-xs-4">
-            <p>@user.getFullName()</p>
+@if(practicalGroup != null) {
+    <h2>Your practical group @practicalGroup.getId()</h2>
+    <h3>Owner: @practicalGroup.getOwner.getFullName()</h3>
+    @if(practicalGroup.getGroupMembers().size > 1) {
+        <a href="@routes.PracticalGroupController.leave(practicalGroup.getId())" class="btn btn-primary">
+            leave practical group</a>
+    }
+    @practicalGroup.getGroupMembers().map { user =>
+        <div class="row">
+            <div class="col-xs-4">
+                <p>@user.getFullName()</p>
+            </div>
+            <div class="col-xs-8">
+            </div>
         </div>
-        <div class="col-xs-8">
-        </div>
-    </div>
+    }
 }
