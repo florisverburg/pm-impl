@@ -1,6 +1,5 @@
 package forms;
 
-import com.avaje.ebean.Ebean;
 import models.*;
 import play.data.validation.*;
 
