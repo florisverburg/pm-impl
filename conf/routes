@@ -3,42 +3,44 @@
 # ~~~~
 
 # Application
-GET         /                                 controllers.ApplicationController.index()
-GET         /about                            controllers.ApplicationController.about()
-GET         /contact                          controllers.ApplicationController.contact()
+GET         /                                  controllers.ApplicationController.index()
+GET         /about                             controllers.ApplicationController.about()
+GET         /contact                           controllers.ApplicationController.contact()
 
 # Practical
-GET         /practical                        controllers.PracticalController.list()
-POST        /practical                        controllers.PracticalController.create()
-GET         /practical/group/:id              controllers.PracticalGroupController.view(id: Long)
-GET         /practical/group/:id/invite       controllers.PracticalGroupController.sendInvite(id: Long)
-GET         /practical/group/:id/leave        controllers.PracticalGroupController.leave(id: Long)
-GET         /practical/:id                    controllers.PracticalController.view(id: Long)
-POST        /practical/:id                    controllers.PracticalController.edit(id: Long)
-GET         /practical/:id/subscribe          controllers.PracticalController.register(id: Long, secret: String)
-GET         /practical/:id/delete             controllers.PracticalController.delete(id: Long)
+GET         /practical                         controllers.PracticalController.list()
+POST        /practical                         controllers.PracticalController.create()
+GET         /practical/group/:id               controllers.PracticalGroupController.view(id: Long)
+GET         /practical/group/:id/invite        controllers.PracticalGroupController.sendInvite(id: Long)
+GET         /practical/group/:id/leave         controllers.PracticalGroupController.leave(id: Long)
+GET         /practical/:id                     controllers.PracticalController.view(id: Long)
+POST        /practical/:id                     controllers.PracticalController.edit(id: Long)
+GET         /practical/:id/subscribe           controllers.PracticalController.register(id: Long, secret: String)
+GET         /practical/:id/delete              controllers.PracticalController.delete(id: Long)
 
 # Profile
-GET         /profile                          controllers.ProfileController.view()
-GET         /profile/edit                     controllers.ProfileController.edit()
-POST        /profile/edit                     controllers.ProfileController.save()
+GET         /profile                           controllers.ProfileController.view()
+GET         /profile/edit                      controllers.ProfileController.edit()
+POST        /profile/edit                      controllers.ProfileController.save()
+GET         /skills/edit                       controllers.ProfileController.editSkills()
+POST        /skills/edit                       controllers.ProfileController.saveSkills()
 
 # Invite
-GET         /invite/:id/accept                controllers.InviteController.acceptInvite(id: Long)
-GET         /invite/:id/withdraw              controllers.InviteController.withdrawInvite(id: Long)
-GET         /invite/:id/resend                controllers.InviteController.resendInvite(id: Long)
-GET         /invite/:id/reject                controllers.InviteController.rejectInvite(id: Long)
-GET         /invite/:id/message               controllers.InviteController.sendMessage(id: Long)
-GET         /invite/:id                       controllers.InviteController.view(id: Long)
+GET         /invite/:id/accept                 controllers.InviteController.acceptInvite(id: Long)
+GET         /invite/:id/withdraw               controllers.InviteController.withdrawInvite(id: Long)
+GET         /invite/:id/resend                 controllers.InviteController.resendInvite(id: Long)
+GET         /invite/:id/reject                 controllers.InviteController.rejectInvite(id: Long)
+GET         /invite/:id/message                controllers.InviteController.sendMessage(id: Long)
+GET         /invite/:id                        controllers.InviteController.view(id: Long)
 
 # Authentication
-GET         /login                            controllers.AuthenticationController.login()
-POST        /login                            controllers.AuthenticationController.authenticate()
-GET         /register                         controllers.AuthenticationController.login()
-POST        /register                         controllers.AuthenticationController.registration()
-GET         /logout                           controllers.AuthenticationController.logout()
-GET         /auth                             controllers.AuthenticationController.auth(code: String ?= "", state: String, error: String ?= "", error_description: String ?= "")
-GET         /verify/:mail/:token              controllers.AuthenticationController.verify(mail: String, token: String)
+GET         /login                             controllers.AuthenticationController.login()
+POST        /login                             controllers.AuthenticationController.authenticate()
+GET         /register                          controllers.AuthenticationController.login()
+POST        /register                          controllers.AuthenticationController.registration()
+GET         /logout                            controllers.AuthenticationController.logout()
+GET         /auth                              controllers.AuthenticationController.auth(code: String ?= "", state: String, error: String ?= "", error_description: String ?= "")
+GET         /verify/:mail/:token               controllers.AuthenticationController.verify(mail: String, token: String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                     controllers.Assets.at(path="/public", file)
+GET         /assets/*file                      controllers.Assets.at(path="/public", file)

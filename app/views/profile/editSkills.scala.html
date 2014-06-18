@@ -1,0 +1,22 @@
+@(skillsForm: play.data.Form[forms.SkillsForm])
+
+@implicitField = @{ helper.FieldConstructor(form.leftLabelConstructor.f) }
+
+@main("Profile", "profile") {
+    <div>
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-user"></span> Skills
+            </h1>
+        </div>
+
+        @helper.form(routes.Profile.saveSkills, 'class -> "form-horizontal") {
+            @helper.repeat(skillsForm("profileSkills")) { skillField =>
+                @form.hidden(skillField("name"), 'type -> "hidden")
+                @form.slider(skillField("value"), '_label -> skillField("name").value.head)
+            }
+
+            @form.submit("Save")
+        }
+    </div>
+}
