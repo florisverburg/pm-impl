@@ -120,6 +120,7 @@ public class RegisterForm extends LoginForm {
 
     /**
      * Generate the user and identity based on the entered form information
+     * @return The newly created user
      */
     public User save() {
         User user = this.getNewUser();

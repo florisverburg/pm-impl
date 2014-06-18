@@ -147,6 +147,7 @@ public class AuthenticationController extends Controller {
 
     /**
      * Sends an email with verification link
+     * @param user The user to send the verification to
      */
     private static void sendVerification(User user) {
         MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
