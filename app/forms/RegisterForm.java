@@ -10,41 +10,27 @@ import java.util.List;
  * Created by Freek on 13/05/14.
  * The registration form
  */
-public class RegisterForm {
+public class RegisterForm extends LoginForm {
 
     /**
      * The registration first name
      */
-    @Constraints.Required
-    @Constraints.MaxLength(128)
-    private String firstName;
+    @Constraints.Required(groups = {All.class, Login.class})
+    @Constraints.MaxLength(value = 128, groups = {All.class, Login.class})
+    protected String firstName;
 
     /**
      * The registration last name
      */
-    @Constraints.Required
-    @Constraints.MaxLength(128)
-    private String lastName;
-
-    /**
-     * The registration email address
-     */
-    @Constraints.Required
-    @Constraints.Email
-    private String email;
-
-    /**
-     * The registration password
-     */
-    @Constraints.Required
-    @Constraints.MinLength(8)
-    private String password;
+    @Constraints.Required(groups = {All.class, Login.class})
+    @Constraints.MaxLength(value = 128, groups = {All.class, Login.class})
+    protected String lastName;
 
     /**
      * The registration password repeat
      */
-    @Constraints.Required
-    private String passwordRepeat;
+    @Constraints.Required(groups = {Login.class})
+    protected String passwordRepeat;
 
     /**
      * Gets the first name.
@@ -79,38 +65,6 @@ public class RegisterForm {
     }
 
     /**
-     * Gets email.
-     * @return The email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Sets email.
-     * @param email The email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets password.
-     * @return The password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets password.
-     * @param password The password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
      * Gets password repeat.
      * @return The password repeat
      */
@@ -130,6 +84,7 @@ public class RegisterForm {
      * Validates the registration form
      * @return A list of errors
      */
+    @Override
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<ValidationError>();
 
@@ -150,7 +105,7 @@ public class RegisterForm {
      * Return a new user based on the registration form
      * @return The new user
      */
-    private User getUser() {
+    private User getNewUser() {
         return new User(firstName, lastName, email);
     }
 
@@ -167,7 +122,7 @@ public class RegisterForm {
      * Generate the user and identity based on the entered form information
      */
     public void save() {
-        User user = this.getUser();
+        User user = this.getNewUser();
         user.save();
         user.sendVerification();
         this.getIdentity(user).save();

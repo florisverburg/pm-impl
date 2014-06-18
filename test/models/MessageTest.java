@@ -33,7 +33,7 @@ public class MessageTest {
         testUser1 = User.findByName("Unverified");
         testPractical = Practical.findByName("Programming");
         listOfPendingInvites = Invite.findPendingInvitesWhereUser(testUser, testPractical);
-        testMessage = testUser.getMessages().get(0);
+        testMessage = Message.find.all().get(0);
     }
 
     @Test

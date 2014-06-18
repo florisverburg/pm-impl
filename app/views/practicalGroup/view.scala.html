@@ -1,25 +1,5 @@
 @(practicalGroup: PracticalGroup, ownPracticalGroup: PracticalGroup)
 
 @main("View - Practical", "view") {
-    @if(practicalGroup.equals(ownPracticalGroup)) {
-        <h1>This is your practical group #@practicalGroup.getId()</h1>
-        <h2>Group participants:</h2>
-    } else {
-        <h1>Practical group #@practicalGroup.getId()</h1>
-        <h2>Average per skill combined:</h2>
-        @Recommendation.average(ownPracticalGroup, practicalGroup).map { case (skill, value) =>
-            @skill.getName(): @value<br />
-        }
-
-        <h2>Group participants:</h2>
-    }
-    @practicalGroup.getGroupMembers().map { user =>
-        <div class="row">
-            <div class="col-xs-4">
-                <p>@user.getFullName()</p>
-            </div>
-            <div class="col-xs-8">
-            </div>
-        </div>
-    }
+    @info(practicalGroup, ownPracticalGroup)
 }

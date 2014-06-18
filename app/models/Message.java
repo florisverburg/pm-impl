@@ -44,8 +44,8 @@ public class Message extends Model implements Comparable<Message> {
     /**
      * Finder of the message
      */
-    public static Model.Finder<Long, Invite> find =
-            new Model.Finder<Long, Invite>(Long.class, Invite.class);
+    public static Model.Finder<Long, Message> find =
+            new Model.Finder<Long, Message>(Long.class, Message.class);
 
     /**
      * Constructor of the message.

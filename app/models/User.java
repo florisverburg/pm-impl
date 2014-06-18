@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 
+import com.avaje.ebean.Expr;
 import com.avaje.ebean.annotation.EnumValue;
 import helpers.MD5;
 import play.Play;
@@ -173,12 +174,6 @@ public class User extends Model {
      */
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Invite> invitesSend = new ArrayList<Invite>();
-
-    /**
-     * One-to-many relationship between user and message
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Message> messages = new ArrayList<Message>();
 
     /**
      * One-to-many relationship between user and invite (receiver)
@@ -395,16 +390,16 @@ public class User extends Model {
     }
 
     /**
-     * Getter of the email
-     * @return email email
+     * Getter of the email address
+     * @return email Email address
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Setter of the email
-     * @param email to be set
+     * Setter of the email address
+     * @param email Email to set
      */
     public void setEmail(String email) {
         this.email = email;
@@ -419,7 +414,7 @@ public class User extends Model {
     }
 
     /**
-     * Gets profile text.
+     * Gets the profile text.
      * @return The profile text
      */
     public String getProfileText() {
@@ -427,7 +422,7 @@ public class User extends Model {
     }
 
     /**
-     * Sets profile text.
+     * Sets the profile text.
      * @param profileText The profile text
      */
     public void setProfileText(String profileText) {
@@ -435,7 +430,7 @@ public class User extends Model {
     }
 
     /**
-     * Gets profile image.
+     * Gets the profile image.
      * @return The profile image
      */
     public ProfileImage getProfileImage() {
@@ -443,7 +438,7 @@ public class User extends Model {
     }
 
     /**
-     * Sets profile image.
+     * Sets the profile image.
      * @param profileImage The profile image
      */
     public void setProfileImage(ProfileImage profileImage) {
@@ -451,7 +446,7 @@ public class User extends Model {
     }
 
     /**
-     * Gets profile image or Gravatar url.
+     * Gets the profile image or Gravatar url.
      * @return The profile image url
      */
     public String getProfileImageUrl() {
@@ -516,59 +511,41 @@ public class User extends Model {
     }
 
     /**
-     * Getter invites send
-     * @return invites send
+     * Gets the invites send
+     * @return Invites send
      */
     public List<Invite> getInvitesSend() {
         return invitesSend;
     }
 
     /**
-     * Getter messages
-     * @return messages
+     * Gets invites send for a certain practical
+     * @param practical The practical
+     * @return Invites send
      */
-    public List<Message> getMessages() {
-        return messages;
+    public List<Invite> getInvitesSend(Practical practical) {
+        return Invite.find.where().and(
+                Expr.eq("practical.id", practical.getId()), Expr.eq("sender.id", this.id)
+        ).findList();
     }
 
     /**
-     * Setter messages
-     * @param messages the messages
-     */
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    /**
-     * Add message
-     * @param message to add
-     */
-    public void addMessage(Message message) {
-        this.messages.add(message);
-    }
-
-    /**
-     * Getter invites received
-     * @return invites received
+     * Gets the invites received
+     * @return Invites received
      */
     public List<Invite> getInvitesReceived() {
         return invitesReceived;
     }
 
     /**
-     * Setter invites received
-     * @param invitesReceived to set
+     * Gets invites received for a certain practical
+     * @param practical The practical
+     * @return Invites received
      */
-    public void setInvitesReceived(List<Invite> invitesReceived) {
-        this.invitesReceived = invitesReceived;
-    }
-
-    /**
-     * Add invite to the invites received
-     * @param invite to add
-     */
-    public void addInvitesReceived(Invite invite) {
-        this.invitesReceived.add(invite);
+    public List<Invite> getInvitesReceived(Practical practical) {
+        return Invite.find.where().and(
+                Expr.eq("practical.id", practical.getId()), Expr.eq("receiver.id", this.id)
+        ).findList();
     }
 
     /**

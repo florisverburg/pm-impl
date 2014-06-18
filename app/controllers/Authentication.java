@@ -34,7 +34,11 @@ public class Authentication extends Controller {
     @Secure.Authenticated(User.Type.Guest)
     public static Result login() {
         return ok(
-                login.render(generateLinkedinUri(), form(LoginForm.class), form(RegisterForm.class))
+                login.render(
+                        generateLinkedinUri(),
+                        form(LoginForm.class, LoginForm.Login.class),
+                        form(RegisterForm.class, LoginForm.Login.class)
+                )
         );
     }
 
@@ -44,27 +48,19 @@ public class Authentication extends Controller {
      */
     @Secure.Authenticated(User.Type.Guest)
     public static Result authenticate() {
-        Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
+        Form<LoginForm> loginForm = form(LoginForm.class, LoginForm.Login.class).bindFromRequest();
 
         // Check for errors in login
         if(loginForm.hasErrors()) {
-            return badRequest(login.render(generateLinkedinUri(), loginForm, form(RegisterForm.class)));
+            return badRequest(login.render(
+                    generateLinkedinUri(),
+                    loginForm,
+                    form(RegisterForm.class, LoginForm.Login.class)
+            ));
         }
-        else {
-            // Set the session and redirect to home
-            User user = loginForm.get().getUser();
-            session().clear();
-            session("user_id", user.getId().toString());
-            flash("success", "authentication.loggedIn");
 
-            // Redirect to skills if not set
-            if(user.getSkillValues().size() <= 0) {
-                return redirect(routes.Profile.edit());
-            }
-            return redirect(
-                    routes.Application.index()
-            );
-        }
+        // Save login to session and redirect to home
+        return authenticated(loginForm.get().getUser());
     }
 
     /**
@@ -93,7 +89,15 @@ public class Authentication extends Controller {
         LinkedinIdentity identity = LinkedinIdentity.authenticate(linkedinConnectionConnection);
 
         // Save login to session and redirect to home
-        User user = identity.getUser();
+        return authenticated(identity.getUser());
+    }
+
+    /**
+     * When the user is authenticated set the session
+     * @param user The user that is logged in
+     * @return The home page or profile page
+     */
+    private static Result authenticated(User user) {
         session().clear();
         session("user_id", user.getId().toString());
         flash("success", "authentication.loggedIn");
@@ -113,11 +117,15 @@ public class Authentication extends Controller {
      */
     @Secure.Authenticated(User.Type.Guest)
     public static Result registration() {
-        Form<RegisterForm> registerForm = form(RegisterForm.class).bindFromRequest();
+        Form<RegisterForm> registerForm = form(RegisterForm.class, LoginForm.Login.class).bindFromRequest();
 
         // Check for errors in register
         if(registerForm.hasErrors()) {
-            return badRequest(login.render(generateLinkedinUri(), form(LoginForm.class), registerForm));
+            return badRequest(login.render(
+                    generateLinkedinUri(),
+                    form(LoginForm.class, LoginForm.Login.class),
+                    registerForm
+            ));
         }
         else {
             // Create the new user and identity
@@ -155,7 +163,7 @@ public class Authentication extends Controller {
     }
 
     /**
-     * Generates an alternative result if the user is authrized and shouldn't be.
+     * Generates an alternative result if the user is authorized and shouldn't be.
      * @return Redirect to the index
      */
     public static Result onAuthorized() {

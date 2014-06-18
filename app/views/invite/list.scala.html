@@ -1,0 +1,33 @@
+@(invites: List[Invite])
+
+<div class="row">
+    <div class="col-xs-3">
+        Sender
+    </div>
+    <div class="col-xs-3">
+        Receiver
+    </div>
+    <div class="col-xs-3">
+        State
+    </div>
+    <div class="col-xs-3">
+
+    </div>
+</div>
+
+@invites.map { invite =>
+    <div class="row">
+        <div class="col-xs-3">
+            <p>@invite.getSender().getFullName()</p>
+        </div>
+        <div class="col-xs-3">
+            <p>@invite.getReceiver().getFullName()</p>
+        </div>
+        <div class="col-xs-3">
+            <p>@invite.getState()</p>
+        </div>
+        <div class="col-xs-3">
+            <a href="@routes.InviteController.view(invite.getId())" class="btn btn-primary">view invite</a>
+        </div>
+    </div>
+}

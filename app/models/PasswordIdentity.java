@@ -33,32 +33,31 @@ public class PasswordIdentity extends Identity {
     private String password;
 
     /**
-     * Gets email.
-     * @return The email
+     * Gets the identity email address identifier.
+     * @return The email address
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Sets email.
-     * @param email The email
+     * Sets the email address identifier.
+     * @param email The email address
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Sets password.
-     * @param password The password
+     * Sets the password and encrypts it.
+     * @param password The password for the identity
      */
     public void setPassword(String password) {
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     /**
-     * Create an identity with an username and password
-     *
+     * Create a new password identity with an username and password
      * @param user The user for which the identity needs to be created
      * @param email The email address used for the identity
      * @param password The plaintext password for the identity

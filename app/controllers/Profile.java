@@ -34,7 +34,8 @@ public class Profile extends Controller {
      */
     public static Result edit() {
         User user = Secure.getUser();
-        return ok(edit.render(form(ProfileForm.class).fill(new ProfileForm(user)), user.hasPassword()));
+        return ok(edit.render(form(ProfileForm.class, ProfileForm.All.class)
+                .fill(new ProfileForm(user)), user.hasPassword()));
     }
 
     /**
@@ -43,7 +44,7 @@ public class Profile extends Controller {
      */
     public static Result save() {
         User user = Secure.getUser();
-        Form<ProfileForm> profileForm = form(ProfileForm.class).bindFromRequest();
+        Form<ProfileForm> profileForm = form(ProfileForm.class, ProfileForm.All.class).bindFromRequest();
 
         // Check for errors in the profile
         if(profileForm.hasErrors()) {

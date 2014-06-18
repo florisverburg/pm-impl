@@ -11,39 +11,7 @@ import java.util.List;
  * Created by Freek on 20/05/14.
  * Profile editing form
  */
-public class ProfileForm {
-
-    /**
-     * The profile first name
-     */
-    @Constraints.Required
-    @Constraints.MaxLength(128)
-    private String firstName;
-
-    /**
-     * The profile last name
-     */
-    @Constraints.Required
-    @Constraints.MaxLength(128)
-    private String lastName;
-
-    /**
-     * The profile email address
-     */
-    @Constraints.Required
-    @Constraints.Email
-    private String email;
-
-    /**
-     * The profile password
-     */
-    @Constraints.MinLength(8)
-    private String password;
-
-    /**
-     * The registration password repeat
-     */
-    private String passwordRepeat;
+public class ProfileForm extends RegisterForm {
 
     /**
      * The profile text
@@ -53,13 +21,13 @@ public class ProfileForm {
     /**
      * The profile image
      */
-    @Constraints.Required
+    @Constraints.Required(groups = {All.class})
     private User.ProfileImage profileImage;
 
     /**
      * The list with skill forms
      */
-    @Constraints.Required
+    @Constraints.Required(groups = {All.class})
     private List<SkillsForm> profileSkills = new ArrayList<SkillsForm>();
 
     /**
@@ -94,87 +62,7 @@ public class ProfileForm {
     }
 
     /**
-     * Gets first name.
-     * @return The first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Sets first name.
-     * @param firstName The first name
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Gets last name.
-     * @return The last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Sets last name.
-     * @param lastName The last name
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * Gets email.
-     * @return The email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Sets email.
-     * @param email The email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets password.
-     * @return The password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets password.
-     * @param password The password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * Gets password repeat.
-     * @return The password repeat
-     */
-    public String getPasswordRepeat() {
-        return passwordRepeat;
-    }
-
-    /**
-     * Sets password repeat.
-     * @param passwordRepeat The password repeat
-     */
-    public void setPasswordRepeat(String passwordRepeat) {
-        this.passwordRepeat = passwordRepeat;
-    }
-
-    /**
-     * Gets profile text.
+     * Gets profile text that is set in the form
      * @return The profile text
      */
     public String getProfileText() {
@@ -182,7 +70,7 @@ public class ProfileForm {
     }
 
     /**
-     * Sets profile text.
+     * Sets profile text that is shown in the form
      * @param profileText The profile text
      */
     public void setProfileText(String profileText) {
@@ -190,7 +78,7 @@ public class ProfileForm {
     }
 
     /**
-     * Gets profile image.
+     * Gets profile image that is set in the form
      * @return The profile image
      */
     public User.ProfileImage getProfileImage() {
@@ -198,7 +86,7 @@ public class ProfileForm {
     }
 
     /**
-     * Sets profile image.
+     * Sets profile image that is shown in the form
      * @param profileImage The profile image
      */
     public void setProfileImage(User.ProfileImage profileImage) {
@@ -206,7 +94,7 @@ public class ProfileForm {
     }
 
     /**
-     * Getter for the profile skills.
+     * Gets the profile skills from the form
      * @return The profile skills
      */
     public List<SkillsForm> getProfileSkills() {
@@ -214,7 +102,7 @@ public class ProfileForm {
     }
 
     /**
-     * Setter for the profile skills.
+     * Sets the profile skills that are shown in the form
      * @param profileSkills The profile skills
      */
     public void setProfileSkills(List<SkillsForm> profileSkills) {
