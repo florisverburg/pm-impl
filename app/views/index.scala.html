@@ -1,4 +1,5 @@
 @(message: String)
+@practicals = @{Practical.find.all()}
 
 @main("Welcome ", "index") {
 
@@ -35,8 +36,22 @@
 
                     The platform also provides for a recommendation algorithm. This algorithm can recommend other students to you using data about some recommended skills.<br />
 
-                    Interested in how it works? Check our <a href="@routes.Application.howDoesItWork()">How does it work?</a> page.
+                    Interested in how it works? Check our <a href="@routes.ApplicationController.howDoesItWork()">How does it work?</a> page.
                 </p>
+            </div>
+        </div>
+        <hr class="featurette-divider">
+        <div class="row featurette">
+            <div class="col-md-12">
+                <h2>Practicals that are currently ongoing</h2>
+                @practicals.map { practical =>
+                <div class="list-group">
+                    <h4 class="list-group-item-heading">@practical.getName() - @practical.getAdmin.getFullName</h4>
+                    <p class="list-group-item-text">
+                        @practical.getDescription()
+                    </p>
+                </div>
+                }
             </div>
         </div>
     </div>
