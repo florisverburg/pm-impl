@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 
+import com.avaje.ebean.Expr;
 import com.avaje.ebean.annotation.EnumValue;
 import helpers.MD5;
 import play.Play;
@@ -173,12 +174,6 @@ public class User extends Model {
      */
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Invite> invitesSend = new ArrayList<Invite>();
-
-    /**
-     * One-to-many relationship between user and message
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Message> messages = new ArrayList<Message>();
 
     /**
      * One-to-many relationship between user and invite (receiver)
@@ -529,7 +524,9 @@ public class User extends Model {
      * @return Invites send
      */
     public List<Invite> getInvitesSend(Practical practical) {
-        return Invite.find.where().eq("practical.id", practical.getId()).eq("sender.id", this.id).findList();
+        return Invite.find.where().and(
+                Expr.eq("practical.id", practical.getId()), Expr.eq("sender.id", this.id)
+        ).findList();
     }
 
     /**
@@ -546,31 +543,9 @@ public class User extends Model {
      * @return Invites received
      */
     public List<Invite> getInvitesReceived(Practical practical) {
-        return Invite.find.where().eq("practical.id", practical.getId()).eq("sender.id", this.id).findList();
-    }
-
-    /**
-     * Getter messages
-     * @return messages
-     */
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    /**
-     * Setter messages
-     * @param messages the messages
-     */
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    /**
-     * Add message
-     * @param message to add
-     */
-    public void addMessage(Message message) {
-        this.messages.add(message);
+        return Invite.find.where().and(
+                Expr.eq("practical.id", practical.getId()), Expr.eq("receiver.id", this.id)
+        ).findList();
     }
 
     /**

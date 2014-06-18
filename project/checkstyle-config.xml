@@ -66,7 +66,7 @@
 
     <!-- Finds duplicate code                             -->
     <module name="StrictDuplicateCode">
-        <property name="min" value="15"/>
+        <property name="min" value="10"/>
     </module>
 
     <module name="TreeWalker">

@@ -14,7 +14,7 @@
     @skill.getSkill().getName(): @skill.getValue()<br />
 }
 
-@practicalGroup.info(PracticalGroup.findWithPracticalAndUser(practical, user))
+@practicalGroup.info(PracticalGroup.findWithPracticalAndUser(practical, user), null)
 
 <h2>Your sent invites</h2>
 @invite.list(user.getInvitesSend(practical))
@@ -23,34 +23,14 @@
 @invite.list(user.getInvitesReceived(practical))
 
 <h2>Recommended Practical Groups:</h2>
-@Recommendation.recommend(user, practical, 1).map { practicalGroup =>
-    @if(!practicalGroup.getGroupMembers.contains(user)) {
-    <div class="row">
-        <div class="col-xs-4">
-            <a href="@routes.PracticalGroupController.view(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
-        </div>
-        <div class="col-xs-8">
-         @if(practicalGroup.getOwner().equals(user)) {
-            <a href="@routes.PracticalGroupController.sendInvite(practicalGroup.getId())" class="btn btn-primary">Invite</a>
-         }
-        </div>
-    </div>
-    }
+@Recommendation.recommend(user, practical, 1).map { pGroup =>
+    @practicalGroup.show(pGroup, user)
 }
 
 <h2>Practical Groups:</h2>
-@practical.getPracticalGroups().map { practicalGroup =>
-    @if(!practicalGroup.getGroupMembers().contains(user)) {
-    <div class="row">
-        <div class="col-xs-4">
-            <a href="@routes.PracticalGroupController.view(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
-        </div>
-        <div class="col-xs-8">
-        @if(practicalGroup.getOwner().equals(user)) {
-            <a href="@routes.PracticalGroupController.sendInvite(practicalGroup.getId())" class="btn btn-primary">Invite</a>
-        }
-        </div>
-    </div>
+@practical.getPracticalGroups().map { pGroup =>
+    @if(!pGroup.getGroupMembers().contains(user)) {
+        @practicalGroup.show(pGroup, user)
     }
 }
 }
