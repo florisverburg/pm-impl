@@ -2,7 +2,9 @@ package forms;
 
 import models.*;
 import play.data.validation.*;
-import play.i18n.Messages;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Freek on 13/05/14.
@@ -11,17 +13,28 @@ import play.i18n.Messages;
 public class LoginForm {
 
     /**
+     * The interface for all the constraints
+     */
+    public interface All {}
+
+    /**
+     * The interface for all the login constraints
+     */
+    public interface Login {}
+
+    /**
      * The user email address
      */
-    @Constraints.Required
-    @Constraints.Email
-    private String email;
+    @Constraints.Required(groups = {All.class, Login.class})
+    @Constraints.Email(groups = {All.class, Login.class})
+    protected String email;
 
     /**
      * The user password
      */
-    @Constraints.Required
-    private String password;
+    @Constraints.Required(groups = {Login.class})
+    @Constraints.MinLength(value = 8, groups = {All.class, Login.class})
+    protected String password;
 
     /**
      * Gets email.
@@ -59,15 +72,18 @@ public class LoginForm {
      * Validates the form
      * @return Returns null if login is correct, else an error message
      */
-    public String validate() {
+    public List<ValidationError> validate() {
+        List<ValidationError> errors = new ArrayList<ValidationError>();
         User user = User.authenticate(email, password);
+
         if (user == null) {
-            return Messages.get("error.wrongAuthentication");
+            errors.add(new ValidationError("email", "error.wrongAuthentication"));
         }
         else if (user.getToken() != null) {
-            return Messages.get("error.notValidated");
+            errors.add(new ValidationError("email", "error.notValidated"));
         }
-        return null;
+
+        return errors.isEmpty() ? null : errors;
     }
 
     /**

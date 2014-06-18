@@ -11,39 +11,7 @@ import java.util.List;
  * Created by Freek on 20/05/14.
  * Profile editing form
  */
-public class ProfileForm {
-
-    /**
-     * The profile first name
-     */
-    @Constraints.Required
-    @Constraints.MaxLength(128)
-    private String firstName;
-
-    /**
-     * The profile last name
-     */
-    @Constraints.Required
-    @Constraints.MaxLength(128)
-    private String lastName;
-
-    /**
-     * The profile email address
-     */
-    @Constraints.Required
-    @Constraints.Email
-    private String email;
-
-    /**
-     * The profile password
-     */
-    @Constraints.MinLength(8)
-    private String password;
-
-    /**
-     * The registration password repeat
-     */
-    private String passwordRepeat;
+public class ProfileForm extends RegisterForm {
 
     /**
      * The profile text
@@ -53,13 +21,13 @@ public class ProfileForm {
     /**
      * The profile image
      */
-    @Constraints.Required
+    @Constraints.Required(groups = {All.class})
     private User.ProfileImage profileImage;
 
     /**
      * The list with skill forms
      */
-    @Constraints.Required
+    @Constraints.Required(groups = {All.class})
     private List<SkillsForm> profileSkills = new ArrayList<SkillsForm>();
 
     /**
@@ -91,86 +59,6 @@ public class ProfileForm {
                 profileSkills.add(new SkillsForm(uSkills.get(0)));
             }
         }
-    }
-
-    /**
-     * Gets first name.
-     * @return The first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Sets first name.
-     * @param firstName The first name
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Gets last name.
-     * @return The last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Sets last name.
-     * @param lastName The last name
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * Gets email.
-     * @return The email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Sets email.
-     * @param email The email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets password.
-     * @return The password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets password.
-     * @param password The password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * Gets password repeat.
-     * @return The password repeat
-     */
-    public String getPasswordRepeat() {
-        return passwordRepeat;
-    }
-
-    /**
-     * Sets password repeat.
-     * @param passwordRepeat The password repeat
-     */
-    public void setPasswordRepeat(String passwordRepeat) {
-        this.passwordRepeat = passwordRepeat;
     }
 
     /**

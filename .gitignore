@@ -11,6 +11,8 @@ conf/evolutions
 .classpath
 .project
 .settings/
+.target/
+lib
 
 # Intellij
 .idea/*

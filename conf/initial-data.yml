@@ -375,27 +375,27 @@ identities:
   - &identity1 !!models.PasswordIdentity
     user: *user1
     email: teacher@example.com
-    password: teacher
+    password: teacher123
 
   - &identity2 !!models.PasswordIdentity
     user: *user3
     email: defaultuser1@example.com
-    password: freak
+    password: defaultuser1
 
   - &identity3 !!models.PasswordIdentity
     user: *user4
     email: defaultuser2@example.com
-    password: floor
+    password: defaultuser2
 
   - &identity4 !!models.PasswordIdentity
     user: *user5
     email: defaultuser3@example.com
-    password: 58bvo
+    password: defaultuser3
 
   - &identity5 !!models.PasswordIdentity
     user: *user10
     email: marijn@example.com
-    password: 55bvo
+    password: marijn123
 
 #Messages
 messages:

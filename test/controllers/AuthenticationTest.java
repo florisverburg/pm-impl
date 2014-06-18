@@ -34,7 +34,7 @@ public class AuthenticationTest extends WithApplication {
                 controllers.routes.ref.Authentication.authenticate(),
                 fakeRequest().withFormUrlEncodedBody(ImmutableMap.of(
                         "email", "defaultuser1@example.com",
-                        "password", "freak"))
+                        "password", "defaultuser1"))
         );
         assertEquals(SEE_OTHER, status(result));
         assertEquals(User.findByEmail("defaultuser1@example.com").getId().toString(), session(result).get("user_id"));
