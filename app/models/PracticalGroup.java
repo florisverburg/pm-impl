@@ -142,40 +142,40 @@ public class PracticalGroup extends Model {
     }
 
     /**
-     * Getter for Id
-     * @return id
+     * gets the identifier of the practical group
+     * @return The identifier
      */
     public long getId() {
         return id;
     }
 
     /**
-     * Getter for practical
-     * @return practical
+     * Gets the practical where the group is from
+     * @return The practical
      */
     public Practical getPractical() {
         return practical;
     }
 
     /**
-     * Setter for practical
-     * @param practical to set
+     * Sets the practical where the group is from
+     * @param practical The practical
      */
     public void setPractical(Practical practical) {
         this.practical = practical;
     }
 
     /**
-     * Getter of owner
-     * @return owner
+     * Gets the owner of the practical group of
+     * @return The owner
      */
     public User getOwner() {
         return owner;
     }
 
     /**
-     * Setter of owner
-     * @param owner to set
+     * Sets the owner of the practical group
+     * @param owner The user that is the new owner
      */
     public void setOwner(User owner) {
         this.owner = owner;

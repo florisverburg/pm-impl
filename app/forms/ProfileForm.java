@@ -62,7 +62,7 @@ public class ProfileForm extends RegisterForm {
     }
 
     /**
-     * Gets profile text.
+     * Gets profile text that is set in the form
      * @return The profile text
      */
     public String getProfileText() {
@@ -70,7 +70,7 @@ public class ProfileForm extends RegisterForm {
     }
 
     /**
-     * Sets profile text.
+     * Sets profile text that is shown in the form
      * @param profileText The profile text
      */
     public void setProfileText(String profileText) {
@@ -78,7 +78,7 @@ public class ProfileForm extends RegisterForm {
     }
 
     /**
-     * Gets profile image.
+     * Gets profile image that is set in the form
      * @return The profile image
      */
     public User.ProfileImage getProfileImage() {
@@ -86,7 +86,7 @@ public class ProfileForm extends RegisterForm {
     }
 
     /**
-     * Sets profile image.
+     * Sets profile image that is shown in the form
      * @param profileImage The profile image
      */
     public void setProfileImage(User.ProfileImage profileImage) {
@@ -94,7 +94,7 @@ public class ProfileForm extends RegisterForm {
     }
 
     /**
-     * Getter for the profile skills.
+     * Gets the profile skills from the form
      * @return The profile skills
      */
     public List<SkillsForm> getProfileSkills() {
@@ -102,7 +102,7 @@ public class ProfileForm extends RegisterForm {
     }
 
     /**
-     * Setter for the profile skills.
+     * Sets the profile skills that are shown in the form
      * @param profileSkills The profile skills
      */
     public void setProfileSkills(List<SkillsForm> profileSkills) {

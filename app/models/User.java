@@ -395,16 +395,16 @@ public class User extends Model {
     }
 
     /**
-     * Getter of the email
-     * @return email email
+     * Getter of the email address
+     * @return email Email address
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Setter of the email
-     * @param email to be set
+     * Setter of the email address
+     * @param email Email to set
      */
     public void setEmail(String email) {
         this.email = email;
@@ -419,7 +419,7 @@ public class User extends Model {
     }
 
     /**
-     * Gets profile text.
+     * Gets the profile text.
      * @return The profile text
      */
     public String getProfileText() {
@@ -427,7 +427,7 @@ public class User extends Model {
     }
 
     /**
-     * Sets profile text.
+     * Sets the profile text.
      * @param profileText The profile text
      */
     public void setProfileText(String profileText) {
@@ -435,7 +435,7 @@ public class User extends Model {
     }
 
     /**
-     * Gets profile image.
+     * Gets the profile image.
      * @return The profile image
      */
     public ProfileImage getProfileImage() {
@@ -443,7 +443,7 @@ public class User extends Model {
     }
 
     /**
-     * Sets profile image.
+     * Sets the profile image.
      * @param profileImage The profile image
      */
     public void setProfileImage(ProfileImage profileImage) {
@@ -451,7 +451,7 @@ public class User extends Model {
     }
 
     /**
-     * Gets profile image or Gravatar url.
+     * Gets the profile image or Gravatar url.
      * @return The profile image url
      */
     public String getProfileImageUrl() {

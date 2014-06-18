@@ -308,56 +308,56 @@ public class Invite extends Model {
     }
 
     /**
-     * Getter for id
-     * @return id
+     * Gets the invite identifier
+     * @return the identifier
      */
     public long getId() {
         return id;
     }
 
     /**
-     * Getter for practical
-     * @return practical
+     * Gets the practical that is linked to the invite
+     * @return the practical
      */
     public Practical getPractical() {
         return practical;
     }
 
     /**
-     * Setter for practical
-     * @param practical to set
+     * Sets the practical that is linked to the invite
+     * @param practical The practical
      */
     public void setPractical(Practical practical) {
         this.practical = practical;
     }
 
     /**
-     * Getter for sender
-     * @return sender
+     * Gets the sender of the invite
+     * @return the sender of the invite
      */
     public User getSender() {
         return sender;
     }
 
     /**
-     * Setter for sender
-     * @param sender to set
+     * Sets the sender of the invite
+     * @param sender the user that sends the invite
      */
     public void setSender(User sender) {
         this.sender = sender;
     }
 
     /**
-     * Getter for receiver
-     * @return receiver
+     * Gets the receiver of the invite
+     * @return the receiver of the invite
      */
     public User getReceiver() {
         return receiver;
     }
 
     /**
-     * Setter for receiver
-     * @param receiver to set
+     * Sets the receiver of the invite
+     * @param receiver that sends the invite
      */
     public void setReceiver(User receiver) {
         this.receiver = receiver;
