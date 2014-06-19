@@ -79,7 +79,7 @@ public class SkillValueUser extends SkillValue {
      * @param user The user the skills are from
      * @return A map with all the skills and skill values
      */
-    public static Map<Skill, SkillValueUser> findAllSkills(User user) {
+    public static Map<Skill, SkillValueUser> findSkills(User user) {
         Map<Skill, SkillValueUser> result = new HashMap<Skill, SkillValueUser>();
 
         // Go trough all the skills and add them to the map

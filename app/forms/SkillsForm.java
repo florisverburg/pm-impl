@@ -52,7 +52,7 @@ public class SkillsForm {
      */
     public SkillsForm(User user) {
         // Add the skills to the form and check if they are set or not
-        for (Map.Entry<Skill, SkillValueUser> entry : SkillValueUser.findAllSkills(user).entrySet()) {
+        for (Map.Entry<Skill, SkillValueUser> entry : SkillValueUser.findSkills(user).entrySet()) {
             if(entry.getValue() == null) {
                 SkillValue uSkill = new SkillValueUser(user, entry.getKey(), 1);
                 profileSkills.add(new SkillsForm(uSkill));

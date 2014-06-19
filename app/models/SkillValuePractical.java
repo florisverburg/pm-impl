@@ -83,7 +83,7 @@ public class SkillValuePractical extends SkillValue {
     public static Map<Skill, SkillValuePractical> findAllSkills(Practical practical) {
         Map<Skill, SkillValuePractical> result = new HashMap<Skill, SkillValuePractical>();
 
-        // Go trough all the skills and add them to the map
+        // Go through all the skills and add them to the map
         for(Skill skill : Skill.findAll()) {
             result.put(skill, findByUserSkill(practical, skill));
         }

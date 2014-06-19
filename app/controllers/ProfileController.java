@@ -26,7 +26,7 @@ public class ProfileController extends Controller {
      */
     public static Result view() {
         User user = Secure.getUser();
-        return ok(view.render(user, SkillValueUser.findAllSkills(user)));
+        return ok(view.render(user, SkillValueUser.findSkills(user)));
     }
 
     /**
