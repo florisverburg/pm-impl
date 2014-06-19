@@ -1,10 +1,7 @@
 package models;
 
-import models.*;
 import org.junit.*;
 import play.test.WithApplication;
-
-import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.fest.assertions.Assertions.assertThat;
