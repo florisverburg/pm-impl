@@ -324,11 +324,6 @@ practicalGroups:
     owner: *user13
     groupMembers:
       - *user13
-  - &practicalGroup17 !!models.PracticalGroup
-      practical: *practical4
-      owner: *user1
-      groupMembers:
-        - *user1
 
 # Invites
 invites:
