@@ -1,6 +1,4 @@
-package helpers;
-
-import models.*;
+package models;
 
 import java.util.*;
 
