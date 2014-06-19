@@ -33,7 +33,7 @@ public class InviteController extends Controller {
         Invite invite = Invite.findById(id);
         invite.accept();
         flash("success", "invite.accepted");
-        return redirect(routes.PracticalController.view(invite.getPractical().getId()));
+        return redirect(routes.PracticalController.invites(invite.getPractical().getId()));
     }
 
     /**
@@ -45,7 +45,7 @@ public class InviteController extends Controller {
         Invite invite = Invite.findById(id);
         invite.withdraw();
         flash("success", "invite.withdrawn");
-        return redirect(routes.PracticalController.view(invite.getPractical().getId()));
+        return redirect(routes.PracticalController.invites(invite.getPractical().getId()));
     }
 
     /**
@@ -58,7 +58,7 @@ public class InviteController extends Controller {
         User user = Secure.getUser();
         invite.resend(user);
         flash("success", "invite.resend");
-        return redirect(routes.PracticalController.view(invite.getPractical().getId()));
+        return redirect(routes.PracticalController.invites(invite.getPractical().getId()));
     }
 
     /**
@@ -70,7 +70,7 @@ public class InviteController extends Controller {
         Invite invite = Invite.findById(inviteId);
         invite.reject();
         flash("success", "invite.reject");
-        return redirect(routes.PracticalController.view(invite.getPractical().getId()));
+        return redirect(routes.PracticalController.invites(invite.getPractical().getId()));
     }
 
     /**

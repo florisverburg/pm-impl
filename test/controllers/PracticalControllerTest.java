@@ -3,6 +3,7 @@ package controllers;
 import models.*;
 import org.junit.Before;
 import org.junit.Test;
+import play.Logger;
 import play.mvc.*;
 import play.test.WithApplication;
 import static org.junit.Assert.*;

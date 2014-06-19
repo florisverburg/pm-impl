@@ -45,12 +45,9 @@
             <div class="col-md-12">
                 <h2>Practicals that are currently ongoing</h2>
                 @practicals.map { practical =>
-                <div class="list-group">
-                    <h4 class="list-group-item-heading">@practical.getName() - @practical.getAdmin.getFullName</h4>
-                    <p class="list-group-item-text">
-                        @practical.getDescription()
-                    </p>
-                </div>
+                <ul>
+                    <li>@practical.getName() - @practical.getAdmin.getFullName</li>
+                </ul>
                 }
             </div>
         </div>

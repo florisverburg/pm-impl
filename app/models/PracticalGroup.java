@@ -123,6 +123,16 @@ public class PracticalGroup extends Model {
         return groupMembers;
     }
 
+    /**
+     * Get the group members without the group owner
+     * @return list of the group members without owner
+     */
+    public List<User> getGroupMembersNoOwner() {
+        List<User> members = this.getGroupMembers();
+        members.remove(this.getOwner());
+        return members;
+    }
+
     /** Setter for users
      * @param groupMembers to set
      */

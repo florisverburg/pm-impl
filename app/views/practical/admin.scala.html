@@ -30,21 +30,26 @@
                 </p>
             }
 
-            @form.section {
-                <h3>Default settings</h3>
-            } {
-                @form.inputText(practicalForm("name"))
-                @form.textarea(practicalForm("description"))
-            }
-
-            @form.section {
-                <h3>Group skills</h3>
-            } {
-                @helper.repeat(practicalForm("skills")) { skillField =>
-                    @form.hidden(skillField("name"), 'type -> "hidden")
-                    @form.slider(skillField("value"), '_label -> skillField("name").value.head)
-                }
-            }
+            <div class="row">
+                <div class="col-md-6">
+                    @form.section {
+                        <h3>Default settings</h3>
+                    } {
+                        @form.inputText(practicalForm("name"))
+                        @form.textarea(practicalForm("description"))
+                    }
+                </div>
+                <div class="col-md-6">
+                    @form.section {
+                        <h3>Group skills</h3>
+                    } {
+                        @helper.repeat(practicalForm("skills")) { skillField =>
+                            @form.hidden(skillField("name"), 'type -> "hidden")
+                            @form.slider(skillField("value"), '_label -> skillField("name").value.head)
+                        }
+                    }
+                </div>
+            </div>
 
             @form.submit("Save")
         }

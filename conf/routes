@@ -3,10 +3,10 @@
 # ~~~~
 
 # Application
-GET         /                                 controllers.ApplicationController.index()
-GET         /about                            controllers.ApplicationController.about()
-GET         /contact                          controllers.ApplicationController.contact()
-GET         /how                              controllers.ApplicationController.how()
+GET         /                                  controllers.ApplicationController.index()
+GET         /about                             controllers.ApplicationController.about()
+GET         /contact                           controllers.ApplicationController.contact()
+GET         /how                               controllers.ApplicationController.how()
 
 # Practical
 GET         /practical                         controllers.PracticalController.list()
@@ -33,6 +33,7 @@ GET         /invite/:id/resend                 controllers.InviteController.rese
 GET         /invite/:id/reject                 controllers.InviteController.rejectInvite(id: Long)
 GET         /invite/:id/message                controllers.InviteController.sendMessage(id: Long)
 GET         /invite/:id                        controllers.InviteController.view(id: Long)
+GET         /invites/:id                       controllers.PracticalController.invites(id: Long)
 
 # Authentication
 GET         /login                             controllers.AuthenticationController.login()

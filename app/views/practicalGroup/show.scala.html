@@ -1,12 +1,21 @@
 @(practicalGroup : PracticalGroup, user : User)
 
-<div class="row">
-    <div class="col-xs-4">
-        <a href="@routes.PracticalGroupController.view(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
-    </div>
-    <div class="col-xs-8">
+<tr class="clickableRow" href="@routes.PracticalGroupController.view(practicalGroup.getId())">
+    <td>
+        <b>@practicalGroup.getOwner.getFullName</b>
+        @if(practicalGroup.getGroupMembersNoOwner.size > 0) {
+            , @practicalGroup.getGroupMembersNoOwner.get(0).getFullName
+        }
+        @if(practicalGroup.getGroupMembersNoOwner.size > 1) {
+            , @practicalGroup.getGroupMembersNoOwner.get(1).getFullName
+        }
+        @if(practicalGroup.getGroupMembersNoOwner.size() > 2) {
+            , ...
+        }
+    </td>
+    <td>
     @if(PracticalGroup.findWithPracticalAndUser(practicalGroup.getPractical, user).getOwner().equals(user)) {
         <a href="@routes.PracticalGroupController.sendInvite(practicalGroup.getId())" class="btn btn-primary">Invite</a>
     }
-    </div>
-</div>
+    </td>
+</tr>

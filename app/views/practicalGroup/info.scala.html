@@ -19,12 +19,10 @@
         <h2>Group participants:</h2>
     }
     @practicalGroup.getGroupMembers().map { user =>
-        <div class="row">
-            <div class="col-xs-4">
+        <ul>
+            <li>
                 <p>@user.getFullName()</p>
-            </div>
-            <div class="col-xs-8">
-            </div>
-        </div>
+            </li>
+        </ul>
     }
 }

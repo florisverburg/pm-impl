@@ -1,0 +1,20 @@
+@(user: User, practical: Practical)
+
+@main("Invites", "invites") {
+
+    <div class="main-text jumbotron">
+        <h2>Your invites for <a href="@routes.PracticalController.view(practical.getId())">@practical.getName()</a></h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Your sent invites</h2>
+            @invite.list(Invite.findByPracticalSender(practical, user))
+        </div>
+        <div class="col-md-6">
+            <h2>Your received invites</h2>
+            @invite.list(Invite.findByPracticalReceiver(practical, user))
+        </div>
+
+    </div>
+}

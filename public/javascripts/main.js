@@ -6,4 +6,8 @@ $(document).ready(function() {
 			return 'Current value: ' + value;
 		}
 	});
+
+	$(".clickableRow").click(function() {
+            window.document.location = $(this).attr("href");
+      });
 }); 
