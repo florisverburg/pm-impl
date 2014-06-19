@@ -82,14 +82,6 @@ public class Skill extends Model {
     }
 
     /**
-     * Add a user skill to the list for the many-to-many relationship
-     * @param skillValue to add to the list
-     */
-    public void addUserSkill(SkillValue skillValue) {
-        skillValues.add(skillValue);
-    }
-
-    /**
      * Getter for the user skills
      * @return user skills
      */

@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Ebean;
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.LinkedinConnection;
 import play.data.validation.*;
 
@@ -72,10 +73,21 @@ public class LinkedinIdentity extends Identity {
 
         // Create and save if the user doesn't exist
         if(identity == null) {
-            User user = linkedinConnection.createUser();
+            JsonNode person = linkedinConnection.getPerson();
+            // Check if call went correct
+            if(person == null) {
+                return null;
+            }
+
+            // Create a new user
+            User user = new User(
+                    person.get("firstName").asText(),
+                    person.get("lastName").asText(),
+                    person.get("emailAddress").asText()
+            );
             user.save();
 
-            identity = linkedinConnection.createIdentity(user);
+            identity = new LinkedinIdentity(user, linkedinConnection.getPersonId());
             identity.save();
         }
 
