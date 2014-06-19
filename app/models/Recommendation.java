@@ -4,7 +4,6 @@ import java.util.*;
 
 import static com.avaje.ebean.Expr.eq;
 import static com.avaje.ebean.Expr.in;
-import static com.avaje.ebean.Expr.or;
 
 /**
  * Created by Marijn Goedegebure on 30-5-2014.
@@ -67,7 +66,7 @@ public final class Recommendation {
      * @param pSkills The practical required skills
      * @return The distance between the practical groups' skills and the practical skills
      */
-    public static double distance(HashMap<Skill, Double> skills, List<SkillValuePractical> pSkills) {
+    public static double distance(HashMap<Skill, Double> skills, List<? extends SkillValue> pSkills) {
         double average = 0;
 
         // Go trough all the practicum skills
