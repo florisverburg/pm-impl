@@ -187,6 +187,7 @@ public class PracticalController extends Controller {
 
         // Delete the practical
         Ebean.delete(PracticalGroup.findByPractical(practical));
+        Ebean.delete(SkillValuePractical.findByPractical(practical));
         practical.delete();
         flash("success", "practical.deleted");
         return redirect(routes.PracticalController.list());

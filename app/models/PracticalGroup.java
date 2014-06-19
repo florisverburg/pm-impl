@@ -25,7 +25,7 @@ public class PracticalGroup extends Model {
     /**
      * Many-to-one relationship of the practicalgroup and the practical
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Practical practical;
 
     /**
