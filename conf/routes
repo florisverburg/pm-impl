@@ -3,9 +3,10 @@
 # ~~~~
 
 # Application
-GET         /                                  controllers.ApplicationController.index()
-GET         /about                             controllers.ApplicationController.about()
-GET         /contact                           controllers.ApplicationController.contact()
+GET         /                                 controllers.ApplicationController.index()
+GET         /about                            controllers.ApplicationController.about()
+GET         /contact                          controllers.ApplicationController.contact()
+GET         /how                              controllers.ApplicationController.how()
 
 # Practical
 GET         /practical                         controllers.PracticalController.list()

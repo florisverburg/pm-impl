@@ -33,4 +33,12 @@ public class ApplicationController extends Controller {
                 "Do you have a comment or question? Please send us an e-mail.",
                 "contact@apmatch.nl"));
     }
+
+    /**
+     * Create the how does it work page
+     * @return the how does it work page
+     */
+    public static Result how() {
+        return ok(how.render("This page describes how different parts of the system work."));
+    }
 }

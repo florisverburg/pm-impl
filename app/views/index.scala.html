@@ -1,13 +1,59 @@
 @(message: String)
+@practicals = @{Practical.find.all()}
 
 @main("Welcome ", "index") {
 
     <div class="main-text jumbotron">
         <h2>@message</h2>
         <p>
-            APMatch is a platform to find group members for practical assignments.<br />
-            Log in to start your group member search!
+            APMatch is a platform to find group members for practical assignments associated with Massive Open Online Courses (MOOCs).<br />
+            Log in to start your group member search!<br />
+            For more information, look down!
         </p>
+    </div>
+    <div class="container marketing">
+        <hr class="featurette-divider">
+        <div class="row featurette">
+            <div class="col-md-12">
+                <h2>The problem</h2>
+                <p>
+                    Since the start of MOOCs (Massive Open Online Courses, for more info click <a href="http://www.tudelft.nl/en/study/online-education/massive-open-online-courses-moocs/">here!</a>) their popularity has grown substantially.
+                    This created two needs:
+                    <ul>
+                        <li>Practicals and assignments for these courses need to be easily manageable</li>
+                        <li>Participants need an easy and reliable way of searching through and inviting their group members</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+        <hr class="featurette-divider">
+        <div class="row featurette">
+            <div class="col-md-12">
+                <h2>What is the purpose of APMatch?</h2>
+                <p>
+                    The purpose of this website is to provide a platform for students to search for group members and invite them to their group.
+                    The platform provides for an easy to use invitation system that gives complete control over your invitations.<br />
+
+                    The platform also provides for a recommendation algorithm. This algorithm can recommend other students to you using data about some recommended skills.<br />
+
+                    Interested in how it works? Check our <a href="@routes.ApplicationController.how()">How does it work?</a> page.
+                </p>
+            </div>
+        </div>
+        <hr class="featurette-divider">
+        <div class="row featurette">
+            <div class="col-md-12">
+                <h2>Practicals that are currently ongoing</h2>
+                @practicals.map { practical =>
+                <div class="list-group">
+                    <h4 class="list-group-item-heading">@practical.getName() - @practical.getAdmin.getFullName</h4>
+                    <p class="list-group-item-text">
+                        @practical.getDescription()
+                    </p>
+                </div>
+                }
+            </div>
+        </div>
     </div>
 
 }
