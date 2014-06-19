@@ -30,7 +30,10 @@ practical.deleted = The practical is deleted
 practical.edited = The practical is successfully edited
 practical.alreadyCoupled = User already coupled to the practical
 practical.successfulAddition = User has been successfully added to the practical
-practical.removeGroupMember = User has been sucessfully removed from practical group
+practical.removeGroupMember = User has been successfully removed from practical group
+
+# Practical group
+practicalGroup.doesNotExist = The practical group does not exist
 
 # Invite
 invite.accepted = Invite has been accepted

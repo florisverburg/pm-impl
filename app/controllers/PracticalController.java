@@ -1,5 +1,6 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
 import forms.PracticalForm;
 import models.*;
 import play.data.*;
@@ -166,6 +167,7 @@ public class PracticalController extends Controller {
         }
 
         // Delete the practical
+        Ebean.delete(PracticalGroup.findByPractical(practical));
         practical.delete();
         flash("success", "practical.deleted");
         return redirect(routes.PracticalController.list());
