@@ -6,7 +6,6 @@ import play.data.validation.*;
 import play.db.ebean.*;
 import com.avaje.ebean.annotation.EnumValue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,12 +53,6 @@ public class Skill extends Model {
     private Integer maxValue;
 
     /**
-     * One-to-many relationship between user skill and skill
-     */
-    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
-    private List<SkillValue> skillValues = new ArrayList<SkillValue>();
-
-    /**
      * Finder defined for the Skills, used in the many-to-many relationship
      */
     public static Model.Finder<String, Skill> find =
@@ -81,13 +74,6 @@ public class Skill extends Model {
         this.name = name;
     }
 
-    /**
-     * Getter for the user skills
-     * @return user skills
-     */
-    public List<SkillValue> getSkillValues() {
-        return skillValues;
-    }
 
     /**
      * Constructor of the Skill model class

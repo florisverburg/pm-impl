@@ -451,13 +451,4 @@ public class User extends Model {
                 Expr.eq("practical.id", practical.getId()), Expr.eq("receiver.id", this.id)
         ).findList();
     }
-
-    /**
-     * Find all the skills, including the skills the user hasn't an user skill for.
-     * @return A list with all the skills
-     */
-    public List<Skill> findAllSkills() {
-        return Skill.find.fetch("skillValues", "*").where().filterMany("skillValues")
-                .eq("user.id", this.id).findList();
-    }
 }

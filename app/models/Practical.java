@@ -288,13 +288,4 @@ public class Practical extends Model {
 
         super.delete();
     }
-
-    /**
-     * Find all the skills, including the skills the practical hasn't set.
-     * @return A list with all the skills
-     */
-    public List<Skill> findAllSkills() {
-        return Skill.find.fetch("skillValues", "*").where().filterMany("skillValues")
-                .eq("practical.id", this.id).findList();
-    }
 }
