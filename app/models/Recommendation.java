@@ -3,6 +3,7 @@ package models;
 import java.util.*;
 
 import static com.avaje.ebean.Expr.eq;
+import static com.avaje.ebean.Expr.in;
 import static com.avaje.ebean.Expr.or;
 
 /**
@@ -34,14 +35,13 @@ public final class Recommendation {
     public static HashMap<Skill, Double> average(PracticalGroup practicalGroup1, PracticalGroup practicalGroup2) {
         HashMap<Skill, Double> result = new HashMap<Skill, Double>();
 
-        // Go trough all the skills
+        // Go through all the skills
         for(Skill skill : Skill.findAll()) {
+            List<User> users = practicalGroup1.getGroupMembers();
+            users.addAll(practicalGroup2.getGroupMembers());
             List<SkillValue> uSkills = SkillValue.find.where().and(
                     eq("skill.name", skill.getName()),
-                    or(
-                            eq("user.practicalGroups.id", practicalGroup1.getId()),
-                            eq("user.practicalGroups.id", practicalGroup2.getId())
-                    )
+                    in("user", users)
             ).findList();
 
             // Calculate the average here through support of ebean is limited (maybe later fix RAW SQL)
