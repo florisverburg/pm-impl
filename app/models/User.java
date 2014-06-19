@@ -121,6 +121,7 @@ public class User extends Model {
     /**
      * Some simple profile text which is viewable to everyone in the practical
      */
+    @Constraints.MaxLength(255)
     private String profileText;
 
     /**
