@@ -28,7 +28,7 @@
 }
 
 <h2>Practical Groups:</h2>
-@practical.getPracticalGroups().map { pGroup =>
+@PracticalGroup.findByPractical(practical).map { pGroup =>
     @if(!pGroup.getGroupMembers().contains(user)) {
         @practicalGroup.show(pGroup, user)
     }

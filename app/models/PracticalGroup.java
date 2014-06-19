@@ -67,6 +67,15 @@ public class PracticalGroup extends Model {
     }
 
     /**
+     * Get the practical groups of a certain practical
+     * @param practical The practical to get the groups from
+     * @return The practical groups
+     */
+    public static List<PracticalGroup> findByPractical(Practical practical) {
+        return find.where().eq("practical.id", practical.getId()).findList();
+    }
+
+    /**
      * A method to find a practical group using a given practical and a given user
      * @param practical of the practical group
      * @param groupMember of the practical group

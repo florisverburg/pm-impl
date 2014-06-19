@@ -95,7 +95,7 @@ public final class Recommendation {
         PracticalGroup practicalGroup1 = PracticalGroup.findWithPracticalAndUser(practical, user);
 
         // Go trough all the practical groups
-        for(PracticalGroup practicalGroup2 : practical.getPracticalGroups()) {
+        for(PracticalGroup practicalGroup2 : PracticalGroup.findByPractical(practical)) {
             // Check if it is not our own group
             if(practicalGroup1.equals(practicalGroup2)) {
                 continue;
