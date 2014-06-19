@@ -109,8 +109,8 @@ public class InviteTest extends WithApplication {
         User receiverInvite2 = createdUser;
 
         // Check if the created user has not received or send any invites yet
-        assertEquals(createdUser.getInvitesReceived().size(), 0);
-        assertEquals(createdUser.getInvitesSend().size(), 0);
+        assertEquals(Invite.findByPracticalReceiver(testPractical, createdUser).size(), 0);
+        assertEquals(Invite.findByPracticalSender(testPractical, createdUser).size(), 0);
         // Check if the method we are testing also returns the appropriate amount of invites
         assertEquals(Invite.findPendingInvitesByUser(testPractical, createdUser).size(), 0);
 

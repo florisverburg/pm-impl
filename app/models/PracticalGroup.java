@@ -32,13 +32,12 @@ public class PracticalGroup extends Model {
      * Many-to-one relationship of the practicalgroup and the owner of a group
      */
     @ManyToOne
-    @JoinColumn(name = "ownerId")
     private User owner;
 
     /**
      * Many-to-many relationship of the practicalgroups and users
      */
-    @ManyToMany(mappedBy = "practicalGroups", cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.ALL)
     List<User> groupMembers = new ArrayList<User>();
 
     /**

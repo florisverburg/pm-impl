@@ -202,8 +202,7 @@ public class UserTest extends WithApplication {
         }
 
         // Reverse the invitation
-        createdUser.getInvitesSend().remove(inviteCreatedUserToTestUser1);
-        createdUser.save();
+        inviteCreatedUserToTestUser1.delete();
         Invite.sendInvite(practical, testUser1, createdUser);
 
         // Check whether the values returned did not change
@@ -213,10 +212,6 @@ public class UserTest extends WithApplication {
             assertEquals(invite.getState(), Invite.State.Pending);
         }
 
-        // Change the state of the invites
-        inviteCreatedUserToTestUser1.setState(Invite.State.Accepted);
-        inviteCreatedUserToTestUser1.save();
-
         inviteDefaultUser3ToCreatedUser.setState(Invite.State.Rejected);
         inviteDefaultUser3ToCreatedUser.save();
 
@@ -225,8 +220,8 @@ public class UserTest extends WithApplication {
 
         foundInvites = Invite.findPendingInvitesByUser(practical, createdUser);
 
-        // Check whether the values returned are change appropriately
-        assertEquals(foundInvites.size(), 0);
+        // Check whether the values returned are changed appropriately
+        assertEquals(foundInvites.size(), 1);
         for (Invite invite : foundInvites) {
             assertEquals(invite.getState(), Invite.State.Pending);
         }

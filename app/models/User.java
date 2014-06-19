@@ -9,8 +9,6 @@ import play.db.ebean.*;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -130,30 +128,6 @@ public class User extends Model {
     private ProfileImage profileImage;
 
     /**
-     * Many-to-many relationship defined for the users and practicalGroups
-     */
-    @ManyToMany(targetEntity = PracticalGroup.class, cascade = CascadeType.ALL)
-    private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
-
-    /**
-     * One-to-many relationship between user and invite (sender)
-     */
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-    private List<Invite> invitesSend = new ArrayList<Invite>();
-
-    /**
-     * One-to-many relationship between user and invite (receiver)
-     */
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-    private List<Invite> invitesReceived = new ArrayList<Invite>();
-
-    /**
-     * One-to-many relationship between user and practicalgroup, the practicalgroups where the user is owner of
-     */
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<PracticalGroup> practicalGroupsOwner = new ArrayList<PracticalGroup>();
-
-    /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
     public static Model.Finder<Long, User> find =
@@ -238,14 +212,6 @@ public class User extends Model {
      */
     public void setType(Type type) {
         this.type = type;
-    }
-
-    /**
-     * Getter for practicalgroups
-     * @return practicalgroups practical groups
-     */
-    public List<PracticalGroup> getPracticalGroups() {
-        return practicalGroups;
     }
 
     /**
@@ -374,21 +340,5 @@ public class User extends Model {
      */
     public void setToken(String token) {
         this.token = token;
-    }
-
-    /**
-     * Gets the invites send
-     * @return Invites send
-     */
-    public List<Invite> getInvitesSend() {
-        return invitesSend;
-    }
-
-    /**
-     * Gets the invites received
-     * @return Invites received
-     */
-    public List<Invite> getInvitesReceived() {
-        return invitesReceived;
     }
 }
