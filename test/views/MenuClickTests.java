@@ -54,4 +54,17 @@ public class MenuClickTests {
         });
     }
 
+    @Test
+    public void clickHowTest() {
+        running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
+            public void invoke(TestBrowser browser) {
+                browser.goTo("http://localhost:3333");
+                browser.$("#navbarToggle").click();
+                browser.$("#linkHow").click();
+                assertThat(browser.url()).isEqualTo("http://localhost:3333/how");
+                assertThat(browser.title()).isEqualTo("How does it work? - APMatch");
+            }
+        });
+    }
+
 }
