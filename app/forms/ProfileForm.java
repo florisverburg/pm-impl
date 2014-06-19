@@ -103,7 +103,7 @@ public class ProfileForm extends RegisterForm {
 
         // Update identity if needed
         if(this.password != null && !this.password.isEmpty() && PasswordIdentity.contains(user)) {
-            for(Identity identity : user.getIdentities()) {
+            for(Identity identity : Identity.findByUser(user)) {
                 if(identity instanceof PasswordIdentity) {
                     ((PasswordIdentity) identity).setPassword(this.password);
                     identity.save();

@@ -1,8 +1,10 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import play.data.validation.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Freek on 02/06/14.
@@ -45,5 +47,14 @@ public class SkillValuePractical extends SkillValue {
      */
     public void setPractical(Practical practical) {
         this.practical = practical;
+    }
+
+    /**
+     * Find the skills of a specific practical
+     * @param practical The practical to search the skills for
+     * @return The skill values
+     */
+    public static List<SkillValuePractical> findByPractical(Practical practical) {
+        return Ebean.find(SkillValuePractical.class).where().eq("practical.id", practical.getId()).findList();
     }
 }

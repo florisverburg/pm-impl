@@ -103,7 +103,7 @@ public final class Recommendation {
 
             // Calculate average and then the distance
             HashMap<Skill, Double> average = average(practicalGroup1, practicalGroup2);
-            list.put(practicalGroup2, distance(average, practical.getSkills()));
+            list.put(practicalGroup2, distance(average, SkillValuePractical.findByPractical(practical)));
         }
 
         // Sort the HashMap by values

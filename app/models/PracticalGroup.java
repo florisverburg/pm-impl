@@ -105,9 +105,6 @@ public class PracticalGroup extends Model {
         // Create a new practical group for the removed user
         PracticalGroup newPracticalGroup = new PracticalGroup(practical, user);
         newPracticalGroup.save();
-
-        // Reset the states of the invites to Rejected
-        Invite.rejectOtherInvitesUser(user, practical, true, Invite.State.Accepted);
     }
 
     /**

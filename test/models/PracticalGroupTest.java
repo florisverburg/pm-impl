@@ -165,6 +165,7 @@ public class PracticalGroupTest extends WithApplication {
         assertEquals(Invite.State.Accepted, invite.getState());
 
         practicalGroup1.leaveGroup(user1);
+        Invite.rejectOtherInvitesUser(user1, practicalGroup1.getPractical(), true, Invite.State.Accepted);
 
         practicalGroup1 = PracticalGroup.findById(practicalGroup1.getId());
         PracticalGroup newPracticalGroup = PracticalGroup.findWithPracticalAndUser(practical, user2);
@@ -215,6 +216,7 @@ public class PracticalGroupTest extends WithApplication {
         assertEquals(Invite.State.Accepted, invite.getState());
 
         practicalGroup1.leaveGroup(user2);
+        Invite.rejectOtherInvitesUser(user2, practicalGroup1.getPractical(), true, Invite.State.Accepted);
 
         practicalGroup1 = PracticalGroup.findById(practicalGroup1.getId());
         PracticalGroup newPracticalGroup = PracticalGroup.findWithPracticalAndUser(practical, user2);
@@ -238,6 +240,7 @@ public class PracticalGroupTest extends WithApplication {
         assertEquals(1, practicalGroup.getGroupMembers().size());
 
         practicalGroup.leaveGroup(user1);
+        Invite.rejectOtherInvitesUser(user1, practicalGroup.getPractical(), true, Invite.State.Accepted);
         practicalGroup = PracticalGroup.findById(practicalGroup.getId());
         assertEquals(1, practicalGroup.getGroupMembers().size());
     }

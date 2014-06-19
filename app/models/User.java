@@ -131,13 +131,6 @@ public class User extends Model {
     private ProfileImage profileImage;
 
     /**
-     * The identities linked to the user
-     * One-to-many relationship between identity and user
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Identity> identities = new ArrayList<Identity>();
-
-    /**
      * One-to-many relationship between user skill and user
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -313,14 +306,6 @@ public class User extends Model {
      */
     public List<PracticalGroup> getPracticalGroups() {
         return practicalGroups;
-    }
-
-    /**
-     * Gets identities.
-     * @return The identities
-     */
-    public List<Identity> getIdentities() {
-        return identities;
     }
 
     /**

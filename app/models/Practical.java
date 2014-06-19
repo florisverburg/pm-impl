@@ -80,12 +80,6 @@ public class Practical extends Model {
     List<Invite> invites = new ArrayList<Invite>();
 
     /**
-     * One-to-many relationship between value skill and practical
-     */
-    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
-    private List<SkillValuePractical> skills = new ArrayList<SkillValuePractical>();
-
-    /**
      * Finder defined for the practical
      */
     public static Model.Finder<Long, Practical> find =
@@ -280,22 +274,6 @@ public class Practical extends Model {
      */
     public boolean isAdmin(User user) {
         return user.equals(this.admin);
-    }
-
-    /**
-     * Gets skills.
-     * @return The skills
-     */
-    public List<SkillValuePractical> getSkills() {
-        return skills;
-    }
-
-    /**
-     * Sets skills.
-     * @param skills The skills
-     */
-    public void setSkills(List<SkillValuePractical> skills) {
-        this.skills = skills;
     }
 
     /**

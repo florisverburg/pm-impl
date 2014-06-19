@@ -36,7 +36,7 @@ public class SkillValueTest extends WithApplication {
         practical1 = Practical.findByName("Documenting");
         skill = Skill.findByName("Programming");
         skillValue1 = user.getSkillValues().get(0);
-        skillValue2 = practical.getSkills().get(0);
+        skillValue2 = SkillValuePractical.findByPractical(practical).get(0);
     }
 
     /**
@@ -67,13 +67,13 @@ public class SkillValueTest extends WithApplication {
         pSkill.save();
 
         // Check the values of the setUp() method
-        assertEquals(practical.getSkills().size(), 2);
+        assertEquals(SkillValuePractical.findByPractical(practical).size(), 2);
         assertEquals(skillValue2.getValue(), new Integer(7));
         assertEquals(skillValue2.getPractical(), practical);
         assertEquals(skillValue2.getSkill(), skill);
 
         // Check if creation was ok
-        assertEquals(practical1.getSkills().size(), 1);
+        assertEquals(SkillValuePractical.findByPractical(practical1).size(), 1);
         assertEquals(pSkill.getValue(), new Integer(5));
         assertEquals(pSkill.getPractical(), practical1);
         assertEquals(pSkill.getSkill(), skill);

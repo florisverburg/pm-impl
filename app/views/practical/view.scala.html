@@ -10,7 +10,7 @@
 </div>
 
 <h2>Recommended Skills:</h2>
-@practical.getSkills().map { skill =>
+@SkillValuePractical.findByPractical(practical).map { skill =>
     @skill.getSkill().getName(): @skill.getValue()<br />
 }
 
