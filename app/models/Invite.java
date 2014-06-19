@@ -7,8 +7,6 @@ import play.data.validation.*;
 import play.db.ebean.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.avaje.ebean.Expr.and;
@@ -71,12 +69,6 @@ public class Invite extends Model {
      */
     @ManyToOne
     private Practical practical;
-
-    /**
-     * One-to-many relationship between user and invite (sender)
-     */
-    @OneToMany(mappedBy = "invite", cascade = CascadeType.ALL)
-    private List<Message> messages = new ArrayList<Message>();
 
     /**
      * User that send the invite
@@ -369,40 +361,6 @@ public class Invite extends Model {
      */
     public State getState() {
         return state;
-    }
-
-    /**
-     * Getter messages
-     * @return messages
-     */
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    /**
-     * Add message
-     * @param message to add
-     */
-    public void addMessage(Message message) {
-        this.messages.add(message);
-    }
-
-    /**
-     * Setter messages
-     * @param messages the messages
-     */
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    /**
-     * Get a list of messages sorted on timestamp.
-     * @return a sorted list of messages
-     */
-    public List<Message> getSortedMessages() {
-        List<Message> messages = this.getMessages();
-        Collections.sort(messages);
-        return messages;
     }
 
     /**

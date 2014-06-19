@@ -5,6 +5,7 @@ import play.db.ebean.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * Created by Floris on 02/06/14.
@@ -150,5 +151,14 @@ public class Message extends Model implements Comparable<Message> {
     public String getTime() {
         String time = new SimpleDateFormat("dd/MM/yyyy hh:mm").format(this.getTimestamp());
         return time;
+    }
+
+    /**
+     * Finds the messages of a specific invite ordered by timestamp
+     * @param invite The invite to get the messages for
+     * @return The ordered list of messages
+     */
+    public static List<Message> findByInvite(Invite invite) {
+        return find.where().eq("invite.id", invite.getId()).orderBy("timestamp").findList();
     }
 }
