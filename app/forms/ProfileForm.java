@@ -15,6 +15,7 @@ public class ProfileForm extends RegisterForm {
     /**
      * The profile text
      */
+    @Constraints.MaxLength(value = 255, groups = {All.class})
     private String profileText;
 
     /**

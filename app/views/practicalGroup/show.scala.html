@@ -5,7 +5,7 @@
         <a href="@routes.PracticalGroupController.view(practicalGroup.getId())">Practical group #@practicalGroup.getId()</a>
     </div>
     <div class="col-xs-8">
-    @if(practicalGroup.getOwner().equals(user)) {
+    @if(PracticalGroup.findWithPracticalAndUser(practicalGroup.getPractical, user).getOwner().equals(user)) {
         <a href="@routes.PracticalGroupController.sendInvite(practicalGroup.getId())" class="btn btn-primary">Invite</a>
     }
     </div>
