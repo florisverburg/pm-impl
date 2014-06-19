@@ -20,7 +20,7 @@ public class PracticalGroupController extends Controller {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
 
         // Check if the user is enrolled for the practical
-        if(!Secure.getUser().getPracticals().contains(practicalGroup.getPractical())){
+        if(!practicalGroup.getPractical().isEnrolled(Secure.getUser())){
             flash("error", "practical.userIsNotEnrolled");
             return redirect(routes.ApplicationController.index());
         }

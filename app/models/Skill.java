@@ -6,7 +6,6 @@ import play.data.validation.*;
 import play.db.ebean.*;
 import com.avaje.ebean.annotation.EnumValue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,18 +47,6 @@ public class Skill extends Model {
     private Type type;
 
     /**
-     * The max value a skill can has
-     */
-    @Constraints.Required
-    private Integer maxValue;
-
-    /**
-     * One-to-many relationship between user skill and skill
-     */
-    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
-    private List<SkillValue> skillValues = new ArrayList<SkillValue>();
-
-    /**
      * Finder defined for the Skills, used in the many-to-many relationship
      */
     public static Model.Finder<String, Skill> find =
@@ -70,7 +57,7 @@ public class Skill extends Model {
      * @return name of the current skill
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -81,24 +68,15 @@ public class Skill extends Model {
         this.name = name;
     }
 
-    /**
-     * Getter for the user skills
-     * @return user skills
-     */
-    public List<SkillValue> getSkillValues() {
-        return skillValues;
-    }
 
     /**
      * Constructor of the Skill model class
-     * @param nm name of the skill
-     * @param tp type of the skill
-     * @param maxV maxValue of the skill
+     * @param name The name of the skill
+     * @param type The type of the skill
      */
-    public Skill(String nm, Type tp, Integer maxV) {
-        name = nm;
-        maxValue = maxV;
-        type = tp;
+    public Skill(String name, Type type) {
+        this.name = name;
+        this.type = type;
     }
 
     /**
@@ -106,7 +84,7 @@ public class Skill extends Model {
      * @return type
      */
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     /**
@@ -115,22 +93,6 @@ public class Skill extends Model {
      */
     public void setType(Type type) {
         this.type = type;
-    }
-
-    /**
-     * Getter of the max value
-     * @return maxValue
-     */
-    public Integer getMaxValue() {
-        return maxValue;
-    }
-
-    /**
-     * Setter of the max value
-     * @param maxValue to be set
-     */
-    public void setMaxValue(Integer maxValue) {
-        this.maxValue = maxValue;
     }
 
     /**

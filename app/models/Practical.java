@@ -58,7 +58,7 @@ public class Practical extends Model {
     /**
      * Many-to-many relationship between practical and user
      */
-    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     List<User> users = new ArrayList<User>();
 
     /**
@@ -66,18 +66,6 @@ public class Practical extends Model {
      */
     @ManyToOne
     private User admin;
-
-    /**
-     * One-to-many relationship between practical and practical group
-     */
-    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
-    List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
-
-    /**
-     * One-to-many relationship between practical and invite
-     */
-    @OneToMany(mappedBy = "practical", cascade = CascadeType.ALL)
-    List<Invite> invites = new ArrayList<Invite>();
 
     /**
      * Finder defined for the practical
@@ -97,11 +85,12 @@ public class Practical extends Model {
     }
 
     /**
-     * Method that returns a random generated secret
-     * @return random generated secret
+     * Method to find a practical by its id
+     * @param id of the practical to be found
+     * @return the found practical
      */
-    public String generateSecret() {
-        return new BigInteger(SECRET_RANDOM_BITS, new SecureRandom()).toString(SECRET_RANDOM_BASE);
+    public static Practical findById(long id) {
+        return find.where().eq("id", id).findUnique();
     }
 
     /**
@@ -114,21 +103,12 @@ public class Practical extends Model {
     }
 
     /**
-     * Method to find a practical by its id
-     * @param id of the practical to be found
-     * @return the found practical
+     * Find the practicals a user is registered to ordered by name
+     * @param user The user that is registered to the practicals
+     * @return The ordered list of practicals
      */
-    public static Practical findById(long id) {
-        return find.where().eq("id", id).findUnique();
-    }
-
-    /**
-     * Check if a user is enrolled for a practical
-     * @param user The user to check
-     * @return Whether the user is enrolled or not
-     */
-    public boolean isEnrolled(User user) {
-        return users.contains(user);
+    public static List<Practical> findByUser(User user) {
+        return find.where().eq("users.id", user.getId()).orderBy("name").findList();
     }
 
     /**
@@ -220,22 +200,6 @@ public class Practical extends Model {
     }
 
     /**
-     * Getter for practicalGroups
-     * @return practicalGroups practical groups
-     */
-    public List<PracticalGroup> getPracticalGroups() {
-        return practicalGroups;
-    }
-
-    /**
-     * Add a practicalgroup to the list
-     * @param practicalGroup to add
-     */
-    public void addPracticalGroup(PracticalGroup practicalGroup) {
-        this.practicalGroups.add(practicalGroup);
-    }
-
-    /**
      * Setter secret
      * @param secret to set
      */
@@ -244,27 +208,11 @@ public class Practical extends Model {
     }
 
     /**
-     * Getter for invites
-     * @return invites invites
+     * Method that returns a random generated secret
+     * @return random generated secret
      */
-    public List<Invite> getInvites() {
-        return invites;
-    }
-
-    /**
-     * Setter for invites
-     * @param invites to set
-     */
-    public void setInvites(List<Invite> invites) {
-        this.invites = invites;
-    }
-
-    /**
-     * Add invite to the list of invites
-     * @param invite to add
-     */
-    public void addInvites(Invite invite) {
-        this.invites.add(invite);
+    public String generateSecret() {
+        return new BigInteger(SECRET_RANDOM_BITS, new SecureRandom()).toString(SECRET_RANDOM_BASE);
     }
 
     /**
@@ -277,24 +225,11 @@ public class Practical extends Model {
     }
 
     /**
-     * Deletes the object
+     * Check if a user is enrolled for a practical
+     * @param user The user to check
+     * @return Whether the user is enrolled or not
      */
-    @Override
-    public void delete() {
-        // Since many-to-many -> many-to-many delete fails we have to do it separately
-        for(PracticalGroup group : getPracticalGroups()) {
-            group.delete();
-        }
-
-        super.delete();
-    }
-
-    /**
-     * Find all the skills, including the skills the practical hasn't set.
-     * @return A list with all the skills
-     */
-    public List<Skill> findAllSkills() {
-        return Skill.find.fetch("skillValues", "*").where().filterMany("skillValues")
-                .eq("practical.id", this.id).findList();
+    public boolean isEnrolled(User user) {
+        return users.contains(user);
     }
 }

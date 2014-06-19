@@ -183,8 +183,9 @@ public class UserTest extends WithApplication {
         // Create a new user createdUser
         User createdUser = new User("CreatedUser", "lastName", "createduser@example.com", User.Type.Admin);
         Practical practical = Practical.findByName("Programming");
-        createdUser.addPractical(practical);
-        createdUser.save();
+        practical.addUser(createdUser);
+        practical.save();
+
         User defaultUser3 = User.findByName("DefaultUser3");
         User defaultUser2 = User.findByName("DefaultUser2");
         // Send invites
@@ -192,7 +193,7 @@ public class UserTest extends WithApplication {
         Invite inviteDefaultUser3ToCreatedUser = Invite.sendInvite(practical, defaultUser3, createdUser);
         Invite inviteDefaultUser2ToCreatedUser = Invite.sendInvite(practical, defaultUser2, createdUser);
 
-        List<Invite> foundInvites = createdUser.findPendingInvitesUser(practical);
+        List<Invite> foundInvites = Invite.findPendingInvitesByUser(practical, createdUser);
 
         // Check whether the values returned are correct
         assertEquals(foundInvites.size(), 3);
@@ -201,8 +202,7 @@ public class UserTest extends WithApplication {
         }
 
         // Reverse the invitation
-        createdUser.getInvitesSend().remove(inviteCreatedUserToTestUser1);
-        createdUser.save();
+        inviteCreatedUserToTestUser1.delete();
         Invite.sendInvite(practical, testUser1, createdUser);
 
         // Check whether the values returned did not change
@@ -212,20 +212,16 @@ public class UserTest extends WithApplication {
             assertEquals(invite.getState(), Invite.State.Pending);
         }
 
-        // Change the state of the invites
-        inviteCreatedUserToTestUser1.setState(Invite.State.Accepted);
-        inviteCreatedUserToTestUser1.save();
-
         inviteDefaultUser3ToCreatedUser.setState(Invite.State.Rejected);
         inviteDefaultUser3ToCreatedUser.save();
 
         inviteDefaultUser2ToCreatedUser.setState(Invite.State.Withdrawn);
         inviteDefaultUser2ToCreatedUser.save();
 
-        foundInvites = createdUser.findPendingInvitesUser(practical);
+        foundInvites = Invite.findPendingInvitesByUser(practical, createdUser);
 
-        // Check whether the values returned are change appropriately
-        assertEquals(foundInvites.size(), 0);
+        // Check whether the values returned are changed appropriately
+        assertEquals(foundInvites.size(), 1);
         for (Invite invite : foundInvites) {
             assertEquals(invite.getState(), Invite.State.Pending);
         }

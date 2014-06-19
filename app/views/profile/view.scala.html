@@ -1,4 +1,4 @@
-@(user: User)
+@(user: User, skills: Map[Skill, SkillValueUser])
 
 @main("Profile", "profile") {
     <div>
@@ -38,13 +38,13 @@
                     <legend>Skills <a href="@controllers.routes.ProfileController.editSkills()" class="btn btn-sm btn-primary pull-right"><span class="glyphicon glyphicon-wrench"></span> Edit</a></legend>
                         <p>
                             <table class="table table-striped">
-                                @user.findAllSkills().map { skill =>
+                                @skills.map { case (skill, value) =>
                                     <tr>
                                         <td>@{skill.getName}:</td>
-                                        @if(skill.getSkillValues.size == 0) {
+                                        @if(value == null) {
                                             <td>Not yet provided.</td>
                                         } else {
-                                            <td>@skill.getSkillValues.get(0).getValue</td>
+                                            <td>@value.getValue()</td>
                                         }
                                     </tr>
                                 }

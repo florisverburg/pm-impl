@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import org.junit.*;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class MessageTest {
         testUser = User.findByName("DefaultUser1");
         testUser1 = User.findByName("Unverified");
         testPractical = Practical.findByName("Programming");
-        listOfPendingInvites = Invite.findPendingInvitesWhereUser(testUser, testPractical);
+        listOfPendingInvites = Invite.findPendingInvitesByUser(testPractical, testUser);
         testMessage = Message.find.all().get(0);
     }
 
@@ -48,13 +49,13 @@ public class MessageTest {
         Message msg2 = new Message(listOfPendingInvites.get(0), testUser, "This is a new message!");
         msg.save();
 
-        assertTrue(listOfPendingInvites.get(0).getMessages().contains(msg));
+        assertTrue(Message.findByInvite(listOfPendingInvites.get(0)).contains(msg));
         assertTrue(msg.getId() > 0);
         assertEquals(msg.getInvite(), listOfPendingInvites.get(0));
         assertEquals(msg.getUser(), testUser);
         assertEquals(msg.getMessage(), "This is a new message!");
         assertTrue(msg.compareTo(msg2) < 0);
-        assertEquals(msg.getInvite().getSortedMessages().get(1), msg);
+        assertEquals(Message.findByInvite(msg.getInvite()).get(1), msg);
     }
 
     @Test
@@ -69,7 +70,7 @@ public class MessageTest {
         testMessage.setTimestamp(timestamp);
         testMessage.save();
 
-        assertTrue(listOfPendingInvites.get(1).getMessages().contains(testMessage));
+        assertTrue(Message.findByInvite(listOfPendingInvites.get(1)).contains(testMessage));
         assertTrue(testMessage.getId() > 0);
         assertEquals(testMessage.getInvite(), listOfPendingInvites.get(1));
         assertEquals(testMessage.getUser(), testUser1);
@@ -80,9 +81,7 @@ public class MessageTest {
 
     @Test
     public void clearAll() {
-        listOfPendingInvites.get(0).setMessages(null);
-        listOfPendingInvites.get(0).save();
-
-        assertTrue(listOfPendingInvites.get(0).getMessages().isEmpty());
+        Ebean.delete(Message.findByInvite(listOfPendingInvites.get(0)));
+        assertTrue(Message.findByInvite(listOfPendingInvites.get(0)).isEmpty());
     }
 }

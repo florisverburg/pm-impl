@@ -7,12 +7,11 @@ import play.data.validation.*;
 import play.db.ebean.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.avaje.ebean.Expr.and;
 import static com.avaje.ebean.Expr.eq;
+import static com.avaje.ebean.Expr.or;
 
 /**
  * Created by Marijn Goedegebure on 19-5-2014.
@@ -73,12 +72,6 @@ public class Invite extends Model {
     private Practical practical;
 
     /**
-     * One-to-many relationship between user and invite (sender)
-     */
-    @OneToMany(mappedBy = "invite", cascade = CascadeType.ALL)
-    private List<Message> messages = new ArrayList<Message>();
-
-    /**
      * User that send the invite
      */
     @ManyToOne
@@ -115,13 +108,43 @@ public class Invite extends Model {
     public static Invite findByPracticalSenderReceiver(Practical practical, User sender, User receiver) {
         return find.where()
             .and(
-                eq("practical_id", practical.getId()),
+                eq("practical.id", practical.getId()),
                 and(
-                        eq("sender_id", sender.getId()),
-                        eq("receiver_id", receiver.getId())
+                        eq("sender.id", sender.getId()),
+                        eq("receiver.id", receiver.getId())
                 )
             )
             .findUnique();
+    }
+
+    /**
+     * Find an invite by a practical and a sender
+     * @param practical The practical to find the invites for
+     * @param sender The sender of the invite
+     * @return The list of invites send in this practical by the user
+     */
+    public static List<Invite> findByPracticalSender(Practical practical, User sender) {
+        return find.where()
+                .and(
+                        eq("practical.id", practical.getId()),
+                        eq("sender.id", sender.getId())
+                )
+                .findList();
+    }
+
+    /**
+     * Find an invite by a practical and a receiver
+     * @param practical The practical to find the invites for
+     * @param receiver The receiver of the invite
+     * @return The list of invites received in this practical by the user
+     */
+    public static List<Invite> findByPracticalReceiver(Practical practical, User receiver) {
+        return find.where()
+                .and(
+                        eq("practical.id", practical.getId()),
+                        eq("receiver.id", receiver.getId())
+                )
+                .findList();
     }
 
     /**
@@ -130,25 +153,19 @@ public class Invite extends Model {
      * @param practical that the invite are attached to
      * @return List of invites that are pending for this user
      */
-    public static List<Invite> findPendingInvitesWhereUser(User user, Practical practical) {
+    public static List<Invite> findPendingInvitesByUser(Practical practical, User user) {
         // Get invites that have state pending and are sent by the user
         List<Invite> pendingInvites =
             find.where()
-                .or(
-                    and(
+                .and(
                         and(
-                                eq("sender_id", user.getId()),
-                                eq("practical_id", practical.getId())
+                                eq("state", State.Pending),
+                                eq("practical.id", practical.getId())
                         ),
-                        eq("state", State.Pending)
-                    ),
-                    and(
-                        and(
-                                eq("receiver_id", user.getId()),
-                                eq("practical_id", practical.getId())
-                        ),
-                        eq("state", State.Pending)
-                    )
+                        or(
+                                eq("sender.id", user.getId()),
+                                eq("receiver.id", user.getId())
+                        )
                 )
                 .findList();
         return pendingInvites;
@@ -278,7 +295,7 @@ public class Invite extends Model {
         if(!checkInvite(sender, receiver, practical)
                 || !checkInvite(receiver, sender, practical)
                 || sender.equals(receiver)
-                || sender.findPendingInvitesUser(practical).size() > INVITES_MAX) {
+                || findPendingInvitesByUser(practical, sender).size() > INVITES_MAX) {
             return null;
         }
         Invite newInvite = new Invite(practical, sender, receiver);
@@ -369,40 +386,6 @@ public class Invite extends Model {
      */
     public State getState() {
         return state;
-    }
-
-    /**
-     * Getter messages
-     * @return messages
-     */
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    /**
-     * Add message
-     * @param message to add
-     */
-    public void addMessage(Message message) {
-        this.messages.add(message);
-    }
-
-    /**
-     * Setter messages
-     * @param messages the messages
-     */
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    /**
-     * Get a list of messages sorted on timestamp.
-     * @return a sorted list of messages
-     */
-    public List<Message> getSortedMessages() {
-        List<Message> messages = this.getMessages();
-        Collections.sort(messages);
-        return messages;
     }
 
     /**

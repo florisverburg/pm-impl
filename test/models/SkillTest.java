@@ -1,10 +1,7 @@
 package models;
 
-import models.*;
 import org.junit.*;
 import play.test.WithApplication;
-
-import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.fest.assertions.Assertions.assertThat;
@@ -32,7 +29,7 @@ public class SkillTest extends WithApplication {
     @Test
     public void testCreationSkill() {
         // Create a new skill
-        Skill createdSkill = new Skill("CreatedSkill", Skill.Type.DOCUMENTING, 15);
+        Skill createdSkill = new Skill("CreatedSkill", Skill.Type.DOCUMENTING);
         createdSkill.save();
 
         // Retrieve skill from database
@@ -41,7 +38,6 @@ public class SkillTest extends WithApplication {
         // Check the values of the setUp() method
         assertEquals(createdSkill.getName(), "CreatedSkill");
         assertEquals(createdSkill.getType(), Skill.Type.DOCUMENTING);
-        assertEquals((int)createdSkill.getMaxValue(), 15);
     }
 
     /**
@@ -51,12 +47,10 @@ public class SkillTest extends WithApplication {
     public void testSetters() {
         // Set different values
         testSkill.setType(Skill.Type.DOCUMENTING);
-        testSkill.setMaxValue(5);
         testSkill.save();
 
         // Check the new values
         assertThat(testSkill.getName()).isEqualTo("Programming");
         assertThat(testSkill.getType()).isEqualTo(Skill.Type.DOCUMENTING);
-        assertThat(testSkill.getMaxValue()).isEqualTo(5);
     }
 }

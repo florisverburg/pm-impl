@@ -5,6 +5,7 @@ import play.db.ebean.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * Created by Floris on 02/06/14.
@@ -66,7 +67,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the id
      */
     public long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -74,7 +75,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the timestamp
      */
     public Timestamp getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     /**
@@ -90,7 +91,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the the invite
      */
     public Invite getInvite() {
-        return invite;
+        return this.invite;
     }
 
     /**
@@ -106,7 +107,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the user
      */
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     /**
@@ -122,7 +123,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the message
      */
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     /**
@@ -150,5 +151,14 @@ public class Message extends Model implements Comparable<Message> {
     public String getTime() {
         String time = new SimpleDateFormat("dd/MM/yyyy hh:mm").format(this.getTimestamp());
         return time;
+    }
+
+    /**
+     * Finds the messages of a specific invite ordered by timestamp
+     * @param invite The invite to get the messages for
+     * @return The ordered list of messages
+     */
+    public static List<Message> findByInvite(Invite invite) {
+        return find.where().eq("invite.id", invite.getId()).orderBy("timestamp").findList();
     }
 }

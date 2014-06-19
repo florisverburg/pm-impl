@@ -3,7 +3,7 @@ package models;
 import java.util.*;
 
 import static com.avaje.ebean.Expr.eq;
-import static com.avaje.ebean.Expr.or;
+import static com.avaje.ebean.Expr.in;
 
 /**
  * Created by Marijn Goedegebure on 30-5-2014.
@@ -34,14 +34,13 @@ public final class Recommendation {
     public static HashMap<Skill, Double> average(PracticalGroup practicalGroup1, PracticalGroup practicalGroup2) {
         HashMap<Skill, Double> result = new HashMap<Skill, Double>();
 
-        // Go trough all the skills
+        // Go through all the skills
         for(Skill skill : Skill.findAll()) {
+            List<User> users = practicalGroup1.getGroupMembers();
+            users.addAll(practicalGroup2.getGroupMembers());
             List<SkillValue> uSkills = SkillValue.find.where().and(
                     eq("skill.name", skill.getName()),
-                    or(
-                            eq("user.practicalGroups.id", practicalGroup1.getId()),
-                            eq("user.practicalGroups.id", practicalGroup2.getId())
-                    )
+                    in("user", users)
             ).findList();
 
             // Calculate the average here through support of ebean is limited (maybe later fix RAW SQL)
@@ -67,7 +66,7 @@ public final class Recommendation {
      * @param pSkills The practical required skills
      * @return The distance between the practical groups' skills and the practical skills
      */
-    public static double distance(HashMap<Skill, Double> skills, List<SkillValuePractical> pSkills) {
+    public static double distance(HashMap<Skill, Double> skills, List<? extends SkillValue> pSkills) {
         double average = 0;
 
         // Go trough all the practicum skills
@@ -95,7 +94,7 @@ public final class Recommendation {
         PracticalGroup practicalGroup1 = PracticalGroup.findWithPracticalAndUser(practical, user);
 
         // Go trough all the practical groups
-        for(PracticalGroup practicalGroup2 : practical.getPracticalGroups()) {
+        for(PracticalGroup practicalGroup2 : PracticalGroup.findByPractical(practical)) {
             // Check if it is not our own group
             if(practicalGroup1.equals(practicalGroup2)) {
                 continue;
@@ -111,8 +110,8 @@ public final class Recommendation {
 
 
         return sortedList.subList(
-                Math.min((page-1)*PAGE_SIZE, sortedList.size()),
-                Math.min(page*PAGE_SIZE, sortedList.size()));
+                Math.min((page - 1) * PAGE_SIZE, sortedList.size()),
+                Math.min(page * PAGE_SIZE, sortedList.size()));
     }
 
     /**

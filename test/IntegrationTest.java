@@ -1,4 +1,3 @@
-import org.junit.*;
 import org.junit.Test;
 import play.test.TestBrowser;
 import play.libs.F.Callback;

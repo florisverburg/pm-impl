@@ -6,6 +6,7 @@ import play.data.validation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Floris on 26/05/14.
@@ -50,15 +51,14 @@ public class SkillsForm {
      * @param user The user to fill the form
      */
     public SkillsForm(User user) {
-        // Add the skills to the form and check if already set
-        for(Skill skill : user.findAllSkills()) {
-            List<SkillValue> uSkills = skill.getSkillValues();
-            if(uSkills.isEmpty()) {
-                SkillValue uSkill = new SkillValueUser(user, skill, 1);
+        // Add the skills to the form and check if they are set or not
+        for (Map.Entry<Skill, SkillValueUser> entry : SkillValueUser.findSkills(user).entrySet()) {
+            if(entry.getValue() == null) {
+                SkillValue uSkill = new SkillValueUser(user, entry.getKey(), 1);
                 profileSkills.add(new SkillsForm(uSkill));
             }
             else {
-                profileSkills.add(new SkillsForm(uSkills.get(0)));
+                profileSkills.add(new SkillsForm(entry.getValue()));
             }
         }
     }

@@ -32,13 +32,12 @@ public class PracticalGroup extends Model {
      * Many-to-one relationship of the practicalgroup and the owner of a group
      */
     @ManyToOne
-    @JoinColumn(name = "ownerId")
     private User owner;
 
     /**
      * Many-to-many relationship of the practicalgroups and users
      */
-    @ManyToMany(mappedBy = "practicalGroups", cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.ALL)
     List<User> groupMembers = new ArrayList<User>();
 
     /**
@@ -65,6 +64,15 @@ public class PracticalGroup extends Model {
      */
     public static PracticalGroup findById(long id) {
         return find.where().eq("id", id).findUnique();
+    }
+
+    /**
+     * Get the practical groups of a certain practical
+     * @param practical The practical to get the groups from
+     * @return The practical groups
+     */
+    public static List<PracticalGroup> findByPractical(Practical practical) {
+        return find.where().eq("practical.id", practical.getId()).findList();
     }
 
     /**

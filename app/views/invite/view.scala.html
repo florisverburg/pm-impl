@@ -1,4 +1,4 @@
-@(invite : Invite, messageForm: play.data.Form[forms.MessageForm])
+@(invite: Invite, messages: List[Message], messageForm: play.data.Form[forms.MessageForm])
 @sessionUser = @{Secure.getUser()}
 @practicalGroupOfUser = @{PracticalGroup.findWithPracticalAndUser(invite.getPractical(), sessionUser)}
 @implicitField = @{ helper.FieldConstructor(form.noLabelConstructor.f) }
@@ -37,14 +37,14 @@
     </div>
 
     <h2>Messages</h2>
-    @invite.getSortedMessages.map { message =>
+    @messages.map { message =>
         <div class="row message">
             <div class="col-xs-3">
-                <p>From: @message.getUser.getFullName</p>
-                <p>@message.getTime</p>
+                <p>From: @message.getUser().getFullName()</p>
+                <p>@message.getTime()</p>
             </div>
             <div class="col-xs-6">
-                <p>@message.getMessage</p>
+                <p>@message.getMessage()</p>
             </div>
         </div>
     }

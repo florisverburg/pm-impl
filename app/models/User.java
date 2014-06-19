@@ -2,7 +2,6 @@ package models;
 
 import javax.persistence.*;
 
-import com.avaje.ebean.Expr;
 import com.avaje.ebean.annotation.EnumValue;
 import helpers.MD5;
 import play.data.validation.*;
@@ -10,8 +9,6 @@ import play.db.ebean.*;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -131,42 +128,6 @@ public class User extends Model {
     private ProfileImage profileImage;
 
     /**
-     * The many-to-many relationship defined for the users and practicals
-     */
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Practical> practicals = new ArrayList<Practical>();
-
-    /**
-     * One-to-many relationship between practical and user
-     */
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
-    private List<Practical> practicalsAdmin = new ArrayList<Practical>();
-
-    /**
-     * Many-to-many relationship defined for the users and practicalGroups
-     */
-    @ManyToMany(targetEntity = PracticalGroup.class, cascade = CascadeType.ALL)
-    private List<PracticalGroup> practicalGroups = new ArrayList<PracticalGroup>();
-
-    /**
-     * One-to-many relationship between user and invite (sender)
-     */
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-    private List<Invite> invitesSend = new ArrayList<Invite>();
-
-    /**
-     * One-to-many relationship between user and invite (receiver)
-     */
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-    private List<Invite> invitesReceived = new ArrayList<Invite>();
-
-    /**
-     * One-to-many relationship between user and practicalgroup, the practicalgroups where the user is owner of
-     */
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<PracticalGroup> practicalGroupsOwner = new ArrayList<PracticalGroup>();
-
-    /**
      * Finder to be defined to use the many-to-many relationship of user and skill
      */
     public static Model.Finder<Long, User> find =
@@ -230,15 +191,6 @@ public class User extends Model {
     }
 
     /**
-     * Method to find the pending invites an user has
-     * @return list of pending invites
-     * @param practical of the user
-     */
-    public List<Invite> findPendingInvitesUser(Practical practical) {
-        return Invite.findPendingInvitesWhereUser(this, practical);
-    }
-
-    /**
      * Get the user id
      * @return The id
      */
@@ -260,30 +212,6 @@ public class User extends Model {
      */
     public void setType(Type type) {
         this.type = type;
-    }
-
-    /**
-     * Method to add a practical to the list
-     * @param practical to be added to the list
-     */
-    public void addPractical(Practical practical) {
-        practicals.add(practical);
-    }
-
-    /**
-     * Used to return the list of practicals
-     * @return practicals practicals
-     */
-    public List<Practical> getPracticals() {
-        return practicals;
-    }
-
-    /**
-     * Getter for practicalgroups
-     * @return practicalgroups practical groups
-     */
-    public List<PracticalGroup> getPracticalGroups() {
-        return practicalGroups;
     }
 
     /**
@@ -412,52 +340,5 @@ public class User extends Model {
      */
     public void setToken(String token) {
         this.token = token;
-    }
-
-    /**
-     * Gets the invites send
-     * @return Invites send
-     */
-    public List<Invite> getInvitesSend() {
-        return invitesSend;
-    }
-
-    /**
-     * Gets invites send for a certain practical
-     * @param practical The practical
-     * @return Invites send
-     */
-    public List<Invite> getInvitesSend(Practical practical) {
-        return Invite.find.where().and(
-                Expr.eq("practical.id", practical.getId()), Expr.eq("sender.id", this.id)
-        ).findList();
-    }
-
-    /**
-     * Gets the invites received
-     * @return Invites received
-     */
-    public List<Invite> getInvitesReceived() {
-        return invitesReceived;
-    }
-
-    /**
-     * Gets invites received for a certain practical
-     * @param practical The practical
-     * @return Invites received
-     */
-    public List<Invite> getInvitesReceived(Practical practical) {
-        return Invite.find.where().and(
-                Expr.eq("practical.id", practical.getId()), Expr.eq("receiver.id", this.id)
-        ).findList();
-    }
-
-    /**
-     * Find all the skills, including the skills the user hasn't an user skill for.
-     * @return A list with all the skills
-     */
-    public List<Skill> findAllSkills() {
-        return Skill.find.fetch("skillValues", "*").where().filterMany("skillValues")
-                .eq("user.id", this.id).findList();
     }
 }

@@ -21,7 +21,7 @@ public class InviteController extends Controller {
      */
     public static Result view(long id) {
         Invite invite = Invite.findById(id);
-        return ok(view.render(invite, form(MessageForm.class)));
+        return ok(view.render(invite, Message.findByInvite(invite), form(MessageForm.class)));
     }
 
     /**
@@ -83,7 +83,7 @@ public class InviteController extends Controller {
         Invite invite = Invite.findById(inviteId);
         if(messageForm.hasErrors()) {
             flash("error", "message.empty");
-            return badRequest(view.render(invite, form(MessageForm.class)));
+            return badRequest(view.render(invite, Message.findByInvite(invite), form(MessageForm.class)));
         }
         else {
             Message message = new Message(invite, Secure.getUser(), messageForm.get().getMessage());

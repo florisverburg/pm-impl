@@ -38,7 +38,7 @@ public class InviteTest extends WithApplication {
         testUser1 = User.findByName("DefaultUser1");
         testUser2 = User.findByName("DefaultUser2");
         testPractical = Practical.findByName("Programming");
-        List<Invite> listOfPendingInvites = Invite.findPendingInvitesWhereUser(testUser1, testPractical);
+        List<Invite> listOfPendingInvites = Invite.findPendingInvitesByUser(testPractical, testUser1);
         testInvite1 = listOfPendingInvites.get(0);
         testInvite2 = listOfPendingInvites.get(1);
     }
@@ -109,10 +109,10 @@ public class InviteTest extends WithApplication {
         User receiverInvite2 = createdUser;
 
         // Check if the created user has not received or send any invites yet
-        assertEquals(createdUser.getInvitesReceived().size(), 0);
-        assertEquals(createdUser.getInvitesSend().size(), 0);
+        assertEquals(Invite.findByPracticalReceiver(testPractical, createdUser).size(), 0);
+        assertEquals(Invite.findByPracticalSender(testPractical, createdUser).size(), 0);
         // Check if the method we are testing also returns the appropriate amount of invites
-        assertEquals(Invite.findPendingInvitesWhereUser(createdUser, testPractical).size(), 0);
+        assertEquals(Invite.findPendingInvitesByUser(testPractical, createdUser).size(), 0);
 
         // Create invites
         Invite newCreatedInvite1 = new Invite(testPractical, senderInvite1, receiverInvite1);
@@ -121,7 +121,7 @@ public class InviteTest extends WithApplication {
         newCreatedInvite2.save();
 
         // Test whether the method finds the correct amount of pending invites
-        assertEquals(Invite.findPendingInvitesWhereUser(createdUser, testPractical).size(), 2);
+        assertEquals(Invite.findPendingInvitesByUser(testPractical, createdUser).size(), 2);
 
         // Change the states of the invites
         newCreatedInvite1.setState(Invite.State.Accepted);
@@ -130,7 +130,7 @@ public class InviteTest extends WithApplication {
         newCreatedInvite2.save();
 
         // Check whether the return value of the method changes appropriately
-        assertEquals(Invite.findPendingInvitesWhereUser(createdUser, testPractical).size(), 0);
+        assertEquals(Invite.findPendingInvitesByUser(testPractical, createdUser).size(), 0);
     }
 
     /**
@@ -181,8 +181,8 @@ public class InviteTest extends WithApplication {
         practicalGroupUser1 = PracticalGroup.findById(practicalGroupUser1.getId());
         practicalGroupUser2 = PracticalGroup.findById(practicalGroupUser2.getId());
         practicalGroupUser3 = PracticalGroup.findById(practicalGroupUser3.getId());
-        List<Invite> newPendingInvitesSender = invite2.getSender().findPendingInvitesUser(invite1.getPractical());
-        List<Invite> newPendingInvitesReceiver = invite2.getReceiver().findPendingInvitesUser(invite1.getPractical());
+        List<Invite> newPendingInvitesSender = Invite.findPendingInvitesByUser(invite1.getPractical(), invite2.getSender());
+        List<Invite> newPendingInvitesReceiver = Invite.findPendingInvitesByUser(invite1.getPractical(), invite2.getReceiver());
 
         // Check whether the right values have been decreased
         assertEquals(newPendingInvitesSender.size(), 0);
@@ -284,7 +284,6 @@ public class InviteTest extends WithApplication {
         invite2 = Invite.findById(invite2.getId());
         invite3 = Invite.findById(invite3.getId());
         practicalGroupUser1 = PracticalGroup.findById(practicalGroupUser1.getId());
-        //practicalGroupUser2 = PracticalGroup.findById(practicalGroupUser2.getId());
         practicalGroupUser3 = PracticalGroup.findById(practicalGroupUser3.getId());
         practicalGroupUser4 = PracticalGroup.findById(practicalGroupUser4.getId());
 
