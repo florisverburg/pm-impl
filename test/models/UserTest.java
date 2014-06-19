@@ -49,18 +49,7 @@ public class UserTest extends WithApplication {
         assertEquals(createdUser.getEmail(), "createduser@example.com");
         assertEquals(createdUser.getType(), User.Type.Admin);
         assertEquals(retrievedUser.getToken().getClass(), String.class);
-        assertFalse(createdUser.hasPassword());
-    }
-
-    @Test
-    public void findUserSkill() {
-        Skill skill = Skill.findByName("Programming");
-        SkillValueUser uSkill = testUser1.findUserSkillBySkill(skill);
-        SkillValueUser uSkill2 = testUser3.findUserSkillBySkill(skill);
-
-        assertNull(uSkill2);
-        assertNotNull(uSkill);
-        assertEquals(uSkill.getValue(), new Integer(8));
+        assertFalse(PasswordIdentity.contains(createdUser));
     }
 
     @Test
@@ -142,7 +131,7 @@ public class UserTest extends WithApplication {
 
         User retrievedUser = User.findById(createdUser.getId());
         // Check values
-        assertEquals(retrievedUser.getSkillValues().size(), 0);
+        assertEquals(SkillValueUser.findByUser(retrievedUser).size(), 0);
 
         // Add skill to user
         SkillValueUser uSkill = new SkillValueUser(retrievedUser, programming, 8);
@@ -150,8 +139,8 @@ public class UserTest extends WithApplication {
 
         retrievedUser = User.findById(createdUser.getId());
         // Check values
-        assertEquals(retrievedUser.getSkillValues().size(), 1);
-        assertEquals(retrievedUser.getSkillValues().get(0).getSkill().getName(), programming.getName());
+        assertEquals(SkillValueUser.findByUser(retrievedUser).size(), 1);
+        assertEquals(SkillValueUser.findByUser(retrievedUser).get(0).getSkill().getName(), programming.getName());
     }
     
     @Test
@@ -160,8 +149,8 @@ public class UserTest extends WithApplication {
         createdUser.save();
         new PasswordIdentity(createdUser, createdUser.getEmail(), "florina").save();
 
-        assertNotNull(User.authenticate(createdUser.getEmail(), "florina"));
-        assertEquals(User.authenticate(createdUser.getEmail(), "florina"), createdUser);
+        assertNotNull(PasswordIdentity.authenticate(createdUser.getEmail(), "florina"));
+        assertEquals(PasswordIdentity.authenticate(createdUser.getEmail(), "florina").getUser(), createdUser);
     }
 
     @Test
@@ -170,8 +159,8 @@ public class UserTest extends WithApplication {
         createdUser.save();
         new PasswordIdentity(createdUser, createdUser.getEmail(), "florina").save();
 
-        assertNull(User.authenticate("floor@wrongemail.com", "florina"));
-        assertNull(User.authenticate(createdUser.getEmail(), "wrongpass"));
+        assertNull(PasswordIdentity.authenticate("floor@wrongemail.com", "florina"));
+        assertNull(PasswordIdentity.authenticate(createdUser.getEmail(), "wrongpass"));
     }
 
     @Test
@@ -182,8 +171,8 @@ public class UserTest extends WithApplication {
 
     @Test
     public void passwordTest() {
-        assertTrue(testUser1.hasPassword());
-        assertFalse(testUser3.hasPassword());
+        assertTrue(PasswordIdentity.contains(testUser1));
+        assertFalse(PasswordIdentity.contains(testUser3));
     }
 
     /**

@@ -1,5 +1,8 @@
 package models;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import helpers.LinkedinConnection;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -99,15 +102,21 @@ public class IdentityTest extends WithApplication {
 
     @Test
     public void authenticateLinkedinCreate() {
+        ObjectNode jsonObject = new ObjectNode(JsonNodeFactory.instance);
+        jsonObject.put("emailAddress", "linkedin@example.com");
+        jsonObject.put("firstName", "Test");
+        jsonObject.put("lastName", "Linkedin");
+
         LinkedinConnection linkedinConnection = mock(LinkedinConnection.class);
         when(linkedinConnection.getPersonId()).thenReturn("wrongLinkedin");
-        when(linkedinConnection.createUser()).thenReturn(bob);
-        when(linkedinConnection.createIdentity(bob)).thenReturn(new LinkedinIdentity(bob, "wrongLinkedin"));
+        when(linkedinConnection.getPerson()).thenReturn(jsonObject);
 
         LinkedinIdentity identity = LinkedinIdentity.authenticate(linkedinConnection);
 
         assertNotNull(identity);
         assertEquals("wrongLinkedin", identity.getPersonId());
-        assertEquals(bob, identity.getUser());
+        assertNotNull(identity.getUser());
+        assertEquals("Test", identity.getUser().getFirstName());
+        assertEquals("Linkedin", identity.getUser().getLastName());
     }
 }

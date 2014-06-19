@@ -63,7 +63,10 @@ public class PracticalGroupController extends Controller {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
         User user = Secure.getUser();
 
+        // Leave group and reset the states of the invites to Rejected
         practicalGroup.leaveGroup(user);
+        Invite.rejectOtherInvitesUser(user, practicalGroup.getPractical(), true, Invite.State.Accepted);
+
         flash("success", "practical.removeGroupMember");
         return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
     }

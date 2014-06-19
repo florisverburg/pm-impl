@@ -131,7 +131,7 @@ public class ProfileTest extends WithApplication {
                         .withFormUrlEncodedBody(body)
         );
 
-        List<SkillValueUser> newSkills = user.getSkillValues();
+        List<SkillValueUser> newSkills = SkillValueUser.findByUser(user);
         assertEquals(newSkills.size(), skills.size());
     }
 
@@ -246,7 +246,7 @@ public class ProfileTest extends WithApplication {
 
         assertEquals(SEE_OTHER, status(result));
         assertEquals("profile.saved", flash(result).get("success"));
-        assertNull(User.authenticate(user.getEmail(), "myNewPassword"));
+        assertNull(PasswordIdentity.authenticate(user.getEmail(), "myNewPassword"));
     }
 
     @Test
@@ -268,6 +268,6 @@ public class ProfileTest extends WithApplication {
 
         assertEquals(SEE_OTHER, status(result));
         assertEquals("profile.saved", flash(result).get("success"));
-        assertNotNull(User.authenticate(user.getEmail(), "myNewPassword"));
+        assertNotNull(PasswordIdentity.authenticate(user.getEmail(), "myNewPassword"));
     }
 }

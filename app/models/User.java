@@ -131,19 +131,6 @@ public class User extends Model {
     private ProfileImage profileImage;
 
     /**
-     * The identities linked to the user
-     * One-to-many relationship between identity and user
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Identity> identities = new ArrayList<Identity>();
-
-    /**
-     * One-to-many relationship between user skill and user
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<SkillValueUser> skillValues = new ArrayList<SkillValueUser>();
-
-    /**
      * The many-to-many relationship defined for the users and practicals
      */
     @ManyToMany(cascade = CascadeType.ALL)
@@ -225,23 +212,6 @@ public class User extends Model {
     }
 
     /**
-     * Checks the user authentication with email and password
-     * @param email The user email address
-     * @param password The user password
-     * @return True if user authenticated successfully else false
-     */
-    public static User authenticate(String email, String password) {
-        Identity identity = PasswordIdentity.authenticate(email, password);
-
-        // Check if the identity is found using the email, password authentication
-        if(identity != null) {
-            return identity.getUser();
-        }
-
-        return null;
-    }
-
-    /**
      * Get an user by email address
      * @param email The email address
      * @return The user if found, else null
@@ -293,22 +263,6 @@ public class User extends Model {
     }
 
     /**
-     * Method to add a user skill to the list, used for the one-to-many relationship
-     * @param skillValue user skill to add to the list
-     */
-    public void addUserSkill(SkillValueUser skillValue) {
-        skillValues.add(skillValue);
-    }
-
-    /**
-     * Used to return the list of skills
-     * @return returns the current list of skills
-     */
-    public List<SkillValueUser> getSkillValues() {
-        return skillValues;
-    }
-
-    /**
      * Method to add a practical to the list
      * @param practical to be added to the list
      */
@@ -330,14 +284,6 @@ public class User extends Model {
      */
     public List<PracticalGroup> getPracticalGroups() {
         return practicalGroups;
-    }
-
-    /**
-     * Gets identities.
-     * @return The identities
-     */
-    public List<Identity> getIdentities() {
-        return identities;
     }
 
     /**
@@ -453,21 +399,6 @@ public class User extends Model {
     }
 
     /**
-     * Check if we have a password identity
-     * @return True if found else false
-     */
-    public Boolean hasPassword() {
-        // Go trough all identities and see if we have a password identity
-        for(Identity identity : identities) {
-            if(identity instanceof PasswordIdentity) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Getter of the token
      * @return token token
      */
@@ -519,20 +450,6 @@ public class User extends Model {
         return Invite.find.where().and(
                 Expr.eq("practical.id", practical.getId()), Expr.eq("receiver.id", this.id)
         ).findList();
-    }
-
-    /**
-     * Find the user skill form this user by a skill.
-     * @param skill The skill to search the user skill
-     * @return The user skill
-     */
-    public SkillValueUser findUserSkillBySkill(Skill skill) {
-        for(SkillValueUser uSkill : this.getSkillValues()) {
-            if(uSkill.getSkill().equals(skill)) {
-                return uSkill;
-            }
-        }
-        return null;
     }
 
     /**

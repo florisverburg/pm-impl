@@ -82,7 +82,8 @@ public final class Secure {
          */
         public F.Promise<SimpleResult> call(Context ctx) {
             try {
-                User user = Secure.getUser(ctx);
+                String userId = ctx.session().get("user_id");
+                User user = (userId == null)? null : User.findById(Long.parseLong(userId));
                 List<User.Type> types = Arrays.asList(configuration.value());
 
                 return checkLogin(ctx, user, types);

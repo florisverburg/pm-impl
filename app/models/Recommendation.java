@@ -1,6 +1,4 @@
-package helpers;
-
-import models.*;
+package models;
 
 import java.util.*;
 
@@ -105,7 +103,7 @@ public final class Recommendation {
 
             // Calculate average and then the distance
             HashMap<Skill, Double> average = average(practicalGroup1, practicalGroup2);
-            list.put(practicalGroup2, distance(average, practical.getSkills()));
+            list.put(practicalGroup2, distance(average, SkillValuePractical.findByPractical(practical)));
         }
 
         // Sort the HashMap by values
@@ -127,7 +125,7 @@ public final class Recommendation {
         // Defined Custom Comparator here
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
-                return ((Comparable) map.get(o1))
+                return map.get(o1)
                         .compareTo(map.get(o2));
             }
         });

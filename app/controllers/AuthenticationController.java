@@ -109,7 +109,7 @@ public class AuthenticationController extends Controller {
         flash("success", "authentication.loggedIn");
 
         // Redirect to skills if not set
-        if(user.getSkillValues().size() <= 0) {
+        if(SkillValueUser.findByUser(user).size() <= 0) {
             return redirect(routes.ProfileController.editSkills());
         }
         return redirect(

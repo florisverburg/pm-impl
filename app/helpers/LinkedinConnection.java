@@ -1,7 +1,6 @@
 package helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import models.*;
 import play.Play;
 import play.libs.WS;
 import play.mvc.*;
@@ -216,28 +215,7 @@ public class LinkedinConnection {
      * Create a new user based on the information from Linkedin
      * @return The created user
      */
-    public User createUser() {
-        JsonNode response = apiCall("people/~:(first-name,last-name,email-address)");
-
-        // Check if call went correct
-        if(response == null) {
-            return null;
-        }
-
-        // Create a new user
-        return new User(
-                response.get("firstName").asText(),
-                response.get("lastName").asText(),
-                response.get("emailAddress").asText()
-        );
-    }
-
-    /**
-     * Create a new identity based on the information from this connection and the given user
-     * @param user The user to link the identity to
-     * @return The newly created identity
-     */
-    public LinkedinIdentity createIdentity(User user) {
-        return new LinkedinIdentity(user, this.getPersonId());
+    public JsonNode getPerson() {
+        return apiCall("people/~:(first-name,last-name,email-address)");
     }
 }
