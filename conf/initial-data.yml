@@ -99,11 +99,9 @@ skills:
   - &skill1 !!models.Skill
     name: Programming
     type: PROGRAMMING
-    maxValue: 10
   - &skill2 !!models.Skill
     name: Documenting
     type: DOCUMENTING
-    maxValue: 10
 
 # UserSkills
 userSkills:

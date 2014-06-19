@@ -47,12 +47,6 @@ public class Skill extends Model {
     private Type type;
 
     /**
-     * The max value a skill can has
-     */
-    @Constraints.Required
-    private Integer maxValue;
-
-    /**
      * Finder defined for the Skills, used in the many-to-many relationship
      */
     public static Model.Finder<String, Skill> find =
@@ -77,14 +71,12 @@ public class Skill extends Model {
 
     /**
      * Constructor of the Skill model class
-     * @param nm name of the skill
-     * @param tp type of the skill
-     * @param maxV maxValue of the skill
+     * @param name The name of the skill
+     * @param type The type of the skill
      */
-    public Skill(String nm, Type tp, Integer maxV) {
-        this.name = nm;
-        this.maxValue = maxV;
-        this.type = tp;
+    public Skill(String name, Type type) {
+        this.name = name;
+        this.type = type;
     }
 
     /**
@@ -101,22 +93,6 @@ public class Skill extends Model {
      */
     public void setType(Type type) {
         this.type = type;
-    }
-
-    /**
-     * Getter of the max value
-     * @return maxValue
-     */
-    public Integer getMaxValue() {
-        return this.maxValue;
-    }
-
-    /**
-     * Setter of the max value
-     * @param maxValue to be set
-     */
-    public void setMaxValue(Integer maxValue) {
-        this.maxValue = maxValue;
     }
 
     /**
