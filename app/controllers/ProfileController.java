@@ -36,7 +36,7 @@ public class ProfileController extends Controller {
     public static Result edit() {
         User user = Secure.getUser();
         return ok(edit.render(form(ProfileForm.class, ProfileForm.All.class)
-                .fill(new ProfileForm(user)), user.hasPassword()));
+                .fill(new ProfileForm(user)), PasswordIdentity.contains(user)));
     }
 
     /**
@@ -59,13 +59,13 @@ public class ProfileController extends Controller {
 
         // Check for errors in the profile
         if(profileForm.hasErrors()) {
-            return badRequest(edit.render(profileForm, user.hasPassword()));
+            return badRequest(edit.render(profileForm, PasswordIdentity.contains(user)));
         }
         else if(!profileForm.get().getEmail().equals(user.getEmail())
                 && User.findByEmail(profileForm.get().getEmail()) != null) {
             // Check for double email, need to be checked here
             profileForm.reject(new ValidationError("email", "error.doubleEmail"));
-            return badRequest(edit.render(profileForm, user.hasPassword()));
+            return badRequest(edit.render(profileForm, PasswordIdentity.contains(user)));
         }
         else {
             // Save the user

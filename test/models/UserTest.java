@@ -49,7 +49,7 @@ public class UserTest extends WithApplication {
         assertEquals(createdUser.getEmail(), "createduser@example.com");
         assertEquals(createdUser.getType(), User.Type.Admin);
         assertEquals(retrievedUser.getToken().getClass(), String.class);
-        assertFalse(createdUser.hasPassword());
+        assertFalse(PasswordIdentity.contains(createdUser));
     }
 
     @Test
@@ -160,8 +160,8 @@ public class UserTest extends WithApplication {
         createdUser.save();
         new PasswordIdentity(createdUser, createdUser.getEmail(), "florina").save();
 
-        assertNotNull(User.authenticate(createdUser.getEmail(), "florina"));
-        assertEquals(User.authenticate(createdUser.getEmail(), "florina"), createdUser);
+        assertNotNull(PasswordIdentity.authenticate(createdUser.getEmail(), "florina"));
+        assertEquals(PasswordIdentity.authenticate(createdUser.getEmail(), "florina").getUser(), createdUser);
     }
 
     @Test
@@ -170,8 +170,8 @@ public class UserTest extends WithApplication {
         createdUser.save();
         new PasswordIdentity(createdUser, createdUser.getEmail(), "florina").save();
 
-        assertNull(User.authenticate("floor@wrongemail.com", "florina"));
-        assertNull(User.authenticate(createdUser.getEmail(), "wrongpass"));
+        assertNull(PasswordIdentity.authenticate("floor@wrongemail.com", "florina"));
+        assertNull(PasswordIdentity.authenticate(createdUser.getEmail(), "wrongpass"));
     }
 
     @Test
@@ -182,8 +182,8 @@ public class UserTest extends WithApplication {
 
     @Test
     public void passwordTest() {
-        assertTrue(testUser1.hasPassword());
-        assertFalse(testUser3.hasPassword());
+        assertTrue(PasswordIdentity.contains(testUser1));
+        assertFalse(PasswordIdentity.contains(testUser3));
     }
 
     /**

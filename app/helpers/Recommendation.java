@@ -127,7 +127,7 @@ public final class Recommendation {
         // Defined Custom Comparator here
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
-                return ((Comparable) map.get(o1))
+                return map.get(o1)
                         .compareTo(map.get(o2));
             }
         });

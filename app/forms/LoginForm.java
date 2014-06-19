@@ -74,8 +74,15 @@ public class LoginForm {
      */
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<ValidationError>();
-        User user = User.authenticate(email, password);
+        Identity identity = PasswordIdentity.authenticate(email, password);
+        User user = null;
 
+        // When the identity exists get the user
+        if(identity != null) {
+            user = identity.getUser();
+        }
+
+        // Check if the user exists and is valid
         if (user == null) {
             errors.add(new ValidationError("email", "error.wrongAuthentication"));
         }

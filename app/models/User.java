@@ -225,23 +225,6 @@ public class User extends Model {
     }
 
     /**
-     * Checks the user authentication with email and password
-     * @param email The user email address
-     * @param password The user password
-     * @return True if user authenticated successfully else false
-     */
-    public static User authenticate(String email, String password) {
-        Identity identity = PasswordIdentity.authenticate(email, password);
-
-        // Check if the identity is found using the email, password authentication
-        if(identity != null) {
-            return identity.getUser();
-        }
-
-        return null;
-    }
-
-    /**
      * Get an user by email address
      * @param email The email address
      * @return The user if found, else null
@@ -450,21 +433,6 @@ public class User extends Model {
                 return GRAVATAR_URL + MD5.crypt(this.getEmail().trim().toLowerCase())
                         + "?d=identicon&f=y";
         }
-    }
-
-    /**
-     * Check if we have a password identity
-     * @return True if found else false
-     */
-    public Boolean hasPassword() {
-        // Go trough all identities and see if we have a password identity
-        for(Identity identity : identities) {
-            if(identity instanceof PasswordIdentity) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

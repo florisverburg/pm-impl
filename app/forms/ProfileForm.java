@@ -102,7 +102,7 @@ public class ProfileForm extends RegisterForm {
         user.setProfileImage(this.profileImage);
 
         // Update identity if needed
-        if(this.password != null && !this.password.isEmpty() && user.hasPassword()) {
+        if(this.password != null && !this.password.isEmpty() && PasswordIdentity.contains(user)) {
             for(Identity identity : user.getIdentities()) {
                 if(identity instanceof PasswordIdentity) {
                     ((PasswordIdentity) identity).setPassword(this.password);

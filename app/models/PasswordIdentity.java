@@ -57,6 +57,15 @@ public class PasswordIdentity extends Identity {
     }
 
     /**
+     * Check if the user has an password identity
+     * @param user The user to search for
+     * @return If the user has an password identity
+     */
+    public static Boolean contains(User user) {
+        return Ebean.find(PasswordIdentity.class).where().eq("user.id", user.getId()).findUnique() != null;
+    }
+
+    /**
      * Create a new password identity with an username and password
      * @param user The user for which the identity needs to be created
      * @param email The email address used for the identity
@@ -74,7 +83,7 @@ public class PasswordIdentity extends Identity {
      * @param password The identity password
      * @return The identity if it is correct authentication else null
      */
-    public static Identity authenticate(String email, String password) {
+    public static PasswordIdentity authenticate(String email, String password) {
         PasswordIdentity identity = Ebean.find(PasswordIdentity.class)
                 .where()
                 .eq("identifier", email)

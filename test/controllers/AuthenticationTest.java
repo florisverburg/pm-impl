@@ -125,7 +125,9 @@ public class AuthenticationTest extends WithApplication {
 
 
         User user = User.findByEmail("mybob@example.com");
-        User userAuth = User.authenticate("mybob@example.com", "myVeryGoodPass");
+        PasswordIdentity identity = PasswordIdentity.authenticate("mybob@example.com", "myVeryGoodPass");
+        assertNotNull(identity);
+        User userAuth = identity.getUser();
 
         assertEquals(SEE_OTHER, status(result));
         assertNotNull(user);
@@ -170,7 +172,9 @@ public class AuthenticationTest extends WithApplication {
 
 
         User user = User.findByEmail("mybob@example.com");
-        User userAuth = User.authenticate("mybob@example.com", "myVeryGoodPass");
+        PasswordIdentity identity = PasswordIdentity.authenticate("mybob@example.com", "myVeryGoodPass");
+        assertNotNull(identity);
+        User userAuth = identity.getUser();
 
         assertNotNull(user);
         assertNotNull(userAuth);
@@ -242,7 +246,10 @@ public class AuthenticationTest extends WithApplication {
 
 
         User user = User.findByEmail("mybob@example.com");
-        User userAuth = User.authenticate("mybob@example.com", "myVeryGoodPass");
+        PasswordIdentity identity = PasswordIdentity.authenticate("mybob@example.com", "myVeryGoodPass");
+        assertNotNull(identity);
+        User userAuth = identity.getUser();
+
 
         assertNotNull(user);
         assertNotNull(userAuth);
