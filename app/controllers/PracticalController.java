@@ -92,7 +92,7 @@ public class PracticalController extends Controller {
             practicalForm = form(PracticalForm.class, PracticalForm.Registration.class);
         }
 
-        return ok(list.render(user.getPracticals(), practicalForm));
+        return ok(list.render(Practical.findByUser(user), practicalForm));
     }
 
     /**
@@ -138,7 +138,7 @@ public class PracticalController extends Controller {
 
         // Check for errors in the form
         if(practicalForm.hasErrors()) {
-            return ok(list.render(user.getPracticals(), practicalForm));
+            return ok(list.render(Practical.findByUser(user), practicalForm));
         }
 
         // Else save and view the practical

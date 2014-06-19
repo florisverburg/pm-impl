@@ -58,7 +58,7 @@ public class Practical extends Model {
     /**
      * Many-to-many relationship between practical and user
      */
-    @ManyToMany(mappedBy = "practicals", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     List<User> users = new ArrayList<User>();
 
     /**
@@ -97,11 +97,12 @@ public class Practical extends Model {
     }
 
     /**
-     * Method that returns a random generated secret
-     * @return random generated secret
+     * Method to find a practical by its id
+     * @param id of the practical to be found
+     * @return the found practical
      */
-    public String generateSecret() {
-        return new BigInteger(SECRET_RANDOM_BITS, new SecureRandom()).toString(SECRET_RANDOM_BASE);
+    public static Practical findById(long id) {
+        return find.where().eq("id", id).findUnique();
     }
 
     /**
@@ -114,21 +115,12 @@ public class Practical extends Model {
     }
 
     /**
-     * Method to find a practical by its id
-     * @param id of the practical to be found
-     * @return the found practical
+     * Find the practicals a user is registered to ordered by name
+     * @param user The user that is registered to the practicals
+     * @return The ordered list of practicals
      */
-    public static Practical findById(long id) {
-        return find.where().eq("id", id).findUnique();
-    }
-
-    /**
-     * Check if a user is enrolled for a practical
-     * @param user The user to check
-     * @return Whether the user is enrolled or not
-     */
-    public boolean isEnrolled(User user) {
-        return users.contains(user);
+    public static List<Practical> findByUser(User user) {
+        return find.where().eq("users.id", user.getId()).orderBy("name").findList();
     }
 
     /**
@@ -268,12 +260,29 @@ public class Practical extends Model {
     }
 
     /**
+     * Method that returns a random generated secret
+     * @return random generated secret
+     */
+    public String generateSecret() {
+        return new BigInteger(SECRET_RANDOM_BITS, new SecureRandom()).toString(SECRET_RANDOM_BASE);
+    }
+
+    /**
      * Check if a user is an administrator of the course
      * @param user The user to check
      * @return If the user is the administrator
      */
     public boolean isAdmin(User user) {
         return user.equals(this.admin);
+    }
+
+    /**
+     * Check if a user is enrolled for a practical
+     * @param user The user to check
+     * @return Whether the user is enrolled or not
+     */
+    public boolean isEnrolled(User user) {
+        return users.contains(user);
     }
 
     /**

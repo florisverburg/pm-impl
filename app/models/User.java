@@ -2,7 +2,6 @@ package models;
 
 import javax.persistence.*;
 
-import com.avaje.ebean.Expr;
 import com.avaje.ebean.annotation.EnumValue;
 import helpers.MD5;
 import play.data.validation.*;
@@ -131,18 +130,6 @@ public class User extends Model {
     private ProfileImage profileImage;
 
     /**
-     * The many-to-many relationship defined for the users and practicals
-     */
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Practical> practicals = new ArrayList<Practical>();
-
-    /**
-     * One-to-many relationship between practical and user
-     */
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
-    private List<Practical> practicalsAdmin = new ArrayList<Practical>();
-
-    /**
      * Many-to-many relationship defined for the users and practicalGroups
      */
     @ManyToMany(targetEntity = PracticalGroup.class, cascade = CascadeType.ALL)
@@ -230,15 +217,6 @@ public class User extends Model {
     }
 
     /**
-     * Method to find the pending invites an user has
-     * @return list of pending invites
-     * @param practical of the user
-     */
-    public List<Invite> findPendingInvitesUser(Practical practical) {
-        return Invite.findPendingInvitesWhereUser(this, practical);
-    }
-
-    /**
      * Get the user id
      * @return The id
      */
@@ -260,22 +238,6 @@ public class User extends Model {
      */
     public void setType(Type type) {
         this.type = type;
-    }
-
-    /**
-     * Method to add a practical to the list
-     * @param practical to be added to the list
-     */
-    public void addPractical(Practical practical) {
-        practicals.add(practical);
-    }
-
-    /**
-     * Used to return the list of practicals
-     * @return practicals practicals
-     */
-    public List<Practical> getPracticals() {
-        return practicals;
     }
 
     /**
@@ -423,32 +385,10 @@ public class User extends Model {
     }
 
     /**
-     * Gets invites send for a certain practical
-     * @param practical The practical
-     * @return Invites send
-     */
-    public List<Invite> getInvitesSend(Practical practical) {
-        return Invite.find.where().and(
-                Expr.eq("practical.id", practical.getId()), Expr.eq("sender.id", this.id)
-        ).findList();
-    }
-
-    /**
      * Gets the invites received
      * @return Invites received
      */
     public List<Invite> getInvitesReceived() {
         return invitesReceived;
-    }
-
-    /**
-     * Gets invites received for a certain practical
-     * @param practical The practical
-     * @return Invites received
-     */
-    public List<Invite> getInvitesReceived(Practical practical) {
-        return Invite.find.where().and(
-                Expr.eq("practical.id", practical.getId()), Expr.eq("receiver.id", this.id)
-        ).findList();
     }
 }

@@ -17,10 +17,10 @@
 @practicalGroup.info(PracticalGroup.findWithPracticalAndUser(practical, user), null)
 
 <h2>Your sent invites</h2>
-@invite.list(user.getInvitesSend(practical))
+@invite.list(Invite.findByPracticalSender(practical, user))
 
 <h2>Your received invites</h2>
-@invite.list(user.getInvitesReceived(practical))
+@invite.list(Invite.findByPracticalReceiver(practical, user))
 
 <h2>Recommended Practical Groups:</h2>
 @Recommendation.recommend(user, practical, 1).map { pGroup =>
