@@ -131,12 +131,6 @@ public class User extends Model {
     private ProfileImage profileImage;
 
     /**
-     * One-to-many relationship between user skill and user
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<SkillValueUser> skillValues = new ArrayList<SkillValueUser>();
-
-    /**
      * The many-to-many relationship defined for the users and practicals
      */
     @ManyToMany(cascade = CascadeType.ALL)
@@ -266,22 +260,6 @@ public class User extends Model {
      */
     public void setType(Type type) {
         this.type = type;
-    }
-
-    /**
-     * Method to add a user skill to the list, used for the one-to-many relationship
-     * @param skillValue user skill to add to the list
-     */
-    public void addUserSkill(SkillValueUser skillValue) {
-        skillValues.add(skillValue);
-    }
-
-    /**
-     * Used to return the list of skills
-     * @return returns the current list of skills
-     */
-    public List<SkillValueUser> getSkillValues() {
-        return skillValues;
     }
 
     /**
@@ -472,20 +450,6 @@ public class User extends Model {
         return Invite.find.where().and(
                 Expr.eq("practical.id", practical.getId()), Expr.eq("receiver.id", this.id)
         ).findList();
-    }
-
-    /**
-     * Find the user skill form this user by a skill.
-     * @param skill The skill to search the user skill
-     * @return The user skill
-     */
-    public SkillValueUser findUserSkillBySkill(Skill skill) {
-        for(SkillValueUser uSkill : this.getSkillValues()) {
-            if(uSkill.getSkill().equals(skill)) {
-                return uSkill;
-            }
-        }
-        return null;
     }
 
     /**

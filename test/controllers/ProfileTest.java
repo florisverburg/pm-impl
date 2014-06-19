@@ -131,7 +131,7 @@ public class ProfileTest extends WithApplication {
                         .withFormUrlEncodedBody(body)
         );
 
-        List<SkillValueUser> newSkills = user.getSkillValues();
+        List<SkillValueUser> newSkills = SkillValueUser.findByUser(user);
         assertEquals(newSkills.size(), skills.size());
     }
 

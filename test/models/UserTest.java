@@ -53,17 +53,6 @@ public class UserTest extends WithApplication {
     }
 
     @Test
-    public void findUserSkill() {
-        Skill skill = Skill.findByName("Programming");
-        SkillValueUser uSkill = testUser1.findUserSkillBySkill(skill);
-        SkillValueUser uSkill2 = testUser3.findUserSkillBySkill(skill);
-
-        assertNull(uSkill2);
-        assertNotNull(uSkill);
-        assertEquals(uSkill.getValue(), new Integer(8));
-    }
-
-    @Test
     public void profileImage() {
         assertEquals(testUser1.getProfileImage(), User.ProfileImage.None);
         assertTrue(testUser1.getProfileImageUrl().contains("f=y"));
@@ -142,7 +131,7 @@ public class UserTest extends WithApplication {
 
         User retrievedUser = User.findById(createdUser.getId());
         // Check values
-        assertEquals(retrievedUser.getSkillValues().size(), 0);
+        assertEquals(SkillValueUser.findByUser(retrievedUser).size(), 0);
 
         // Add skill to user
         SkillValueUser uSkill = new SkillValueUser(retrievedUser, programming, 8);
@@ -150,8 +139,8 @@ public class UserTest extends WithApplication {
 
         retrievedUser = User.findById(createdUser.getId());
         // Check values
-        assertEquals(retrievedUser.getSkillValues().size(), 1);
-        assertEquals(retrievedUser.getSkillValues().get(0).getSkill().getName(), programming.getName());
+        assertEquals(SkillValueUser.findByUser(retrievedUser).size(), 1);
+        assertEquals(SkillValueUser.findByUser(retrievedUser).get(0).getSkill().getName(), programming.getName());
     }
     
     @Test
