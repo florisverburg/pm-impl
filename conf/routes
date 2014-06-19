@@ -6,7 +6,7 @@
 GET         /                                 controllers.ApplicationController.index()
 GET         /about                            controllers.ApplicationController.about()
 GET         /contact                          controllers.ApplicationController.contact()
-GET         /howDoesItWork                    controllers.ApplicationController.howDoesItWork()
+GET         /how                              controllers.ApplicationController.how()
 
 # Practical
 GET         /practical                         controllers.PracticalController.list()

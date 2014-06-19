@@ -38,7 +38,7 @@ public class ApplicationController extends Controller {
      * Create the how does it work page
      * @return the how does it work page
      */
-    public static Result howDoesItWork() {
-        return ok(howDoesItWork.render("This page describes how different parts of the system work."));
+    public static Result how() {
+        return ok(how.render("This page describes how different parts of the system work."));
     }
 }
