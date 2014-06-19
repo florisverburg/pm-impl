@@ -40,7 +40,7 @@ public class SkillValueUser extends SkillValue {
      * @return The user
      */
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     /**

@@ -37,7 +37,7 @@ public class RegisterForm extends LoginForm {
      * @return The first name
      */
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     /**
@@ -53,7 +53,7 @@ public class RegisterForm extends LoginForm {
      * @return The last name
      */
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     /**
@@ -69,7 +69,7 @@ public class RegisterForm extends LoginForm {
      * @return The password repeat
      */
     public String getPasswordRepeat() {
-        return passwordRepeat;
+        return this.passwordRepeat;
     }
 
     /**
@@ -89,12 +89,12 @@ public class RegisterForm extends LoginForm {
         List<ValidationError> errors = new ArrayList<ValidationError>();
 
         // Check if email is already existing in database
-        if(User.findByEmail(email) != null) {
+        if(User.findByEmail(this.email) != null) {
             errors.add(new ValidationError("email", "error.doubleEmail"));
         }
 
         // Check if passwords match
-        if(!password.equals(passwordRepeat)) {
+        if(!this.password.equals(this.passwordRepeat)) {
             errors.add(new ValidationError("passwordRepeat", "error.passwordRepeat"));
         }
 
@@ -106,7 +106,7 @@ public class RegisterForm extends LoginForm {
      * @return The new user
      */
     private User getNewUser() {
-        return new User(firstName, lastName, email);
+        return new User(this.firstName, this.lastName, this.email);
     }
 
     /**
@@ -115,7 +115,7 @@ public class RegisterForm extends LoginForm {
      * @return The new password identity
      */
     private Identity getIdentity(User user) {
-        return new PasswordIdentity(user, email, password);
+        return new PasswordIdentity(user, this.email, this.password);
     }
 
     /**

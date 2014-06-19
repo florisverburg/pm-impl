@@ -63,7 +63,7 @@ public class Skill extends Model {
      * @return name of the current skill
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -82,9 +82,9 @@ public class Skill extends Model {
      * @param maxV maxValue of the skill
      */
     public Skill(String nm, Type tp, Integer maxV) {
-        name = nm;
-        maxValue = maxV;
-        type = tp;
+        this.name = nm;
+        this.maxValue = maxV;
+        this.type = tp;
     }
 
     /**
@@ -92,7 +92,7 @@ public class Skill extends Model {
      * @return type
      */
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     /**
@@ -108,7 +108,7 @@ public class Skill extends Model {
      * @return maxValue
      */
     public Integer getMaxValue() {
-        return maxValue;
+        return this.maxValue;
     }
 
     /**

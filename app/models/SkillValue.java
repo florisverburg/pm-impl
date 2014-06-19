@@ -38,7 +38,7 @@ public abstract class SkillValue extends Model {
      * @return The id
      */
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -46,7 +46,7 @@ public abstract class SkillValue extends Model {
      * @return The skill
      */
     public Skill getSkill() {
-        return skill;
+        return this.skill;
     }
 
     /**
@@ -62,7 +62,7 @@ public abstract class SkillValue extends Model {
      * @return The value for this value skill
      */
     public Integer getValue() {
-        return value;
+        return this.value;
     }
 
     /**

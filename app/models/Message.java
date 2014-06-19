@@ -67,7 +67,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the id
      */
     public long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the timestamp
      */
     public Timestamp getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     /**
@@ -91,7 +91,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the the invite
      */
     public Invite getInvite() {
-        return invite;
+        return this.invite;
     }
 
     /**
@@ -107,7 +107,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the user
      */
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     /**
@@ -123,7 +123,7 @@ public class Message extends Model implements Comparable<Message> {
      * @return the message
      */
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     /**

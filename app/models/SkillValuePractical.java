@@ -41,7 +41,7 @@ public class SkillValuePractical extends SkillValue {
      * @return The practical
      */
     public Practical getPractical() {
-        return practical;
+        return this.practical;
     }
 
     /**

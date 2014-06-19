@@ -34,7 +34,7 @@ public abstract class Identity extends Model {
      * @return The id
      */
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class Identity extends Model {
      * @return The user
      */
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     /**

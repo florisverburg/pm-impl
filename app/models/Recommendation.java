@@ -111,8 +111,8 @@ public final class Recommendation {
 
 
         return sortedList.subList(
-                Math.min((page-1)*PAGE_SIZE, sortedList.size()),
-                Math.min(page*PAGE_SIZE, sortedList.size()));
+                Math.min((page - 1) * PAGE_SIZE, sortedList.size()),
+                Math.min(page * PAGE_SIZE, sortedList.size()));
     }
 
     /**
