@@ -58,14 +58,13 @@ public class PracticalForm {
         this.description = practical.getDescription();
 
         // Add the skills to the form and check if they are set or not
-        Map<Skill, SkillValuePractical> skillsMaps = SkillValuePractical.findAllSkills(practical);
-        for(Skill skill : skillsMaps.keySet()) {
-            if(skillsMaps.get(skill) == null) {
-                SkillValue uSkill = new SkillValuePractical(practical, skill, 1);
+        for (Map.Entry<Skill, SkillValuePractical> entry : SkillValuePractical.findAllSkills(practical).entrySet()) {
+            if(entry.getValue() == null) {
+                SkillValue uSkill = new SkillValuePractical(practical, entry.getKey(), 1);
                 skills.add(new SkillsForm(uSkill));
             }
             else {
-                skills.add(new SkillsForm(skillsMaps.get(skill)));
+                skills.add(new SkillsForm(entry.getValue()));
             }
         }
     }

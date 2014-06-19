@@ -52,14 +52,13 @@ public class SkillsForm {
      */
     public SkillsForm(User user) {
         // Add the skills to the form and check if they are set or not
-        Map<Skill, SkillValueUser> skillsMaps = SkillValueUser.findAllSkills(user);
-        for(Skill skill : skillsMaps.keySet()) {
-            if(skillsMaps.get(skill) == null) {
-                SkillValue uSkill = new SkillValueUser(user, skill, 1);
+        for (Map.Entry<Skill, SkillValueUser> entry : SkillValueUser.findAllSkills(user).entrySet()) {
+            if(entry.getValue() == null) {
+                SkillValue uSkill = new SkillValueUser(user, entry.getKey(), 1);
                 profileSkills.add(new SkillsForm(uSkill));
             }
             else {
-                profileSkills.add(new SkillsForm(skillsMaps.get(skill)));
+                profileSkills.add(new SkillsForm(entry.getValue()));
             }
         }
     }
