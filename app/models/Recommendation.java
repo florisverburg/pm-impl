@@ -93,6 +93,11 @@ public final class Recommendation {
         HashMap<PracticalGroup, Double> list = new HashMap<PracticalGroup, Double>();
         PracticalGroup practicalGroup1 = PracticalGroup.findWithPracticalAndUser(practical, user);
 
+        // When the user isn't in a group return an empty list
+        if(practicalGroup1 == null) {
+            return new LinkedList<PracticalGroup>();
+        }
+
         // Go trough all the practical groups
         for(PracticalGroup practicalGroup2 : PracticalGroup.findByPractical(practical)) {
             // Check if it is not our own group

@@ -19,6 +19,12 @@ public class PracticalGroupController extends Controller {
     public static Result view(long id) {
         PracticalGroup practicalGroup = PracticalGroup.findById(id);
 
+        // Check if the practicalGroup exists
+        if(practicalGroup == null) {
+            flash("error", "practicalGroup.doesNotExist");
+            return redirect(routes.ApplicationController.index());
+        }
+
         // Check if the user is enrolled for the practical
         if(!practicalGroup.getPractical().isEnrolled(Secure.getUser())){
             flash("error", "practical.userIsNotEnrolled");
