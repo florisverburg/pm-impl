@@ -1,36 +1,60 @@
-@(user: User, practical: Practical)
+@(user: User, practical: Practical, ownGroup: PracticalGroup)
 
 @main("Practical", "practicals") {
 
-<div class="main-text jumbotron">
-    <h2>@practical.getName()</h2>
-    <p>
-        @practical.getDescription()
-    </p>
-</div>
+    <div class="main-text jumbotron">
+        <h2>@practical.getName() <a href="@controllers.routes.PracticalController.invites(practical.getId)" class="btn btn-lg btn-primary pull-right">View invites</a></h2>
+        <p>
+            @practical.getDescription()
+        </p>
+    </div>
 
-<h2>Recommended Skills:</h2>
-@SkillValuePractical.findByPractical(practical).map { skill =>
-    @skill.getSkill().getName(): @skill.getValue()<br />
-}
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Recommended Skills:</h2>
+            <table class="table">
+                @SkillValuePractical.findByPractical(practical).map { skill =>
+                    <tr>
+                        <td>@skill.getSkill().getName():</td>
+                        <td>@skill.getValue()</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        @if(ownGroup != null) {
+            <div class="col-md-5">
+                <div class="well">
+                    <h3 class="modal-header"><a href="@routes.PracticalGroupController.view(ownGroup.getId())">
+                        Your group:</a></h3>
+                    <ul>
+                    @ownGroup.getGroupMembers.map { member =>
+                        <li>@member.getFullName</li>
+                    }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
 
-@practicalGroup.info(PracticalGroup.findWithPracticalAndUser(practical, user), null)
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Recommended Practical Groups:</h2>
+            <table class="table table-hover">
+            @Recommendation.recommend(user, practical, 1).map { pGroup =>
+                @practicalGroup.show(pGroup, ownGroup, user)
+            }
+            </table>
+        </div>
 
-<h2>Your sent invites</h2>
-@invite.list(Invite.findByPracticalSender(practical, user))
-
-<h2>Your received invites</h2>
-@invite.list(Invite.findByPracticalReceiver(practical, user))
-
-<h2>Recommended Practical Groups:</h2>
-@Recommendation.recommend(user, practical, 1).map { pGroup =>
-    @practicalGroup.show(pGroup, user)
-}
-
-<h2>Practical Groups:</h2>
-@PracticalGroup.findByPractical(practical).map { pGroup =>
-    @if(!pGroup.getGroupMembers().contains(user)) {
-        @practicalGroup.show(pGroup, user)
-    }
-}
+        <div class="col-md-6">
+            <h2>Practical Groups:</h2>
+            <table class="table table-hover">
+            @PracticalGroup.findByPractical(practical).map { pGroup =>
+                @if(!pGroup.getGroupMembers().contains(user)) {
+                    @practicalGroup.show(pGroup, ownGroup, user)
+                }
+            }
+            </table>
+        </div>
+    </div>
 }

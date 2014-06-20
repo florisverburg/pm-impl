@@ -31,9 +31,13 @@ practical.edited = The practical is successfully edited
 practical.alreadyCoupled = User already coupled to the practical
 practical.successfulAddition = User has been successfully added to the practical
 practical.removeGroupMember = User has been successfully removed from practical group
+practical.userIsNotEnrolled = The user is not enrolled to this practical
+practical.inviteSend = The invite has been successfully send.
+practical.unsuccessfulSend = You have already send an invite to this group or have more then 5 open invites.
 
 # Practical group
 practicalGroup.doesNotExist = The practical group does not exist
+practicalGroup.notAllowed = You are not allowed to fulfill this action.
 
 # Invite
 invite.accepted = Invite has been accepted
@@ -49,8 +53,6 @@ message = Send new message
 # Profile
 profileText = A basic profile description
 profileImage = Profile image
-
 profile.saved = Your profile is saved
-practical.userIsNotEnrolled = The user is not enrolled to this practical
-practical.inviteSend = The invite has been successfully send.
-practical.unsuccessfulSend = The invite has not been send.
+
+user.doesNotExist = This user does not exist

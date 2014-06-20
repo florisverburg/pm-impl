@@ -108,11 +108,11 @@ public class Invite extends Model {
     public static Invite findByPracticalSenderReceiver(Practical practical, User sender, User receiver) {
         return find.where()
             .and(
-                eq("practical.id", practical.getId()),
-                and(
-                        eq("sender.id", sender.getId()),
-                        eq("receiver.id", receiver.getId())
-                )
+                    eq("practical.id", practical.getId()),
+                    and(
+                            eq("sender.id", sender.getId()),
+                            eq("receiver.id", receiver.getId())
+                    )
             )
             .findUnique();
     }
@@ -283,45 +283,51 @@ public class Invite extends Model {
     /**
      * Method to send an invite, the method checks whether the invite has not already been
      * send and the amount of pending invites send has not exceeded
-     * @param practical which the invite is for
      * @param sender of the new invite
      * @param receiver of the new invite
      * @return Resembles the success/failure of the check
      */
-    public static Invite sendInvite(Practical practical, User sender, User receiver) {
+    public static Invite sendInvite(PracticalGroup sender, PracticalGroup receiver) {
         // Check whether the sender has not already send an invite to the receiver and
         // Check whether the receiver has not already send an invite to the receiver and
         // Check whether the amount of send invitations does not exceed the set maximum
-        if(!checkInvite(sender, receiver, practical)
-                || !checkInvite(receiver, sender, practical)
-                || sender.equals(receiver)
-                || findPendingInvitesByUser(practical, sender).size() > INVITES_MAX) {
+        if(!canInvite(sender, receiver)
+                || findPendingInvitesByUser(sender.getPractical(), sender.getOwner()).size() > INVITES_MAX) {
             return null;
         }
-        Invite newInvite = new Invite(practical, sender, receiver);
+        Invite newInvite = new Invite(sender.getPractical(), sender.getOwner(), receiver.getOwner());
         newInvite.save();
         return newInvite;
     }
 
     /**
-     * Returns true if the first user has not send an invite to the second user
-     * @param sender first user
-     * @param receiver second user
-     * @param practical of the invite that needs to be checked
-     * @return Resembles the success/failure of the check
+     * Check if an invite can be send between two practical groups
+     * @param group1 The first practical group
+     * @param group2 The second practical group
+     * @return If two groups can invite each other
      */
-    public static boolean checkInvite(User sender, User receiver, Practical practical) {
-        // Check whether the sender has not already send an invite to the receiver
-        Invite alreadySentInvite = find.where()
+    public static boolean canInvite(PracticalGroup group1, PracticalGroup group2) {
+        // Check if they are not sending an invite to themself
+        if(group1.equals(group2)) {
+            return false;
+        }
+
+        // Check whether the groups have already send an invite to eachother
+        Invite invite = find.where()
                 .and(
-                    eq("practical.id", practical.getId()),
-                    and(
-                        eq("sender.id", sender.getId()),
-                        eq("receiver.id", receiver.getId())
-                    )
-                )
-                .findUnique();
-        return (null == alreadySentInvite);
+                        eq("practical.id", group1.getPractical().getId()),
+                        or(
+                                and(
+                                        eq("sender.id", group1.getOwner().getId()),
+                                        eq("receiver.id", group2.getOwner().getId())
+                                ),
+                                and(
+                                        eq("sender.id", group2.getOwner().getId()),
+                                        eq("receiver.id", group1.getOwner().getId())
+                                )
+                        )
+                ).findUnique();
+        return (invite == null);
     }
 
     /**

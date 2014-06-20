@@ -8,6 +8,7 @@ import play.mvc.*;
 import views.html.practical.list;
 import views.html.practical.view;
 import views.html.practical.admin;
+import views.html.practical.invites;
 
 import static play.data.Form.form;
 
@@ -77,7 +78,26 @@ public class PracticalController extends Controller {
             return ok(admin.render(practical, practicalForm));
         }
 
-        return ok(view.render(user, practical));
+        PracticalGroup practicalGroup = PracticalGroup.findWithPracticalAndUser(practical, user);
+        return ok(view.render(user, practical, practicalGroup));
+    }
+
+    /**
+     * View the invites specified by the url
+     * @param id identity of the practical
+     * @return Show the invites for this practical
+     */
+    public static Result invites(long id) {
+        User user = Secure.getUser();
+        Practical practical = Practical.findById(id);
+
+        // Check if practical does exist
+        if(practical == null) {
+            flash("error", "practical.doesNotExist");
+            return redirect(routes.PracticalController.list());
+        }
+
+        return ok(invites.render(user, practical));
     }
 
     /**
@@ -168,6 +188,7 @@ public class PracticalController extends Controller {
 
         // Delete the practical
         Ebean.delete(PracticalGroup.findByPractical(practical));
+        Ebean.delete(SkillValuePractical.findByPractical(practical));
         practical.delete();
         flash("success", "practical.deleted");
         return redirect(routes.PracticalController.list());
