@@ -1,4 +1,4 @@
-@(practicalGroup : PracticalGroup, user : User)
+@(practicalGroup: PracticalGroup, ownPracticalGroup: PracticalGroup, user: User)
 
 <tr class="clickableRow" href="@routes.PracticalGroupController.view(practicalGroup.getId())">
     <td>
@@ -14,8 +14,12 @@
         }
     </td>
     <td>
-    @if(PracticalGroup.findWithPracticalAndUser(practicalGroup.getPractical, user).getOwner().equals(user)) {
-        <a href="@routes.PracticalGroupController.sendInvite(practicalGroup.getId())" class="btn btn-primary">Invite</a>
+    @if(ownPracticalGroup != null && ownPracticalGroup.getOwner().equals(user)) {
+        @if(!Invite.canInvite(practicalGroup, ownPracticalGroup)) {
+            <a href="#" class="btn btn-primary" disabled="disabled">Invite</a>
+        } else {
+            <a href="@routes.PracticalGroupController.sendInvite(practicalGroup.getId())" class="btn btn-primary">Invite</a>
+        }
     }
     </td>
 </tr>

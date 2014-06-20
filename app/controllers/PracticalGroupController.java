@@ -46,18 +46,28 @@ public class PracticalGroupController extends Controller {
      * @return a redirect to the view practical
      */
     public static Result sendInvite(long id) {
-        PracticalGroup practicalGroup = PracticalGroup.findById(id);
-        User receiver =  practicalGroup.getGroupMembers().get(0);
-        User sender = Secure.getUser();
+        User user = Secure.getUser();
+        PracticalGroup practicalGroup1 = PracticalGroup.findById(id);
+
+        // Check if we both have a practical group
+        if(practicalGroup1 == null) {
+            flash("error", "practicalGroup.doesNotExist");
+            return redirect(routes.PracticalController.list());
+        }
+        PracticalGroup practicalGroup2 = PracticalGroup.findWithPracticalAndUser(practicalGroup1.getPractical(), user);
+        if(practicalGroup2 == null || !practicalGroup2.getOwner().equals(user)) {
+            flash("error", "practicalGroup.notAllowed");
+            return redirect(routes.PracticalController.list());
+        }
 
         // Check if the invite was successfully send
-        if(Invite.sendInvite(practicalGroup.getPractical(), sender, receiver) == null) {
+        if(Invite.sendInvite(practicalGroup2, practicalGroup1) == null) {
             flash("error", "practical.unsuccessfulSend");
-            return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
+            return redirect(routes.PracticalController.view(practicalGroup1.getPractical().getId()));
         }
 
         flash("success", "practical.inviteSend");
-        return redirect(routes.PracticalController.view(practicalGroup.getPractical().getId()));
+        return redirect(routes.PracticalController.view(practicalGroup1.getPractical().getId()));
     }
 
     /**

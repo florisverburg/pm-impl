@@ -78,7 +78,8 @@ public class PracticalController extends Controller {
             return ok(admin.render(practical, practicalForm));
         }
 
-        return ok(view.render(user, practical));
+        PracticalGroup practicalGroup = PracticalGroup.findWithPracticalAndUser(practical, user);
+        return ok(view.render(user, practical, practicalGroup));
     }
 
     /**

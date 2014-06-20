@@ -1,4 +1,4 @@
-@(user: User, practical: Practical)
+@(user: User, practical: Practical, ownGroup: PracticalGroup)
 
 @main("Practical", "practicals") {
 
@@ -21,16 +21,19 @@
                 }
             </table>
         </div>
-        <div class="col-md-5">
-            <div class="well">
-                <h3 class="modal-header"><a href="@routes.PracticalGroupController.view(PracticalGroup.findWithPracticalAndUser(practical, user).getId())">Your group:</a></h3>
-                <ul>
-                    @PracticalGroup.findWithPracticalAndUser(practical, user).getGroupMembers.map { member =>
+        @if(ownGroup != null) {
+            <div class="col-md-5">
+                <div class="well">
+                    <h3 class="modal-header"><a href="@routes.PracticalGroupController.view(ownGroup.getId())">
+                        Your group:</a></h3>
+                    <ul>
+                    @ownGroup.getGroupMembers.map { member =>
                         <li>@member.getFullName</li>
                     }
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
+        }
     </div>
 
     <div class="row">
@@ -38,7 +41,7 @@
             <h2>Recommended Practical Groups:</h2>
             <table class="table table-hover">
             @Recommendation.recommend(user, practical, 1).map { pGroup =>
-                @practicalGroup.show(pGroup, user)
+                @practicalGroup.show(pGroup, ownGroup, user)
             }
             </table>
         </div>
@@ -48,7 +51,7 @@
             <table class="table table-hover">
             @PracticalGroup.findByPractical(practical).map { pGroup =>
                 @if(!pGroup.getGroupMembers().contains(user)) {
-                    @practicalGroup.show(pGroup, user)
+                    @practicalGroup.show(pGroup, ownGroup, user)
                 }
             }
             </table>
