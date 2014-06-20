@@ -21,7 +21,7 @@
     @practicalGroup.getGroupMembers().map { user =>
         <ul>
             <li>
-                <p>@user.getFullName()</p>
+                <a href="@routes.ProfileController.viewOther(user.getId())">@user.getFullName()</a>
             </li>
         </ul>
     }

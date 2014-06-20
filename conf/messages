@@ -54,3 +54,5 @@ message = Send new message
 profileText = A basic profile description
 profileImage = Profile image
 profile.saved = Your profile is saved
+
+user.doesNotExist = This user does not exist

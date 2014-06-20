@@ -26,7 +26,21 @@ public class ProfileController extends Controller {
      */
     public static Result view() {
         User user = Secure.getUser();
-        return ok(view.render(user, SkillValueUser.findSkills(user)));
+        return ok(view.render(user, SkillValueUser.findSkills(user), false));
+    }
+
+    /**
+     * Shows an users' view
+     * @param id The users' id
+     * @return The users' profile page
+     */
+    public static Result viewOther(Long id) {
+        User user = User.findById(id);
+        if(user == null) {
+            flash("error", "user.doesNotExist");
+            return redirect(routes.ApplicationController.index());
+        }
+        return ok(view.render(user, SkillValueUser.findSkills(user), true));
     }
 
     /**
