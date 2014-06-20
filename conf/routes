@@ -21,9 +21,9 @@ GET         /practical/:id/delete              controllers.PracticalController.d
 
 # Profile
 GET         /profile                           controllers.ProfileController.view()
-GET         /profile/:id                       controllers.ProfileController.viewOther(id: Long)
 GET         /profile/edit                      controllers.ProfileController.edit()
 POST        /profile/edit                      controllers.ProfileController.save()
+GET         /profile/:id                       controllers.ProfileController.viewOther(id: Long)
 GET         /skills/edit                       controllers.ProfileController.editSkills()
 POST        /skills/edit                       controllers.ProfileController.saveSkills()
 
